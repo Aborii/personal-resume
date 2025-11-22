@@ -1,5 +1,3 @@
-"use server";
-
 const DevBanner = () => {
   const isDevEnvironment = process.env.APP_ENV !== "production";
 
