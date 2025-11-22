@@ -1,0 +1,8 @@
+name = "personal-resume"
+compatibility_date = "2024-11-21"
+
+[env.production]
+account_id = "" # Add your Cloudflare Account ID here
+compatibility_date = "2024-11-21"
+
+[[pages_build_output_dir]]

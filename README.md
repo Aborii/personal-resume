@@ -1,36 +1,92 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Abdullah Almofleh - Personal Resume
 
-## Getting Started
+This is a personal resume website built with [Next.js](https://nextjs.org) and configured for deployment on [Cloudflare Pages](https://pages.cloudflare.com/).
 
-First, run the development server:
+## 🚀 Getting Started
+
+First, install the dependencies:
+
+```bash
+npm install
+```
+
+Then, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📦 Available Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `npm run dev` - Start the development server
+- `npm run build` - Build the application for production
+- `npm run start` - Start the production server
+- `npm run lint` - Run ESLint
+- `npm run pages:build` - Build for Cloudflare Pages
+- `npm run preview` - Preview the Cloudflare Pages build locally
+- `npm run deploy` - Deploy to Cloudflare Pages
 
-## Learn More
+## 🌐 Deployment on Cloudflare Pages
 
-To learn more about Next.js, take a look at the following resources:
+This project is configured for deployment on Cloudflare Pages. You can deploy it in two ways:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Option 1: Automatic Deployment via GitHub Actions
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Fork this repository to your GitHub account
+2. Go to your Cloudflare Dashboard and get your API token and Account ID
+3. In your GitHub repository, go to Settings → Secrets and variables → Actions
+4. Add these secrets:
+   - `CLOUDFLARE_API_TOKEN`: Your Cloudflare API token
+   - `CLOUDFLARE_ACCOUNT_ID`: Your Cloudflare Account ID
+5. Push to the `main` branch to trigger automatic deployment
 
-## Deploy on Vercel
+### Option 2: Manual Deployment
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Install dependencies: `npm install`
+2. Build the project: `npm run pages:build`
+3. Install Wrangler CLI: `npm install -g wrangler`
+4. Login to Cloudflare: `wrangler login`
+5. Deploy: `wrangler pages deploy .vercel/output/static --project-name=personal-resume`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Option 3: Cloudflare Dashboard
+
+1. Go to [Cloudflare Pages](https://pages.cloudflare.com/)
+2. Connect your GitHub repository
+3. Set the build command to: `npm run pages:build`
+4. Set the build output directory to: `.vercel/output/static`
+5. Deploy!
+
+## 🛠️ Technology Stack
+
+- **Framework**: Next.js 16
+- **Styling**: Tailwind CSS 4
+- **Language**: TypeScript
+- **Deployment**: Cloudflare Pages
+- **CI/CD**: GitHub Actions
+
+## 📁 Project Structure
+
+```
+├── app/                 # Next.js App Router
+│   ├── globals.css     # Global styles
+│   ├── layout.tsx      # Root layout
+│   └── page.tsx        # Home page
+├── public/             # Static assets
+├── .github/workflows/  # GitHub Actions
+├── next.config.ts      # Next.js configuration
+├── package.json        # Dependencies
+├── wrangler.toml       # Cloudflare configuration
+└── README.md           # This file
+```
+
+## 📧 Contact
+
+- **Email**: abdullah@abdullah-almofleh.com
+- **Email**: almofleh.abdullah@gmail.com
+- **LinkedIn**: [abdullah-almofleh](https://www.linkedin.com/in/abdullah-almofleh/)
+
+---
+
+⚡ Powered by Next.js and Cloudflare Pages
