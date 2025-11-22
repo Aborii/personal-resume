@@ -1,5 +1,3 @@
-import React from "react";
-
 const DevBanner: React.FC = () => {
   const isDevEnvironment = process.env.APP_ENV !== "production";
 
