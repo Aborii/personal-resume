@@ -1,5 +1,5 @@
 const DevBanner = () => {
-  const isDevEnvironment = process.env.CF_PAGES_BRANCH !== "main";
+  const isDevEnvironment = process.env.GITHUB_REF_NAME !== "main";
 
   if (!isDevEnvironment) return null;
 
