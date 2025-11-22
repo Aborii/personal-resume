@@ -7,7 +7,6 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "pages:build": "next build",
     "pages:dev": "wrangler pages dev out",
     "deploy": "npm run build && wrangler pages deploy out"
   },
