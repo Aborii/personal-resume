@@ -4,9 +4,12 @@ const DevBanner = () => {
   if (!isDevEnvironment) return null;
 
   return (
-    <div className="fixed top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-md text-xs font-medium z-50 shadow-lg">
-      <span>DEV {process.env.APP_ENV}</span>
-    </div>
+    <>
+      <div className="fixed top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-md text-xs font-medium z-50 shadow-lg">
+        <span>DEV</span>
+      </div>
+      {JSON.stringify(process.env, null, 2)}
+    </>
   );
 };
 
