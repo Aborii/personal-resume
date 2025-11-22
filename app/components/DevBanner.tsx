@@ -1,5 +1,5 @@
 const DevBanner = () => {
-  const isDevEnvironment = process.env.APP_ENV !== "production";
+  const isDevEnvironment = process.env.CF_PAGES_BRANCH !== "main";
 
   if (!isDevEnvironment) return null;
 
