@@ -40,7 +40,8 @@ yarn-error.log*
 .wrangler/
 wrangler.toml.bak
 
-# open-next build output
+# next.js build output
+/out/
 .open-next/
 
 # typescript
