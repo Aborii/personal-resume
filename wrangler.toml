@@ -1,8 +1,21 @@
-name = "personal-resume"
-compatibility_date = "2024-11-21"
-
-[env.production]
-account_id = "" # Add your Cloudflare Account ID here
-compatibility_date = "2024-11-21"
-
-[[pages_build_output_dir]]
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "main": ".open-next/worker.js",
+  "name": "personal-resume",
+  "compatibility_date": "2024-12-30",
+  "compatibility_flags": [
+    "nodejs_compat",
+    "global_fetch_strictly_public"
+  ],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "services": [
+    {
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "personal-resume"
+    }
+  ],
+  "r2_buckets": []
+}
