@@ -7,9 +7,7 @@ const DevBanner: React.FC = () => {
 
   return (
     <div className="fixed top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-md text-xs font-medium z-50 shadow-lg">
-      <div className="flex items-center gap-1">
-        <span>DEV</span>
-      </div>
+      <span>DEV</span>
     </div>
   );
 };
