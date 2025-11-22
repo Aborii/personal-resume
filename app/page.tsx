@@ -4,7 +4,7 @@ export default function Home() {
       <main className="flex min-h-screen w-full max-w-4xl flex-col items-center justify-center py-16 px-8 text-center">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-5xl font-bold text-gray-800 dark:text-white mb-4">King Abdullah Almofleh</h1>
+          <h1 className="text-5xl font-bold text-gray-800 dark:text-white mb-4">Abdullah Almofleh</h1>
           <h2 className="text-2xl text-gray-600 dark:text-gray-300 mb-6">Software Developer & Tech Enthusiast</h2>
 
           {/* Funny Development Status */}
