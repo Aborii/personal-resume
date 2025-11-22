@@ -1,6 +1,6 @@
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 font-sans flex items-center justify-center px-8">
+    <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-green-50 via-blue-50 to-purple-50 font-sans dark:from-green-900 dark:via-gray-900 dark:to-purple-900">
       <main className="text-center">
         <h1 className="text-6xl font-bold text-gray-900 dark:text-white mb-8">Abdullah Almofleh</h1>
 
