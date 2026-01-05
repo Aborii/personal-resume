@@ -22,6 +22,7 @@ export default function Home() {
           >
             LinkedIn
           </a>
+        
         </div>
       </main>
     </div>
