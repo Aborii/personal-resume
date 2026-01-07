@@ -1,0 +1,210 @@
+{
+  "personalInfo": {
+    "name": "Abdullah Almofleh",
+    "location": "Dubai, United Arab Emirates",
+    "phone": "+971 50 510 8253",
+    "email": "almofleh.abdullah@gmail.com",
+    "links": {
+      "linkedin": "https://www.linkedin.com/in/abdullah-almofleh",
+      "github": "https://github.com/Aborii",
+      "portfolio": "https://abdullah-almofleh.com"
+    }
+  },
+  "summary": "Software Engineer and Senior Full-Stack Developer with nearly seven years of experience building scalable, production-ready web applications. Strong expertise in the JavaScript and TypeScript ecosystem, including React, Next.js, Vue.js, Node.js, Nest.js, Laravel, and Express.js. Proven ability to deliver full-stack solutions for SaaS platforms, energy systems, e-learning platforms, e-commerce, and enterprise tools across the full development lifecycle from architecture and API design to deployment and production support.",
+  "skills": {
+    "Programming Languages": ["JavaScript", "TypeScript", "PHP"],
+    "Front-End": ["React", "Next.js", "Vue.js", "HTML", "CSS"],
+    "Back-End": ["Node.js", "Nest.js", "Express.js", "Laravel"],
+    "APIs": ["REST", "GraphQL"],
+    "Databases": ["PostgreSQL", "MySQL", "MongoDB"],
+    "DevOps and Cloud": ["Docker", "AWS", "CI/CD"],
+    "Testing": ["Jest", "Cypress"],
+    "Methodologies": ["Agile", "Scrum"]
+  },
+  "experience": [
+    {
+      "title": "Software Engineer",
+      "company": "Estia Software DMCC",
+      "location": "Dubai, United Arab Emirates",
+      "period": "May 2023 - Present",
+      "current": true,
+      "responsibilities": [
+        "Develop and maintain scalable React and Next.js applications for production environments.",
+        "Build SSR and SSG solutions using Next.js to improve SEO and application performance.",
+        "Integrate RESTful and GraphQL APIs to support complex front-end and back-end workflows.",
+        "Implement unit and end-to-end testing using Jest and Cypress to ensure code quality and stability.",
+        "Containerize applications using Docker and monitor production systems to maintain reliability.",
+        "Contribute full-stack features using Next.js and Nest.js following modern scalability practices."
+      ]
+    },
+    {
+      "title": "Software Engineer",
+      "company": "Nordelco DMCC",
+      "location": "Dubai, United Arab Emirates",
+      "period": "December 2022 - May 2023",
+      "current": false,
+      "responsibilities": [
+        "Develop server-side applications using Node.js and Express.js across multiple projects.",
+        "Design and implement RESTful APIs to support front-end and third-party integrations.",
+        "Optimize application performance and scalability in cloud-based environments.",
+        "Create reusable Vue.js components and templates.",
+        "Refactor and debug legacy code to improve maintainability and stability."
+      ]
+    },
+    {
+      "title": "Software Engineer",
+      "company": "Digital Real Marketing",
+      "location": "Dubai, United Arab Emirates",
+      "period": "October 2022 - December 2022",
+      "current": false,
+      "responsibilities": [
+        "Develop and maintain e-commerce websites and applications using the Laravel framework.",
+        "Design and implement database schemas to support e-commerce functionality.",
+        "Build and integrate APIs to support front-end features and external services."
+      ]
+    },
+    {
+      "title": "Full-Stack Developer",
+      "company": "3 Miles",
+      "location": "Damascus, Syria",
+      "period": "November 2021 - September 2022",
+      "current": false,
+      "responsibilities": [
+        "Develop web applications using Laravel, Vue.js, Node.js, and MongoDB across multiple projects.",
+        "Build reusable and testable PHP modules to accelerate feature delivery.",
+        "Design client-side and server-side architecture supporting production users.",
+        "Own the full development lifecycle from requirements to deployment.",
+        "Collaborate with cross-functional teams in Agile and Scrum environments."
+      ]
+    },
+    {
+      "title": "Full-Stack Developer",
+      "company": "Unifi Solutions",
+      "location": "Remote, Part-time",
+      "period": "May 2021 - March 2022",
+      "current": false,
+      "responsibilities": [
+        "Develop web applications using Node.js and React.js for client-facing products.",
+        "Design and implement RESTful APIs to support application features.",
+        "Deliver new functionality based on product specifications.",
+        "Troubleshoot, debug, and update software to improve stability.",
+        "Collaborate remotely with stakeholders to meet technical and user requirements."
+      ]
+    },
+    {
+      "title": "Full-Stack Developer and IT Support",
+      "company": "Technical G",
+      "location": "Damascus, Syria",
+      "period": "February 2021 - May 2021",
+      "current": false,
+      "responsibilities": [
+        "Lead a small web development team while contributing as a hands-on developer.",
+        "Design, code, test, and deploy software systems.",
+        "Solve performance and architectural challenges across web projects.",
+        "Collaborate with product managers and developers using Agile methodologies.",
+        "Refactor existing code to improve efficiency and maintainability."
+      ]
+    },
+    {
+      "title": "Full-Stack Developer",
+      "company": "Aspiraties",
+      "location": "Amsterdam, Netherlands (Remote, Part-time)",
+      "period": "July 2020 - October 2021",
+      "current": false,
+      "responsibilities": [
+        "Develop and maintain web applications using Laravel, HTML, CSS, JavaScript, and MySQL.",
+        "Plan, design, integrate, and test website-related code.",
+        "Test and optimize applications to improve responsiveness and performance.",
+        "Maintain existing applications and services across development and production environments.",
+        "Perform MySQL profiling and database optimization."
+      ]
+    },
+    {
+      "title": "Back-End Developer",
+      "company": "Unifi Solutions",
+      "location": "Remote, Part-time",
+      "period": "August 2020 - January 2021",
+      "current": false,
+      "responsibilities": [
+        "Develop back-end services using Node.js and MongoDB.",
+        "Design and implement RESTful APIs for web applications.",
+        "Manage and optimize databases to ensure reliability and performance.",
+        "Write technical documentation to support maintainability.",
+        "Collaborate with cross-functional teams to gather requirements and deliver features."
+      ]
+    },
+    {
+      "title": "Full-Stack Developer",
+      "company": "We Media",
+      "location": "Damascus, Syria",
+      "period": "May 2019 - April 2021",
+      "current": false,
+      "responsibilities": [
+        "Develop full-stack web applications using React, HTML, CSS, JavaScript, Flutter, Laravel, and Node.js.",
+        "Consult with clients to gather and document website requirements.",
+        "Design website architecture and define hardware and software requirements.",
+        "Prepare mockups and UI flows to guide development.",
+        "Manage multiple projects simultaneously while meeting delivery deadlines."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "Envita",
+      "description": "Energy Monitoring Platform",
+      "details": [
+        "Develop features for an energy monitoring web application to track, visualize, and analyze energy consumption data.",
+        "Build scalable front-end and back-end components supporting dashboards and reporting.",
+        "Integrate APIs and data pipelines to deliver real-time energy insights."
+      ],
+      "url": "https://envita.io/"
+    },
+    {
+      "name": "Ecorize",
+      "description": "Energy Planning Software",
+      "details": [
+        "Contribute to an energy planning platform used by energy engineers.",
+        "Develop features supporting calculations, data visualization, and planning workflows.",
+        "Improve performance and usability for data-intensive engineering use cases."
+      ],
+      "url": "https://ecorize.de/en"
+    },
+    {
+      "name": "ASP School",
+      "description": "Online Learning Platform",
+      "details": [
+        "Develop and enhance an online learning platform providing video and text-based courses.",
+        "Support multilingual access for Dutch, English, and Arabic users.",
+        "Build responsive features for course delivery, practice modules, and learner progress tracking."
+      ],
+      "url": "https://asp-school.nl"
+    },
+    {
+      "name": "Beethere",
+      "description": "Taxi Ordering Application",
+      "details": [
+        "Develop core features for a taxi ordering application, including ride requests and real-time updates.",
+        "Integrate APIs supporting driver and customer workflows."
+      ]
+    },
+    {
+      "name": "Al-Adham",
+      "description": "E-Commerce Platform",
+      "details": [
+        "Develop an e-commerce platform focused on horse and horse-related products.",
+        "Implement product catalogs, shopping cart functionality, and order workflows."
+      ]
+    }
+  ],
+  "education": {
+    "degree": "Bachelor of Information Engineering (Artificial Intelligence)",
+    "school": "Arab International University",
+    "location": "Damascus, Syria",
+    "period": "October 2016 - February 2022",
+    "gpa": "3.25 out of 4.00"
+  },
+  "languages": {
+    "Arabic": "Native",
+    "English": "Professional"
+  }
+}
