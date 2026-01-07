@@ -1,67 +1,27 @@
-import ResumeHeader from "../components/ResumeHeader";
-import Section from "../components/Section";
-import Skills from "../components/Skills";
-import Experience from "../components/Experience";
-import Projects from "../components/Projects";
-import resumeData from "../../data/resumeData.json";
-
-export default function Resume() {
+export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br to-green-100 via-emerald-200 from-teal-300 font-sans dark:from-green-900 dark:via-gray-900 dark:to-purple-900">
-      <main className="max-w-4xl mx-auto px-8 py-16">
-        <div className="bg-white dark:bg-gray-800 shadow-2xl rounded-2xl overflow-hidden">
-          <ResumeHeader personalInfo={resumeData.personalInfo} />
+    <div className="flex min-h-screen items-center justify-center bg-linear-to-br to-green-100 via-emerald-200 from-teal-300 font-sans dark:from-green-900 dark:via-gray-900 dark:to-purple-900">
+      <main className="text-center">
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-8">
+          Abdullah Almofleh
+        </h1>
 
-          <div className="px-8 py-8">
-            {/* Summary Section */}
-            <Section title="Professional Summary">
-              <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-lg">{resumeData.summary}</p>
-            </Section>
+        <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+          <a
+            href="mailto:contact@abdullah-almofleh.com"
+            className="text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300 text-lg transition-colors duration-200 underline"
+          >
+            contact@abdullah-almofleh.com
+          </a>
 
-            {/* Skills Section */}
-            <Section title="Technical Skills">
-              <Skills skills={resumeData.skills} />
-            </Section>
-
-            {/* Experience Section */}
-            <Section title="Professional Experience">
-              <Experience experiences={resumeData.experience} />
-            </Section>
-
-            {/* Projects Section */}
-            <Section title="Notable Projects">
-              <Projects projects={resumeData.projects} />
-            </Section>
-
-            {/* Education Section */}
-            <Section title="Education">
-              <div className="border-l-4 border-blue-500 pl-6">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{resumeData.education.degree}</h3>
-                <p className="text-lg text-blue-600 dark:text-blue-400 font-medium">{resumeData.education.school}</p>
-                <p className="text-gray-600 dark:text-gray-400">{resumeData.education.location}</p>
-                <div className="flex flex-wrap items-center gap-4 mt-2">
-                  <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 px-3 py-1 rounded-full text-sm">
-                    {resumeData.education.period}
-                  </span>
-                  <span className="text-gray-600 dark:text-gray-400">GPA: {resumeData.education.gpa}</span>
-                </div>
-              </div>
-            </Section>
-
-            {/* Languages Section */}
-            <Section title="Languages">
-              <div className="flex flex-wrap gap-4">
-                {Object.entries(resumeData.languages).map(([language, level]) => (
-                  <span
-                    key={language}
-                    className="px-4 py-2 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-300 rounded-lg font-medium"
-                  >
-                    {language}: {level}
-                  </span>
-                ))}
-              </div>
-            </Section>
-          </div>
+          <a
+            href="https://www.linkedin.com/in/abdullah-almofleh/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300 text-lg transition-colors duration-200 underline"
+          >
+            LinkedIn
+          </a>
         </div>
       </main>
     </div>
