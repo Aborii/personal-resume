@@ -26,7 +26,9 @@ export default function Experience({ experiences }: ExperienceProps) {
         >
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
             <div className="flex-1">
-              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white"><FormattedText>{exp.title}</FormattedText></h3>
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
+                <FormattedText>{exp.title}</FormattedText>
+              </h3>
               <p
                 className={`text-base sm:text-lg font-medium ${
                   exp.current ? "text-green-600 dark:text-green-400" : "text-gray-600 dark:text-gray-400"
@@ -34,7 +36,9 @@ export default function Experience({ experiences }: ExperienceProps) {
               >
                 <FormattedText>{exp.company}</FormattedText>
               </p>
-              <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400"><FormattedText>{exp.location}</FormattedText></p>
+              <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
+                <FormattedText>{exp.location}</FormattedText>
+              </p>
             </div>
             <div className="text-gray-600 dark:text-gray-400 mt-2 sm:mt-0 sm:ml-4">
               <span
@@ -58,7 +62,9 @@ export default function Experience({ experiences }: ExperienceProps) {
                 >
                   arrow_right
                 </span>
-                <span className="leading-relaxed"><FormattedText>{responsibility}</FormattedText></span>
+                <span className="leading-relaxed">
+                  <FormattedText>{responsibility}</FormattedText>
+                </span>
               </li>
             ))}
           </ul>

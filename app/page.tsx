@@ -45,7 +45,9 @@ export default function Resume() {
                 <p className="text-base sm:text-lg text-blue-600 dark:text-blue-400 font-medium">
                   <FormattedText>{resumeData.education.school}</FormattedText>
                 </p>
-                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400"><FormattedText>{resumeData.education.location}</FormattedText></p>
+                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
+                  <FormattedText>{resumeData.education.location}</FormattedText>
+                </p>
                 <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-2">
                   <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm">
                     <FormattedText>{resumeData.education.period}</FormattedText>
