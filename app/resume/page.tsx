@@ -7,7 +7,7 @@ import resumeData from "../../data/resumeData.json";
 
 export default function Resume() {
   return (
-    <div className="min-h-screen bg-linear-to-br to-green-100 via-emerald-200 from-teal-300 font-sans dark:from-green-900 dark:via-gray-900 dark:to-purple-900">
+    <div className="min-h-screen bg-gradient-to-br to-green-100 via-emerald-200 from-teal-300 font-sans dark:from-green-900 dark:via-gray-900 dark:to-purple-900">
       <main className="max-w-4xl mx-auto px-8 py-16">
         <div className="bg-white dark:bg-gray-800 shadow-2xl rounded-2xl overflow-hidden">
           <ResumeHeader personalInfo={resumeData.personalInfo} />
