@@ -3,6 +3,7 @@ import Section from "./components/Section";
 import Skills from "./components/Skills";
 import Experience from "./components/Experience";
 import Projects from "./components/Projects";
+import { FormattedText } from "./utils/textFormatter";
 import resumeData from "./../data/resumeData.json";
 
 export default function Resume() {
@@ -16,7 +17,7 @@ export default function Resume() {
             {/* Summary Section */}
             <Section title="Professional Summary">
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-base sm:text-lg">
-                {resumeData.summary}
+                <FormattedText>{resumeData.summary}</FormattedText>
               </p>
             </Section>
 
@@ -39,18 +40,18 @@ export default function Resume() {
             <Section title="Education">
               <div className="border-l-4 border-blue-500 pl-4 sm:pl-6">
                 <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
-                  {resumeData.education.degree}
+                  <FormattedText>{resumeData.education.degree}</FormattedText>
                 </h3>
                 <p className="text-base sm:text-lg text-blue-600 dark:text-blue-400 font-medium">
-                  {resumeData.education.school}
+                  <FormattedText>{resumeData.education.school}</FormattedText>
                 </p>
-                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">{resumeData.education.location}</p>
+                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400"><FormattedText>{resumeData.education.location}</FormattedText></p>
                 <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-2">
                   <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm">
-                    {resumeData.education.period}
+                    <FormattedText>{resumeData.education.period}</FormattedText>
                   </span>
                   <span className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
-                    GPA: {resumeData.education.gpa}
+                    <FormattedText>{`GPA: ${resumeData.education.gpa}`}</FormattedText>
                   </span>
                 </div>
               </div>
