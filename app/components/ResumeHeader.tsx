@@ -23,9 +23,9 @@ const icons = {
 
 export default function ResumeHeader({ personalInfo }: HeaderProps) {
   return (
-    <div className="bg-gradient-to-r from-gray-700 to-gray-800 dark:from-gray-800 dark:to-green-900 text-white px-8 py-12">
-      <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gray-100">{personalInfo.name}</h1>
-      <div className="flex flex-wrap items-center gap-6 text-gray-300 mb-6">
+    <div className="bg-gradient-to-r from-slate-800 to-emerald-900 dark:from-gray-800 dark:to-green-900 text-white px-4 py-8 sm:px-6 md:px-8 lg:py-12">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-white">{personalInfo.name}</h1>
+      <div className="flex flex-wrap items-center gap-3 sm:gap-4 md:gap-6 text-gray-200 mb-4 sm:mb-6 text-sm sm:text-base">
         <div className="flex items-center gap-2">
           {icons.location}
           {personalInfo.location}
@@ -37,10 +37,10 @@ export default function ResumeHeader({ personalInfo }: HeaderProps) {
       </div>
 
       {/* Contact Links */}
-      <div className="flex flex-wrap gap-6">
+      <div className="flex flex-wrap gap-3 sm:gap-4 md:gap-6 text-sm sm:text-base">
         <a
           href={`mailto:${personalInfo.email}`}
-          className="inline-flex items-center gap-2 text-gray-300 hover:text-white transition-colors duration-200"
+          className="inline-flex items-center gap-2 text-gray-200 hover:text-white transition-colors duration-200"
         >
           {icons.email}
           {personalInfo.email}
@@ -50,7 +50,7 @@ export default function ResumeHeader({ personalInfo }: HeaderProps) {
           href={personalInfo.links.linkedin}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 text-gray-300 hover:text-white transition-colors duration-200"
+          className="inline-flex items-center gap-2 text-gray-200 hover:text-white transition-colors duration-200"
         >
           {icons.linkedin}
           LinkedIn
@@ -60,7 +60,7 @@ export default function ResumeHeader({ personalInfo }: HeaderProps) {
           href={personalInfo.links.github}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 text-gray-300 hover:text-white transition-colors duration-200"
+          className="inline-flex items-center gap-2 text-gray-200 hover:text-white transition-colors duration-200"
         >
           {icons.github}
           GitHub
@@ -70,7 +70,7 @@ export default function ResumeHeader({ personalInfo }: HeaderProps) {
           href={personalInfo.links.portfolio}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 text-gray-300 hover:text-white transition-colors duration-200"
+          className="inline-flex items-center gap-2 text-gray-200 hover:text-white transition-colors duration-200"
         >
           {icons.portfolio}
           Portfolio

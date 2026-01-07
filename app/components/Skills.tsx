@@ -19,13 +19,20 @@ export default function Skills({ skills }: SkillsProps) {
   const skillCategories = Object.entries(skills);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
       {skillCategories.map(([category, skillList], index) => (
         <div key={category}>
-          <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">{category}</h3>
+          <h3 className="text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2 sm:mb-3">
+            {category}
+          </h3>
           <div className="flex flex-wrap gap-2">
             {skillList.map((skill) => (
-              <span key={skill} className={`px-3 py-1 text-sm rounded-full ${skillColors[index % skillColors.length]}`}>
+              <span
+                key={skill}
+                className={`px-2 sm:px-3 py-1 text-xs sm:text-sm rounded-full ${
+                  skillColors[index % skillColors.length]
+                }`}
+              >
                 {skill}
               </span>
             ))}
