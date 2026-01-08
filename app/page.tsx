@@ -75,7 +75,7 @@ export default function Resume() {
           </div>
         </div>
         {/* Footer */}
-        <footer className="border-t border-gray-200 dark:border-gray-700 pt-8">
+        <footer className="pt-8">
           <p className="text-gray-500 dark:text-gray-400 text-sm">
             © {new Date().getFullYear()} Abdullah Almofleh. Building the future, one line of code at a time.
           </p>
