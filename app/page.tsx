@@ -13,7 +13,7 @@ export default function Resume() {
         <div className="bg-white dark:bg-gray-800 shadow-lg sm:shadow-2xl rounded-lg sm:rounded-2xl overflow-hidden">
           <ResumeHeader personalInfo={resumeData.personalInfo} />
 
-          <div className="px-4 py-6 sm:px-6 md:p                      x-8 lg:py-8">
+          <div className="px-4 py-6 sm:px-6 md:px-8 lg:py-8">
             {/* Summary Section */}
             <Section title="Professional Summary">
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-base sm:text-lg">
@@ -74,56 +74,6 @@ export default function Resume() {
             </Section>
           </div>
         </div>
-
-        {/* About Section */}
-        <div className="mb-16">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">About</h2>
-          <div className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed space-y-4">
-            <p>
-              I&apos;m a passionate software developer with a love for creating innovative digital solutions. My
-              expertise spans across modern web technologies, with a focus on building scalable and user-friendly
-              applications.
-            </p>
-            <p>
-              When I&apos;m not coding, you&apos;ll find me exploring new technologies, contributing to open-source
-              projects, or enjoying a good cup of coffee while planning my next project.
-            </p>
-          </div>
-        </div>
-
-        {/* Skills Section */}
-        <div className="mb-16">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Expertise</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">Frontend Development</h3>
-              <div className="flex flex-wrap gap-2">
-                {["React", "Next.js", "TypeScript", "Tailwind CSS"].map((skill) => (
-                  <span
-                    key={skill}
-                    className="px-3 py-1 bg-green-200 dark:bg-green-900/30 border dark:border-0 border-green-800 text-green-800 dark:text-green-300 text-sm rounded-full"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div>
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">Backend & Tools</h3>
-              <div className="flex flex-wrap gap-2">
-                {["Node.js", "Git", "Docker", "AWS", "Nest.js"].map((skill) => (
-                  <span
-                    key={skill}
-                    className="px-3 py-1 bg-green-200 dark:bg-green-900/30 dark:border-0 text-green-800 border border-green-800 dark:text-green-300 text-sm rounded-full"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* Footer */}
         <footer className="border-t border-gray-200 dark:border-gray-700 pt-8">
           <p className="text-gray-500 dark:text-gray-400 text-sm">
