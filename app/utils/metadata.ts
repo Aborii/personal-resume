@@ -1,7 +1,7 @@
 import resumeData from "../../data/resumeData.json";
 
-export function generateMetadata(pageType: "home" | "resume", customTitle?: string, customDescription?: string) {
-  const { personalInfo, summary, skills, experience } = resumeData;
+export function generateMetadata(pageType: "home", customTitle?: string, customDescription?: string) {
+  const { personalInfo, skills, experience } = resumeData;
 
   // Get current role for dynamic titles
   const currentRole = experience.find((exp) => exp.current) || experience[0];
@@ -9,22 +9,18 @@ export function generateMetadata(pageType: "home" | "resume", customTitle?: stri
 
   const titles = {
     home: `${personalInfo.name} - Portfolio | ${roleTitle}`,
-    resume: `${personalInfo.name} - Resume | ${roleTitle}`,
   };
 
   const descriptions = {
     home: `Portfolio of ${personalInfo.name}, a ${roleTitle} with nearly 7 years of experience. Explore my projects, skills, and professional experience.`,
-    resume: summary,
   };
 
   const urls = {
     home: personalInfo.links.portfolio,
-    resume: `${personalInfo.links.portfolio}/resume`,
   };
 
   const ogImages = {
-    home: `/og-portfolio.png`,
-    resume: "/og-resume.png",
+    home: `/og-main.png`,
   };
 
   const title = customTitle || titles[pageType];
@@ -35,7 +31,7 @@ export function generateMetadata(pageType: "home" | "resume", customTitle?: stri
     description,
     keywords: [
       personalInfo.name,
-      pageType === "home" ? "Portfolio" : "Resume",
+      "Portfolio",
       roleTitle,
       ...Object.values(skills).flat().slice(0, 8),
       personalInfo.location.split(",")[1]?.trim() || "UAE",
@@ -55,7 +51,7 @@ export function generateMetadata(pageType: "home" | "resume", customTitle?: stri
           url: ogImages[pageType],
           width: 1200,
           height: 630,
-          alt: `${personalInfo.name} - ${pageType === "home" ? "Portfolio" : "Resume"}`,
+          alt: `${personalInfo.name} - Portfolio`,
         },
       ],
     },
@@ -66,13 +62,4 @@ export function generateMetadata(pageType: "home" | "resume", customTitle?: stri
       images: [ogImages[pageType]],
     },
   };
-}
-
-export function generatePageSpecificOGImageUrl(title: string, subtitle: string, description: string): string {
-  const params = new URLSearchParams({
-    title,
-    subtitle,
-    description,
-  });
-  return `/api/og?${params.toString()}`;
 }
