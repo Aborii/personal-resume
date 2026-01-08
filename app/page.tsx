@@ -16,7 +16,7 @@ export default function Resume() {
           <div className="px-4 py-6 sm:px-6 md:px-8 lg:py-8">
             {/* Summary Section */}
             <Section title="Professional Summary">
-              <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-base sm:text-lg">
+              <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-base sm:text-lg text-justify">
                 <FormattedText>{resumeData.summary}</FormattedText>
               </p>
             </Section>
