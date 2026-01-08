@@ -1,10 +1,14 @@
+import { Metadata } from "next";
 import ResumeHeader from "./components/ResumeHeader";
 import Section from "./components/Section";
 import Skills from "./components/Skills";
 import Experience from "./components/Experience";
 import Projects from "./components/Projects";
 import { FormattedText } from "./utils/textFormatter";
+import { generateMetadata } from "./utils/metadata";
 import resumeData from "./../data/resumeData.json";
+
+export const metadata: Metadata = generateMetadata("home");
 
 export default function Resume() {
   return (
@@ -77,7 +81,8 @@ export default function Resume() {
         {/* Footer */}
         <footer className="pt-8">
           <p className="text-gray-500 dark:text-gray-400 text-sm">
-            © {new Date().getFullYear()} Abdullah Almofleh. Building the future, one line of code at a time.
+            © {new Date().getFullYear()} {resumeData.personalInfo.name}. Building the future, one line of code at a
+            time.
           </p>
         </footer>
       </main>
