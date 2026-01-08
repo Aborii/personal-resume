@@ -27,7 +27,7 @@ async function generateOGImage(filename, jsx, options = {}) {
 
 async function generateResumeOGImage() {
   const currentRole = resumeData.experience.find((exp) => exp.current) || resumeData.experience[0];
-  const topSkills = Object.values(resumeData.skills).flat().slice(0, 8);
+  const topSkills = ["TypeScript", "React.js", "Next.js", "Node.js", "Nest.js", "Laravel", "Vue.js"];
 
   const jsx = {
     type: "div",
