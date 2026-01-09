@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "pages:dev": "wrangler pages dev out",
-    "deploy": "npm run build && wrangler pages deploy out"
+    "deploy": "npm run build && wrangler pages deploy out",
+    "generate-og": "node scripts/generate-og-images.js"
   },
   "dependencies": {
     "next": "^16.1.1",
@@ -20,9 +21,11 @@
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.6",
     "@types/react-dom": "^19.2.3",
+    "@vercel/og": "^0.8.6",
     "baseline-browser-mapping": "^2.9.12",
     "eslint": "^9.39.1",
     "eslint-config-next": "16.0.3",
+    "playwright": "^1.57.0",
     "tailwindcss": "^4.1.17",
     "typescript": "^5.9.3",
     "wrangler": "^4.50.0"

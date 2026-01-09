@@ -10,10 +10,10 @@
       "portfolio": "https://abdullah-almofleh.com"
     }
   },
-  "summary": "Software Engineer and Senior Full-Stack Developer with nearly seven years of experience building scalable, production-ready web applications. Strong expertise in the JavaScript and TypeScript ecosystem, including React, Next.js, Vue.js, Node.js, Nest.js, Laravel, and Express.js. Proven ability to deliver full-stack solutions for SaaS platforms, energy systems, e-learning platforms, e-commerce, and enterprise tools across the full development lifecycle from architecture and API design to deployment and production support.",
+  "summary": "Software Engineer and Senior Full-Stack Developer with ~7 years of experience building scalable, production-ready web applications. Strong expertise in the JavaScript and TypeScript ecosystem, including React, Next.js, Vue.js, Node.js, Nest.js, Laravel, and Express.js. Proven ability to deliver full-stack solutions for SaaS platforms, energy systems, e-learning platforms, e-commerce, and enterprise tools across the full development lifecycle from architecture and API design to deployment and production support.",
   "skills": {
     "Programming Languages": ["JavaScript", "TypeScript", "PHP"],
-    "Front-End": ["React", "Next.js", "Vue.js", "HTML", "CSS"],
+    "Front-End": ["React.js", "Next.js", "Vue.js", "HTML", "CSS"],
     "Back-End": ["Node.js", "Nest.js", "Express.js", "Laravel"],
     "APIs": ["REST", "GraphQL"],
     "Databases": ["PostgreSQL", "MySQL", "MongoDB"],

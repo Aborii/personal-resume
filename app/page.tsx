@@ -1,10 +1,14 @@
+import { Metadata } from "next";
 import ResumeHeader from "./components/ResumeHeader";
 import Section from "./components/Section";
 import Skills from "./components/Skills";
 import Experience from "./components/Experience";
 import Projects from "./components/Projects";
 import { FormattedText } from "./utils/textFormatter";
+import { generateMetadata } from "./utils/metadata";
 import resumeData from "./../data/resumeData.json";
+
+export const metadata: Metadata = generateMetadata("home");
 
 export default function Resume() {
   return (
@@ -13,10 +17,10 @@ export default function Resume() {
         <div className="bg-white dark:bg-gray-800 shadow-lg sm:shadow-2xl rounded-lg sm:rounded-2xl overflow-hidden">
           <ResumeHeader personalInfo={resumeData.personalInfo} />
 
-          <div className="px-4 py-6 sm:px-6 md:p                      x-8 lg:py-8">
+          <div className="px-4 py-6 sm:px-6 md:px-8 lg:py-8">
             {/* Summary Section */}
             <Section title="Professional Summary">
-              <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-base sm:text-lg">
+              <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-base sm:text-lg text-justify">
                 <FormattedText>{resumeData.summary}</FormattedText>
               </p>
             </Section>
@@ -74,6 +78,13 @@ export default function Resume() {
             </Section>
           </div>
         </div>
+        {/* Footer */}
+        <footer className="pt-8">
+          <p className="text-gray-500 dark:text-gray-400 text-sm">
+            © {new Date().getFullYear()} {resumeData.personalInfo.name}. Building the future, one line of code at a
+            time.
+          </p>
+        </footer>
       </main>
     </div>
   );
