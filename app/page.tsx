@@ -4,7 +4,6 @@ import Section from "./components/Section";
 import Skills from "./components/Skills";
 import Experience from "./components/Experience";
 import Projects from "./components/Projects";
-import DownloadPDFButton from "./components/DownloadPDFButton";
 import { FormattedText } from "./utils/textFormatter";
 import { generateMetadata } from "./utils/metadata";
 import resumeData from "./../data/resumeData.json";
@@ -17,11 +16,6 @@ export default function Resume() {
       <main className="w-full max-w-4xl mx-auto px-4 py-8 sm:px-6 md:px-8 lg:py-16">
         <div className="bg-white dark:bg-gray-800 shadow-lg sm:shadow-2xl rounded-lg sm:rounded-2xl overflow-hidden">
           <ResumeHeader personalInfo={resumeData.personalInfo} />
-
-          {/* Download PDF Button */}
-          <div className="px-4 py-4 sm:px-6 md:px-8 flex justify-center border-b border-gray-200 dark:border-gray-700">
-            <DownloadPDFButton />
-          </div>
 
           <div className="px-4 py-6 sm:px-6 md:px-8 lg:py-8">
             {/* Summary Section */}

@@ -1,3 +1,5 @@
+import DownloadPDFButton from "./DownloadPDFButton";
+
 interface HeaderProps {
   personalInfo: {
     name: string;
@@ -24,7 +26,12 @@ const icons = {
 export default function ResumeHeader({ personalInfo }: HeaderProps) {
   return (
     <div className="bg-linear-to-r from-slate-800 to-emerald-900 dark:from-gray-800 dark:to-green-900 text-white px-4 py-8 sm:px-6 md:px-8 lg:py-12">
-      <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-white">{personalInfo.name}</h1>
+      <div className="flex justify-between items-start mb-4">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white">{personalInfo.name}</h1>
+        <div className="hidden sm:block">
+          <DownloadPDFButton />
+        </div>
+      </div>
       <div className="flex flex-wrap items-center gap-3 sm:gap-4 md:gap-6 text-gray-200 mb-4 sm:mb-6 text-sm sm:text-base">
         <div className="flex items-center gap-2">
           {icons.location}
@@ -75,6 +82,11 @@ export default function ResumeHeader({ personalInfo }: HeaderProps) {
           {icons.portfolio}
           Portfolio
         </a>
+      </div>
+
+      {/* Mobile Download Button */}
+      <div className="sm:hidden mt-6 flex justify-center">
+        <DownloadPDFButton />
       </div>
     </div>
   );
