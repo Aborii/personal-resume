@@ -1,5 +1,4 @@
 import { jsPDF } from "jspdf";
-import autoTable from "jspdf-autotable";
 
 interface ResumeData {
   personalInfo: {
@@ -58,16 +57,16 @@ export const generateResumePDF = (resumeData: ResumeData) => {
 
   // Helper function to add section title
   const addSectionTitle = (title: string) => {
-    checkPageBreak(15);
-    doc.setFontSize(14);
+    checkPageBreak(12);
+    doc.setFontSize(13);
     doc.setFont("helvetica", "bold");
     doc.setTextColor(37, 99, 235); // Blue color
     doc.text(title, margin, yPosition);
-    yPosition += 3;
+    yPosition += 2;
     doc.setDrawColor(37, 99, 235);
     doc.setLineWidth(0.5);
     doc.line(margin, yPosition, pageWidth - margin, yPosition);
-    yPosition += 8;
+    yPosition += 6;
   };
 
   // Header Section
@@ -99,7 +98,7 @@ export const generateResumePDF = (resumeData: ResumeData) => {
   doc.setTextColor(0, 0, 0);
   const summaryLines = doc.splitTextToSize(resumeData.summary, pageWidth - 2 * margin);
   doc.text(summaryLines, margin, yPosition);
-  yPosition += summaryLines.length * 5 + 5;
+  yPosition += summaryLines.length * 4 + 3;
 
   // Technical Skills
   addSectionTitle("TECHNICAL SKILLS");
@@ -123,28 +122,28 @@ export const generateResumePDF = (resumeData: ResumeData) => {
     const categoryWidth = doc.getTextWidth(`${category}: `);
     const skillsLines = doc.splitTextToSize(skillsText, pageWidth - 2 * margin - categoryWidth - 2);
     doc.text(skillsLines, margin + categoryWidth + 2, yPosition);
-    yPosition += Math.max(5, skillsLines.length * 5);
+    yPosition += Math.max(4, skillsLines.length * 4);
 
     // Add small spacing between categories (except last one)
     if (index < Object.entries(resumeData.skills).length - 1) {
-      yPosition += 2;
+      yPosition += 1;
     }
   });
 
-  yPosition += 5;
+  yPosition += 3;
 
   // Professional Experience
   resumeData.experience.forEach((exp, index) => {
     // Calculate the total height needed for this experience block
-    let blockHeight = 6 + 5 + 5 + 7; // title + company + location + period
+    let blockHeight = 5 + 4 + 4 + 5; // title + company + location + period
 
     exp.responsibilities.forEach((resp) => {
       const respLines = doc.splitTextToSize(`• ${resp}`, pageWidth - 2 * margin - 5);
-      blockHeight += respLines.length * 4.5;
+      blockHeight += respLines.length * 3.8;
     });
 
     if (index < resumeData.experience.length - 1) {
-      blockHeight += 5; // spacing after block
+      blockHeight += 3; // spacing after block
     }
 
     // Add section title before first experience item
@@ -166,23 +165,23 @@ export const generateResumePDF = (resumeData: ResumeData) => {
     doc.setFont("helvetica", "bold");
     doc.setTextColor(0, 0, 0);
     doc.text(exp.title, margin, yPosition);
-    yPosition += 6;
+    yPosition += 5;
 
     doc.setFontSize(10);
     doc.setFont("helvetica", "bold");
     doc.setTextColor(37, 99, 235);
     doc.text(exp.company, margin, yPosition);
-    yPosition += 5;
+    yPosition += 4;
 
     doc.setFont("helvetica", "normal");
     doc.setTextColor(100, 100, 100);
     doc.setFontSize(9);
     doc.text(exp.location, margin, yPosition);
-    yPosition += 5;
+    yPosition += 4;
 
     doc.setTextColor(100, 100, 100);
     doc.text(exp.period, margin, yPosition);
-    yPosition += 7;
+    yPosition += 5;
 
     doc.setFontSize(9);
     doc.setFont("helvetica", "normal");
@@ -191,11 +190,11 @@ export const generateResumePDF = (resumeData: ResumeData) => {
     exp.responsibilities.forEach((resp) => {
       const respLines = doc.splitTextToSize(`• ${resp}`, pageWidth - 2 * margin - 5);
       doc.text(respLines, margin + 5, yPosition);
-      yPosition += respLines.length * 4.5;
+      yPosition += respLines.length * 3.8;
     });
 
     if (index < resumeData.experience.length - 1) {
-      yPosition += 5;
+      yPosition += 3;
     }
   });
 
@@ -204,19 +203,19 @@ export const generateResumePDF = (resumeData: ResumeData) => {
   // Projects
   resumeData.projects.forEach((project, index) => {
     // Calculate the total height needed for this project block
-    let blockHeight = 6; // project name + description line
+    let blockHeight = 5; // project name + description line
 
     if (project.url) {
-      blockHeight += 5; // URL line
+      blockHeight += 4; // URL line
     }
 
     project.details.forEach((detail) => {
       const detailLines = doc.splitTextToSize(`• ${detail}`, pageWidth - 2 * margin - 5);
-      blockHeight += detailLines.length * 4.5;
+      blockHeight += detailLines.length * 3.8;
     });
 
     if (index < resumeData.projects.length - 1) {
-      blockHeight += 5; // spacing after block
+      blockHeight += 3; // spacing after block
     }
 
     // Add section title before first project item
@@ -243,14 +242,14 @@ export const generateResumePDF = (resumeData: ResumeData) => {
     doc.setFont("helvetica", "italic");
     doc.setTextColor(37, 99, 235);
     doc.text(`- ${project.description}`, margin + doc.getTextWidth(project.name) + 2, yPosition);
-    yPosition += 6;
+    yPosition += 5;
 
     if (project.url) {
       doc.setFontSize(9);
       doc.setFont("helvetica", "normal");
       doc.setTextColor(100, 100, 100);
       doc.text(`URL: ${project.url}`, margin, yPosition);
-      yPosition += 5;
+      yPosition += 4;
     }
 
     doc.setFontSize(9);
@@ -260,11 +259,11 @@ export const generateResumePDF = (resumeData: ResumeData) => {
     project.details.forEach((detail) => {
       const detailLines = doc.splitTextToSize(`• ${detail}`, pageWidth - 2 * margin - 5);
       doc.text(detailLines, margin + 5, yPosition);
-      yPosition += detailLines.length * 4.5;
+      yPosition += detailLines.length * 3.8;
     });
 
     if (index < resumeData.projects.length - 1) {
-      yPosition += 5;
+      yPosition += 3;
     }
   });
 
@@ -276,23 +275,23 @@ export const generateResumePDF = (resumeData: ResumeData) => {
   doc.setFont("helvetica", "bold");
   doc.setTextColor(0, 0, 0);
   doc.text(resumeData.education.degree, margin, yPosition);
-  yPosition += 6;
+  yPosition += 5;
 
   doc.setFontSize(10);
   doc.setFont("helvetica", "bold");
   doc.setTextColor(37, 99, 235);
   doc.text(resumeData.education.school, margin, yPosition);
-  yPosition += 5;
+  yPosition += 4;
 
   doc.setFontSize(9);
   doc.setFont("helvetica", "normal");
   doc.setTextColor(100, 100, 100);
   doc.text(`${resumeData.education.location} | ${resumeData.education.period}`, margin, yPosition);
-  yPosition += 5;
+  yPosition += 4;
 
   doc.setTextColor(0, 0, 0);
   doc.text(`GPA: ${resumeData.education.gpa}`, margin, yPosition);
-  yPosition += 10;
+  yPosition += 7;
 
   // Languages
   addSectionTitle("LANGUAGES");
