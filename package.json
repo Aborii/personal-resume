@@ -12,6 +12,8 @@
     "generate-og": "node scripts/generate-og-images.js"
   },
   "dependencies": {
+    "jspdf": "^4.0.0",
+    "jspdf-autotable": "^5.0.7",
     "next": "^16.1.1",
     "react": "19.2.0",
     "react-dom": "19.2.0"
