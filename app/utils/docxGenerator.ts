@@ -45,23 +45,40 @@ export const generateResumeDOCX = async (resumeData: ResumeData) => {
   // Header Section
   children.push(
     new Paragraph({
-      text: resumeData.personalInfo.name,
-      heading: HeadingLevel.HEADING_1,
+      children: [
+        new TextRun({
+          text: resumeData.personalInfo.name,
+          bold: true,
+          size: 32,
+        }),
+      ],
       alignment: AlignmentType.CENTER,
       spacing: { after: 100 },
     }),
     new Paragraph({
-      text: resumeData.personalInfo.location,
+      children: [
+        new TextRun({
+          text: resumeData.personalInfo.location,
+        }),
+      ],
       alignment: AlignmentType.CENTER,
       spacing: { after: 50 },
     }),
     new Paragraph({
-      text: `${resumeData.personalInfo.phone} | ${resumeData.personalInfo.email}`,
+      children: [
+        new TextRun({
+          text: `${resumeData.personalInfo.phone} | ${resumeData.personalInfo.email}`,
+        }),
+      ],
       alignment: AlignmentType.CENTER,
       spacing: { after: 50 },
     }),
     new Paragraph({
-      text: `LinkedIn: ${resumeData.personalInfo.links.linkedin} | Portfolio: ${resumeData.personalInfo.links.portfolio}`,
+      children: [
+        new TextRun({
+          text: `LinkedIn: ${resumeData.personalInfo.links.linkedin} | Portfolio: ${resumeData.personalInfo.links.portfolio}`,
+        }),
+      ],
       alignment: AlignmentType.CENTER,
       spacing: { after: 200 },
     })
@@ -70,8 +87,13 @@ export const generateResumeDOCX = async (resumeData: ResumeData) => {
   // Professional Summary
   children.push(
     new Paragraph({
-      text: "PROFESSIONAL SUMMARY",
-      heading: HeadingLevel.HEADING_2,
+      children: [
+        new TextRun({
+          text: "PROFESSIONAL SUMMARY",
+          bold: true,
+          size: 24,
+        }),
+      ],
       spacing: { before: 200, after: 100 },
       border: {
         bottom: {
@@ -83,7 +105,11 @@ export const generateResumeDOCX = async (resumeData: ResumeData) => {
       },
     }),
     new Paragraph({
-      text: resumeData.summary,
+      children: [
+        new TextRun({
+          text: resumeData.summary,
+        }),
+      ],
       spacing: { after: 200 },
     })
   );
@@ -91,8 +117,13 @@ export const generateResumeDOCX = async (resumeData: ResumeData) => {
   // Technical Skills
   children.push(
     new Paragraph({
-      text: "TECHNICAL SKILLS",
-      heading: HeadingLevel.HEADING_2,
+      children: [
+        new TextRun({
+          text: "TECHNICAL SKILLS",
+          bold: true,
+          size: 24,
+        }),
+      ],
       spacing: { before: 200, after: 100 },
       border: {
         bottom: {
@@ -132,8 +163,13 @@ export const generateResumeDOCX = async (resumeData: ResumeData) => {
   // Professional Experience
   children.push(
     new Paragraph({
-      text: "PROFESSIONAL EXPERIENCE",
-      heading: HeadingLevel.HEADING_2,
+      children: [
+        new TextRun({
+          text: "PROFESSIONAL EXPERIENCE",
+          bold: true,
+          size: 24,
+        }),
+      ],
       spacing: { before: 200, after: 100 },
       border: {
         bottom: {
@@ -149,8 +185,13 @@ export const generateResumeDOCX = async (resumeData: ResumeData) => {
   resumeData.experience.forEach((exp) => {
     children.push(
       new Paragraph({
-        text: exp.title,
-        heading: HeadingLevel.HEADING_3,
+        children: [
+          new TextRun({
+            text: exp.title,
+            bold: true,
+            size: 22,
+          }),
+        ],
         spacing: { before: 150, after: 50 },
       }),
       new Paragraph({
@@ -164,11 +205,19 @@ export const generateResumeDOCX = async (resumeData: ResumeData) => {
         spacing: { after: 50 },
       }),
       new Paragraph({
-        text: exp.location,
+        children: [
+          new TextRun({
+            text: exp.location,
+          }),
+        ],
         spacing: { after: 50 },
       }),
       new Paragraph({
-        text: exp.period,
+        children: [
+          new TextRun({
+            text: exp.period,
+          }),
+        ],
         spacing: { after: 100 },
       })
     );
@@ -176,7 +225,11 @@ export const generateResumeDOCX = async (resumeData: ResumeData) => {
     exp.responsibilities.forEach((resp) => {
       children.push(
         new Paragraph({
-          text: `• ${resp}`,
+          children: [
+            new TextRun({
+              text: `• ${resp}`,
+            }),
+          ],
           spacing: { after: 80 },
           indent: { left: 360 },
         })
@@ -187,8 +240,13 @@ export const generateResumeDOCX = async (resumeData: ResumeData) => {
   // Projects
   children.push(
     new Paragraph({
-      text: "NOTABLE PROJECTS",
-      heading: HeadingLevel.HEADING_2,
+      children: [
+        new TextRun({
+          text: "NOTABLE PROJECTS",
+          bold: true,
+          size: 24,
+        }),
+      ],
       spacing: { before: 200, after: 100 },
       border: {
         bottom: {
@@ -222,7 +280,11 @@ export const generateResumeDOCX = async (resumeData: ResumeData) => {
     if (project.url) {
       children.push(
         new Paragraph({
-          text: `URL: ${project.url}`,
+          children: [
+            new TextRun({
+              text: `URL: ${project.url}`,
+            }),
+          ],
           spacing: { after: 50 },
         })
       );
@@ -231,7 +293,11 @@ export const generateResumeDOCX = async (resumeData: ResumeData) => {
     project.details.forEach((detail) => {
       children.push(
         new Paragraph({
-          text: `• ${detail}`,
+          children: [
+            new TextRun({
+              text: `• ${detail}`,
+            }),
+          ],
           spacing: { after: 80 },
           indent: { left: 360 },
         })
@@ -242,8 +308,13 @@ export const generateResumeDOCX = async (resumeData: ResumeData) => {
   // Education
   children.push(
     new Paragraph({
-      text: "EDUCATION",
-      heading: HeadingLevel.HEADING_2,
+      children: [
+        new TextRun({
+          text: "EDUCATION",
+          bold: true,
+          size: 24,
+        }),
+      ],
       spacing: { before: 200, after: 100 },
       border: {
         bottom: {
@@ -255,8 +326,13 @@ export const generateResumeDOCX = async (resumeData: ResumeData) => {
       },
     }),
     new Paragraph({
-      text: resumeData.education.degree,
-      heading: HeadingLevel.HEADING_3,
+      children: [
+        new TextRun({
+          text: resumeData.education.degree,
+          bold: true,
+          size: 22,
+        }),
+      ],
       spacing: { after: 50 },
     }),
     new Paragraph({
@@ -270,11 +346,19 @@ export const generateResumeDOCX = async (resumeData: ResumeData) => {
       spacing: { after: 50 },
     }),
     new Paragraph({
-      text: `${resumeData.education.location} | ${resumeData.education.period}`,
+      children: [
+        new TextRun({
+          text: `${resumeData.education.location} | ${resumeData.education.period}`,
+        }),
+      ],
       spacing: { after: 50 },
     }),
     new Paragraph({
-      text: `GPA: ${resumeData.education.gpa}`,
+      children: [
+        new TextRun({
+          text: `GPA: ${resumeData.education.gpa}`,
+        }),
+      ],
       spacing: { after: 200 },
     })
   );
@@ -282,8 +366,13 @@ export const generateResumeDOCX = async (resumeData: ResumeData) => {
   // Languages
   children.push(
     new Paragraph({
-      text: "LANGUAGES",
-      heading: HeadingLevel.HEADING_2,
+      children: [
+        new TextRun({
+          text: "LANGUAGES",
+          bold: true,
+          size: 24,
+        }),
+      ],
       spacing: { before: 200, after: 100 },
       border: {
         bottom: {
@@ -295,9 +384,13 @@ export const generateResumeDOCX = async (resumeData: ResumeData) => {
       },
     }),
     new Paragraph({
-      text: Object.entries(resumeData.languages)
-        .map(([lang, level]) => `${lang}: ${level}`)
-        .join(" | "),
+      children: [
+        new TextRun({
+          text: Object.entries(resumeData.languages)
+            .map(([lang, level]) => `${lang}: ${level}`)
+            .join(" | "),
+        }),
+      ],
       spacing: { after: 100 },
     })
   );
