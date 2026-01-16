@@ -1,4 +1,4 @@
-import { Document, Paragraph, TextRun, HeadingLevel, AlignmentType, BorderStyle, Packer } from "docx";
+import { Document, Paragraph, TextRun, AlignmentType, BorderStyle, Packer } from "docx";
 import { saveAs } from "file-saver";
 
 interface ResumeData {

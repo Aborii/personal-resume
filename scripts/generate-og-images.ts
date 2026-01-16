@@ -1,13 +1,24 @@
-const { writeFileSync, mkdirSync } = require("fs");
-const { join } = require("path");
-const { ImageResponse } = require("@vercel/og");
-const resumeData = require("../data/resumeData.json");
+import { writeFileSync, mkdirSync } from "fs";
+import { join, dirname } from "path";
+import { fileURLToPath } from "url";
+import { ImageResponse } from "@vercel/og";
+import resumeData from "../data/resumeData.json" assert { type: "json" };
+import type { JSX } from "react";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // Ensure public directory exists
 const publicDir = join(__dirname, "..", "public");
 mkdirSync(publicDir, { recursive: true });
 
-async function generateOGImage(filename, jsx, options = {}) {
+interface ImageResponseOptions {
+  width?: number;
+  height?: number;
+  [key: string]: unknown;
+}
+
+async function generateOGImage(filename: string, jsx: JSX.Element, options: ImageResponseOptions = {}): Promise<void> {
   try {
     const response = new ImageResponse(jsx, {
       width: 1200,
@@ -21,16 +32,18 @@ async function generateOGImage(filename, jsx, options = {}) {
     writeFileSync(outputPath, Buffer.from(imageBuffer));
     console.log(`✅ Generated: ${filename}`);
   } catch (error) {
-    console.error(`❌ Failed to generate ${filename}:`, error.message);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error(`❌ Failed to generate ${filename}:`, errorMessage);
   }
 }
 
-async function generateResumeOGImage() {
+async function generateResumeOGImage(): Promise<void> {
   const currentRole = resumeData.experience.find((exp) => exp.current) || resumeData.experience[0];
   const topSkills = ["TypeScript", "React.js", "Next.js", "Node.js", "Nest.js", "Laravel", "Vue.js"];
 
-  const jsx = {
+  const jsx: JSX.Element = {
     type: "div",
+    key: "og-resume-main",
     props: {
       style: {
         height: "100%",
@@ -77,7 +90,7 @@ async function generateResumeOGImage() {
                     color: "#6EE7B7",
                     marginBottom: "24px",
                   },
-                  children: `${currentRole.title} at ${currentRole.company}`,
+                  children: `${currentRole!.title} @ ${currentRole!.company}`,
                 },
               },
               {
@@ -194,7 +207,7 @@ async function generateResumeOGImage() {
   await generateOGImage("og-main.png", jsx);
 }
 
-async function main() {
+async function main(): Promise<void> {
   console.log("🎨 Generating static OG image...");
   console.log("");
 
@@ -208,8 +221,6 @@ async function main() {
   console.log("  - og-main.png (Resume/Main page)");
 }
 
-if (require.main === module) {
-  main().catch(console.error);
-}
+main().catch(console.error);
 
-module.exports = { generateResumeOGImage };
+export { generateResumeOGImage };

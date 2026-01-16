@@ -9,7 +9,7 @@
     "lint": "eslint",
     "pages:dev": "wrangler pages dev out",
     "deploy": "npm run build && wrangler pages deploy out",
-    "generate-og": "node scripts/generate-og-images.js"
+    "generate-og": "tsx scripts/generate-og-images.ts"
   },
   "dependencies": {
     "@types/file-saver": "^2.0.7",
@@ -31,6 +31,7 @@
     "eslint-config-next": "16.1.2",
     "playwright": "^1.57.0",
     "tailwindcss": "^4.1.18",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "wrangler": "^4.59.2"
   }
