@@ -1,50 +1,91 @@
 import React from "react";
 
-// Common technology keywords to bold
+// ===== TECHNOLOGY KEYWORDS =====
+// Programming Languages
+export const programmingLanguages = ["TypeScript", "JavaScript", "PHP"];
+
+// Frontend Technologies
+export const frontendTechs = ["Next.js", "React.js", "React", "Vue.js", "Tailwind CSS", "HTML", "CSS", "SSR", "SSG"];
+
+// Backend Technologies
+export const backendTechs = ["Node.js", "Nest.js", "NestJS", "Express.js", "Laravel", "TypeORM"];
+
+// Databases
+export const databases = ["PostgreSQL", "TimescaleDB", "MongoDB", "MySQL", "Redis"];
+
+// Real-time & IoT
+export const realtimeIoT = ["MQTT", "AWS IoT Core", "IoT Core", "WebSockets", "Socket.io"];
+
+// APIs
+export const apiTechs = ["REST", "RESTful", "GraphQL", "API", "APIs"];
+
+// DevOps & Cloud
+export const devopsCloud = ["AWS", "EC2", "S3", "Lambda", "Docker", "GitHub Actions", "CI/CD", "Sentry"];
+
+// Testing & Tools
+export const testingTools = ["Jest", "Cypress", "Playwright", "Git"];
+
+// Methodologies
+export const methodologies = ["Agile", "Scrum"];
+
+// Other Technologies
+export const otherTechs = ["Stripe", "Flutter"];
+
+// Combined tech keywords array
 const techKeywords = [
-  "JavaScript",
-  "TypeScript",
-  "PHP",
-  "React",
-  "Next.js",
-  "Vue.js",
-  "HTML",
-  "CSS",
-  "Node.js",
-  "Nest.js",
-  "Express.js",
-  "Laravel",
-  "REST",
-  "GraphQL",
-  "RESTful",
-  "PostgreSQL",
-  "MySQL",
-  "MongoDB",
-  "Docker",
-  "AWS",
-  "CI/CD",
-  "Jest",
-  "Cypress",
-  "Agile",
-  "Scrum",
-  "SSR",
-  "SSG",
-  "API",
-  "APIs",
-  "Flutter",
-  "React.js",
+  ...programmingLanguages,
+  ...frontendTechs,
+  ...backendTechs,
+  ...databases,
+  ...realtimeIoT,
+  ...apiTechs,
+  ...devopsCloud,
+  ...testingTools,
+  ...methodologies,
+  ...otherTechs,
 ];
 
+// ===== COMPANY NAMES =====
+export const companyNames = [
+  "Estia Software DMCC",
+  "Estia Software",
+  "Nordelco DMCC",
+  "Nordelco",
+  "Digital Real Marketing",
+  "3 Miles",
+  "Unifi Solutions",
+  "Technical G",
+  "Aspiraties",
+  "We Media",
+  "Arab International University",
+];
+
+// ===== PROJECT NAMES =====
+export const projectNames = [
+  "Envita",
+  "Ecorize",
+  "ASP School",
+  "Beethere",
+  "Al-Adham",
+  "Bact",
+  "Events Management System",
+];
+
+// ===== PATTERNS =====
 // Numbers that typically represent experience/years/versions
 const experiencePattern =
-  /(\b(?:seven|Seven|7)\s*years?\b|\b\d+\s*years?\b|\bv?\d+\.\d+(?:\.\d+)?\b|\b(?:May|June|July|August|September|October|November|December)\s+\d{4}\b)/gi;
+  /(\b(?:seven|Seven|7)\s*years?\b|\b\d+\+?\s*years?\b|\bv?\d+\.\d+(?:\.\d+)?\b|\b(?:May|June|July|August|September|October|November|December)\s+\d{4}\b)/gi;
 
 // GPA and academic achievements
 const academicPattern = /(\bGPA:?\s*\d+\.\d+\b|\b\d+\.\d+\s*out\s*of\s*\d+\.\d+\b)/gi;
 
-// Company names and project names (specific important ones)
-const companyProjectPattern =
-  /\b(Envita|Ecorize|ASP School|Beethere|Al-Adham|Estia Software|Nordelco|Digital Real Marketing|3 Miles|Unifi Solutions|Technical G|Aspiraties|We Media|Arab International University)\b/gi;
+// Build company/project pattern from arrays
+const buildPattern = (items: string[]) => {
+  const escaped = items.map((item) => item.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  return new RegExp(`\\b(${escaped.join("|")})\\b`, "gi");
+};
+
+const companyProjectPattern = buildPattern([...companyNames, ...projectNames]);
 
 /**
  * Formats text by making important elements bold

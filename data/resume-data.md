@@ -10,17 +10,17 @@ almofleh.abdullah@gmail.com | [+971 50 510 8253](tel:+971505108253)
 
 ## Summary
 
-Senior Full-Stack Software Engineer with 7+ years developing scalable platforms in energy (Envita/Ecorize), e-learning (ASP School), mobility, and e-commerce. Technical owner at Estia Software DMCC, building Node.js/NestJS/React/Next.js systems from ground up to handle 2M+ real-time data points daily (time-series). Delivered REST/GraphQL APIs with multi-frame aggregation for production workflows serving energy professionals and educators; achieved 25-40% performance gains through optimization and leading architecture/mentoring.
+Senior Full-Stack Software Engineer with ~7 years developing scalable platforms in energy (Envita/Ecorize), e-learning (ASP School), mobility, and e-commerce. Technical owner at Estia Software DMCC, building Node.js/NestJS/React/Next.js systems from ground up to handle 2M+ real-time data points daily (time-series). Delivered REST/GraphQL APIs with multi-frame aggregation for production workflows serving energy professionals and educators; achieved 25-40% performance gains through optimization and leading architecture/mentoring.
 
 ---
 
 ## Key Achievements
 
 - Engineered Envita SaaS energy platform: Real-time time-series dashboards processing 2M+ data points daily via MQTT from sensors, AWS IoT Core integration, multi-frame aggregation, and complex optimized queries—slashing chart/dashboard load times 40% for energy professionals.
-- Technical owner for Ecorize: GraphQL APIs handling complex energy modeling workflows, optimizing aggregations across PostgreSQL/Redis for sub-second responses.
+- Built Ecorize energy platform: GraphQL APIs handling complex energy modeling workflows, optimizing aggregations across PostgreSQL/Redis for sub-second responses.
 - Delivered ASP School e-learning platform: Multilingual Laravel/React system with video streaming and progress tracking, scaling to production educator workflows.
-- Built backend to Bact for Consulting & Training e-learning platform: Node.js/TypeORM with PostgreSQL, powering scalable course delivery and user management APIs as part of development team.
-- Architected real-time taxi ordering app: WebSocket-driven booking with 100ms latency, integrating live location and payment APIs.
+- Contributed backend to Bact for Consulting & Training e-learning platform: Node.js/TypeORM with PostgreSQL, powering scalable course delivery and user management APIs as part of development team.
+- Developed Beethere taxi ordering app: WebSocket/Socket.io for real-time ride requests and driver/customer updates; integrated live location tracking and payment APIs.
 - Built 3+ e-commerce platforms end-to-end: Laravel/Node.js stacks with inventory management and Stripe integrations, achieving zero-downtime deploys.
 - Drove 25-40% performance/stability gains across 5+ apps via database optimization, Jest/Cypress automation, and TypeScript refactoring.
 - Led architecture decisions and mentored 5+ engineers, enforcing CI/CD pipelines and raising delivery speed 2x in Agile teams.
@@ -133,7 +133,7 @@ _We Media | Damascus, Syria_
 ### Beethere | Taxi Ordering Application
 
 - Laravel, WebSockets/Socket.io,Node.js, Next.js
-- Developed ride requests, real-time driver/customer updates; delivered 100ms latency booking workflows with API integrations.
+- Developed core features for ride requests, real-time driver/customer updates; integrated APIs for location tracking and payments.
 
 ### Al-Adham | E-Commerce Platform
 
