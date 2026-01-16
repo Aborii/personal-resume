@@ -12,6 +12,10 @@
     "generate-og": "node scripts/generate-og-images.js"
   },
   "dependencies": {
+    "@types/file-saver": "^2.0.7",
+    "docx": "^9.5.1",
+    "file-saver": "^2.0.5",
+    "jspdf": "^4.0.0",
     "next": "^16.1.1",
     "react": "19.2.0",
     "react-dom": "19.2.0"
