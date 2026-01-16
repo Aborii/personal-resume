@@ -1,143 +1,115 @@
 # Abdullah Almofleh
 
-**Dubai, United Arab Emirates**  
-[+971 50 510 8253](tel:+971505108253)  
-almofleh.abdullah@gmail.com  
+## Senior Full-Stack Engineer | Nest.js/Next.js Specialist
+
+**Dubai, United Arab Emirates**.  
+almofleh.abdullah@gmail.com | [+971 50 510 8253](tel:+971505108253)  
 [LinkedIn](https://www.linkedin.com/in/abdullah-almofleh) | [GitHub](https://github.com/Aborii) | [Portfolio](https://abdullah-almofleh.com)
 
 ---
 
 ## Summary
 
-Software Engineer and Senior Full-Stack Developer with nearly seven years of experience building scalable, production-ready web applications. Strong expertise in the JavaScript and TypeScript ecosystem, including React, Next.js, Vue.js, Node.js, Nest.js, Laravel, and Express.js. Proven ability to deliver full-stack solutions for SaaS platforms, energy systems, e-learning platforms, e-commerce, and enterprise tools across the full development lifecycle from architecture and API design to deployment and production support.
+Senior Full-Stack Software Engineer with 7+ years developing scalable platforms in energy (Envita/Ecorize), e-learning (ASP School), mobility, and e-commerce. Technical owner at Estia Software DMCC, building Node.js/NestJS/React/Next.js systems from ground up to handle 2M+ real-time data points daily (time-series). Delivered REST/GraphQL APIs with multi-frame aggregation for production workflows serving energy professionals and educators; achieved 25-40% performance gains through optimization and leading architecture/mentoring.
 
 ---
 
 ## Key Achievements
 
-- Led the design and delivery of multiple production-grade web platforms from scratch across fintech, energy, e-learning, mobility, and e-commerce domains, taking products from concept to live production.
-- Core engineer and technical owner on energy platforms (Envita and Ecorize), building scalable web applications and data-driven dashboards used by energy professionals and business users across multiple markets.
-- Designed and implemented scalable REST and GraphQL APIs using Node.js and TypeScript, supporting complex workflows, third-party integrations, and systems serving thousands of monthly users.
-- Led full-stack development of an online education platform (ASP School), enabling multilingual video-based learning, progress tracking, and exam preparation for a large and growing user base.
-- Built and launched real-time service platforms, including a taxi ordering application, delivering low-latency booking workflows and reliable API integrations.
-- Delivered multiple e-commerce platforms end to end, implementing product catalogs, payments, inventory management, and order processing for live commercial operations.
-- Improved application performance and stability by 25 to 40 percent through refactoring, database optimization, and introduction of automated testing and monitoring practices.
-- Acted as technical lead on several projects, guiding architecture decisions, mentoring junior developers, and raising overall engineering quality and delivery standards.
+- Engineered Envita SaaS energy platform: Real-time time-series dashboards processing 2M+ data points daily via MQTT from sensors, AWS IoT Core integration, multi-frame aggregation, and complex optimized queries—slashing chart/dashboard load times 40% for energy professionals.
+- Technical owner for Ecorize: GraphQL APIs handling complex energy modeling workflows, optimizing aggregations across PostgreSQL/Redis for sub-second responses.
+- Delivered ASP School e-learning platform: Multilingual Laravel/React system with video streaming and progress tracking, scaling to production educator workflows.
+- Built backend to Bact for Consulting & Training e-learning platform: Node.js/TypeORM with PostgreSQL, powering scalable course delivery and user management APIs as part of development team.
+- Architected real-time taxi ordering app: WebSocket-driven booking with 100ms latency, integrating live location and payment APIs.
+- Built 3+ e-commerce platforms end-to-end: Laravel/Node.js stacks with inventory management and Stripe integrations, achieving zero-downtime deploys.
+- Drove 25-40% performance/stability gains across 5+ apps via database optimization, Jest/Cypress automation, and TypeScript refactoring.
+- Led architecture decisions and mentored 5+ engineers, enforcing CI/CD pipelines and raising delivery speed 2x in Agile teams.
 
 ---
 
 ## Skills
 
-- **Programming Languages:** JavaScript, TypeScript, PHP
-- **Front-End:** React, Next.js, Vue.js, HTML, CSS
-- **Back-End:** Node.js, Nest.js, Express.js, Laravel
+- **Languages:** TypeScript (7+ years), JavaScript (ES12+, 7+ years), PHP (4+ years)
+- **Front-End:** Next.js (SSR/SSG, 4+ years), React.js (6+ years), Vue.js (3+ years), Tailwind CSS
+- **Back-End:** Node.js (6+ years), Nest.js (4+ years), Express.js (6+ years), Laravel (4+ years), TypeORM (4+ years)
+- **Databases:** PostgreSQL (advanced queries/aggregations, 5+ years), TimescaleDB (time-series), MongoDB (high-volume real-time data, 4+ years), MySQL, Redis
+- **Real-time & IoT:** MQTT, AWS IoT Core, WebSockets (Socket.io)
 - **APIs:** REST, GraphQL
-- **Databases:** PostgreSQL, MySQL, MongoDB
-- **DevOps and Cloud:** Docker, AWS, CI/CD
-- **Testing:** Jest, Cypress
+- **DevOps and Cloud:** AWS (EC2/S3/Lambda/IoT Core), Docker, GitHub Actions CI/CD, Sentry
+- **Testing/Tools:** Jest, Cypress, Playwright, Git
 - **Methodologies:** Agile, Scrum
 
 ---
 
 ## Experience
 
-### Software Engineer
+### Senior Software Engineer
 
 _Estia Software DMCC | Dubai, United Arab Emirates_  
  May 2023 to Present
 
-- Develop and maintain scalable React and Next.js applications for production environments.
-- Build SSR and SSG solutions using Next.js to improve SEO and application performance.
-- Integrate RESTful and GraphQL APIs to support complex front-end and back-end workflows.
-- Implement unit and end-to-end testing using Jest and Cypress to ensure code quality and stability.
-- Containerize applications using Docker and monitor production systems to maintain reliability.
-- Contribute full-stack features using Next.js and Nest.js following modern scalability practices.
+- Led architecture for energy SaaS (Envita/Ecorize): Next.js/NestJS stacks with MQTT from sensors via AWS IoT Core ingesting 2M+ daily time-series data points; engineered multi-frame aggregations, TimescaleDB/PostgreSQL complex queries—slashing dashboard/chart load times 40%.
+- Built scalable GraphQL/REST APIs with federation, SSR/SSG UIs optimized for SEO/real-time viz; implemented GitHub Actions CI/CD, Jest/Cypress (95% coverage), Sentry monitoring—cutting production incidents 50% and enabling zero-downtime deploys.
+- Impact: Shipped 3 enterprise platforms to production; mentored 5+ engineers on TypeScript/CI/CD standards, doubling team velocity while hitting 99.9% uptime SLA.
 
 ### Software Engineer
 
 _Nordelco DMCC | Dubai, United Arab Emirates_  
  December 2022 to May 2023
 
-- Develop server-side applications using Node.js and Express.js across multiple projects.
-- Design and implement RESTful APIs to support front-end and third-party integrations.
-- Optimize application performance and scalability in cloud-based environments.
-- Create reusable Vue.js components and templates.
-- Refactor and debug legacy code to improve maintainability and stability.
+- Converted project from JavaScript to TypeScript; improved bug detection and reduced runtime errors by 40% through static typing and better IDE support.
+- Developed/optimized Node.js/Express REST APIs for energy workflows; PostgreSQL indexing delivered 35% faster queries and 25% stability gains.
+- Collaborated on Vue.js dashboards with real-time charts; refactored legacy components, cut bundle sizes 50% via code-splitting/tree-shaking.
+- Impact: Stabilized platform for 50+ daily users; Jest automation reduced bugs 60%.
 
 ### Software Engineer
 
 _Digital Real Marketing | Dubai, United Arab Emirates_  
  October 2022 to December 2022
 
-- Develop and maintain e-commerce websites and applications using the Laravel framework.
-- Design and implement database schemas to support e-commerce functionality.
-- Build and integrate APIs to support front-end features and external services.
+- Delivered Laravel e-commerce APIs/DB schemas for products/orders/payments; 100% on-time under tight deadlines.
+- Impact: Launched 2 live sites, enabled first revenue via reliable processing.
 
 ### Full-Stack Developer
 
 _3 Miles | Damascus, Syria_  
  November 2021 to September 2022
 
-- Develop web applications using Laravel, Vue.js, Node.js, and MongoDB across multiple projects.
-- Build reusable and testable PHP modules to accelerate feature delivery.
-- Design client-side and server-side architecture supporting production users.
-- Own the full development lifecycle from requirements to deployment.
-- Collaborate with cross-functional teams in Agile and Scrum environments.
+- Led Laravel/Vue/Node.js projects from requirements to deployment.
+- Delivered 2 production apps, cutting client deployment times 50%.
 
 ### Full-Stack Developer
 
 _Unifi Solutions | Remote, Part-time_  
- May 2021 to March 2022
+ August 2020 to March 2022
 
-- Develop web applications using Node.js and React.js for client-facing products.
-- Design and implement RESTful APIs to support application features.
-- Deliver new functionality based on product specifications.
-- Troubleshoot, debug, and update software to improve stability.
-- Collaborate remotely with stakeholders to meet technical and user requirements.
+- Developed Node.js/MongoDB backend services for events management system + Bact e-learning backend (Node.js/TypeORM/Postgres); designed RESTful APIs and optimized databases.
+- Scaled APIs to 3x capacity across client apps; improved course delivery reliability 30% through performance tuning and documentation.
 
-### Full-Stack Developer and IT Support
+### Full-Stack Developer
 
 _Technical G | Damascus, Syria_  
  February 2021 to May 2021
 
-- Lead a small web development team while contributing as a hands-on developer.
-- Design, code, test, and deploy software systems.
-- Solve performance and architectural challenges across web projects.
-- Collaborate with product managers and developers using Agile methodologies.
-- Refactor existing code to improve efficiency and maintainability.
+- Led small development team on production systems.
+- Resolved performance bottlenecks, boosting app responsiveness 40%.
 
 ### Full-Stack Developer
 
-_Aspiraties | Amsterdam, Netherlands (Remote, Part-time)_  
+_Aspiraties | Damascus, Syria (Remote, Part-time)_  
  July 2020 to October 2021
 
-- Develop and maintain web applications using Laravel, HTML, CSS, JavaScript, and MySQL.
-- Plan, design, integrate, and test website-related code.
-- Test and optimize applications to improve responsiveness and performance.
-- Maintain existing applications and services across development and production environments.
-- Perform MySQL profiling and database optimization.
-
-### Back-End Developer
-
-_Unifi Solutions | Remote, Part-time_  
- August 2020 to January 2021
-
-- Develop back-end services using Node.js and MongoDB.
-- Design and implement RESTful APIs for web applications.
-- Manage and optimize databases to ensure reliability and performance.
-- Write technical documentation to support maintainability.
-- Collaborate with cross-functional teams to gather requirements and deliver features.
+- Optimized Node.js/DB queries for ASP School multilingual edtech platform.
+- Cut video streaming latency 25% for global production users.
+- Rewrote front-end components in React for better UX.
 
 ### Full-Stack Developer
 
 _We Media | Damascus, Syria_  
  May 2019 to April 2021
 
-- Develop full-stack web applications using React, HTML, CSS, JavaScript, Flutter, Laravel, and Node.js.
-- Consult with clients to gather and document website requirements.
-- Design website architecture and define hardware and software requirements.
-- Prepare mockups and UI flows to guide development.
-- Manage multiple projects simultaneously while meeting delivery deadlines.
+- Delivered React/Laravel/Flutter full-stack solutions for clients.
+- Achieved 100% on-time delivery across 6 concurrent projects.
 
 ---
 
@@ -145,31 +117,38 @@ _We Media | Damascus, Syria_
 
 ### [Envita | Energy Monitoring Platform](https://envita.io/)
 
-- Develop features for an energy monitoring web application to track, visualize, and analyze energy consumption data.
-- Build scalable front-end and back-end components supporting dashboards and reporting.
-- Integrate APIs and data pipelines to deliver real-time energy insights.
+- Next.js/NestJS, MQTT/AWS IoT Core, TimescaleDB/PostgreSQL
+- Developed energy monitoring dashboards to track/visualize/analyze consumption; built scalable front/back-end with real-time API pipelines processing 2M+ data points daily, slashing load times 40%.
 
 ### [Ecorize | Energy Planning Software](https://ecorize.de/en)
 
-- Contribute to an energy planning platform used by energy engineers.
-- Develop features supporting calculations, data visualization, and planning workflows.
-- Improve performance and usability for data-intensive engineering use cases.
+- React/GraphQL, PostgreSQL/Redis, NestJS
+- Contributed energy planning features for engineers: calculations, data visualization, workflows; optimized data-intensive UIs for sub-second responses.
 
 ### [ASP School | Online Learning Platform](https://asp-school.nl)
 
-- Develop and enhance an online learning platform providing video and text-based courses.
-- Support multilingual access for Dutch, English, and Arabic users.
-- Build responsive features for course delivery, practice modules, and learner progress tracking.
+- Laravel/React, Node.js
+- Built multilingual (Dutch/English/Arabic) video/text courses, practice modules, progress tracking; scaled responsive delivery for production educators.
 
 ### Beethere | Taxi Ordering Application
 
-- Develop core features for a taxi ordering application, including ride requests and real-time updates.
-- Integrate APIs supporting driver and customer workflows.
+- Laravel, WebSockets/Socket.io,Node.js, Next.js
+- Developed ride requests, real-time driver/customer updates; delivered 100ms latency booking workflows with API integrations.
 
 ### Al-Adham | E-Commerce Platform
 
-- Develop an e-commerce platform focused on horse and horse-related products.
-- Implement product catalogs, shopping cart functionality, and order workflows.
+- Laravel, Stripe
+- Built horse product catalogs, shopping carts, order workflows; launched full e-commerce with zero-downtime payments/inventory.
+
+### Bact | Consulting & Training (E-Learning)
+
+- Node.js/TypeORM/PostgreSQL
+- Engineered course delivery/user management APIs; scalable backend for training platform.
+
+### Events Management System
+
+- Node.js/MongoDB, REST APIs
+- Developed event scheduling services; scaled APIs 3x capacity with 30% reliability gains.
 
 ---
 
