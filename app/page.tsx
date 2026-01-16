@@ -86,7 +86,7 @@ export default function Resume() {
         </div>
         {/* Footer */}
         <footer className="pt-8">
-          <p className="text-gray-500 dark:text-gray-400 text-sm">
+          <p className="text-gray-500 dark:text-gray-400 text-sm text-center">
             © {new Date().getFullYear()} {resumeData.personalInfo.name}. Building the future, one line of code at a
             time.
           </p>
