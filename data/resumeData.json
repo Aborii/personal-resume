@@ -1,17 +1,17 @@
 {
   "personalInfo": {
     "name": "Abdullah Almofleh",
-    "title": "Senior Full-Stack Engineer | Nest.js/Next.js Specialist",
+    "title": "Senior Full-Stack Engineer | NestJS / Next.js Specialist",
     "location": "Dubai, United Arab Emirates",
     "phone": "+971 50 510 8253",
     "email": "almofleh.abdullah@gmail.com",
     "links": {
       "linkedin": "https://www.linkedin.com/in/abdullah-almofleh",
       "github": "https://github.com/Aborii",
-      "portfolio": "https://abdullah-almofleh.com"
+      "portfolio": "https://almofleh.dev"
     }
   },
-  "summary": "Senior Full-Stack Engineer with ~7 years building high-volume platforms at Estia Software DMCC (real time energy/e-learning), handling 2M+ daily time-series data points. Architected NestJS/GraphQL backends and Next.js/React front-ends from scratch, driving 25-40% performance gains through database sharding and caching optimizations while mentoring development teams.",
+  "summary": "Senior Full-Stack Engineer with ~7 years building high-volume platforms at Estia Software DMCC (real time energy/e-learning), handling 2M+ daily time-series data points. Architected NestJS/PostgreSQL backends and Next.js/Typescript front-ends from scratch, driving 25-40% performance gains through database sharding and caching optimizations while mentoring development teams.",
   "keyAchievements": [
     "Engineered Envita SaaS energy platform: Real-time time-series dashboards processing 2M+ data points daily via MQTT from sensors, AWS IoT Core integration, multi-frame aggregation, and complex optimized queries—slashing chart/dashboard load times 40% for energy professionals.",
     "Built Ecorize energy platform: GraphQL APIs handling complex energy modeling workflows, optimizing aggregations across PostgreSQL/Redis for sub-second responses.",
@@ -27,7 +27,7 @@
     "Front-End": ["Next.js (SSR/SSG, 4+ years)", "React.js (6+ years)", "Vue.js (3+ years)", "Tailwind CSS"],
     "Back-End": [
       "Node.js (6+ years)",
-      "Nest.js (4+ years)",
+      "NestJS (4+ years)",
       "Express.js (6+ years)",
       "Laravel (4+ years)",
       "TypeORM (4+ years)"

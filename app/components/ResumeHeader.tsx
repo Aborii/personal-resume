@@ -15,75 +15,56 @@ interface HeaderProps {
   };
 }
 
-const icons = {
-  location: <span className="material-icons text-base">location_on</span>,
-  phone: <span className="material-icons text-base">phone</span>,
-  email: <span className="material-icons text-base">email</span>,
-  linkedin: <span className="material-icons text-base">work</span>,
-  github: <span className="material-icons text-base">code</span>,
-  portfolio: <span className="material-icons text-base">public</span>,
-};
-
 export default function ResumeHeader({ personalInfo }: HeaderProps) {
   return (
-    <div className="bg-linear-to-r from-slate-800 to-emerald-900 dark:from-gray-800 dark:to-green-900 text-white px-4 py-8 sm:px-6 md:px-8 lg:py-12">
-      <div className="flex justify-between items-start mb-4">
-        <div>
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white">{personalInfo.name}</h1>
-          <p className="text-base sm:text-lg md:text-xl text-gray-200 mt-2">{personalInfo.title}</p>
-        </div>
+    <div className="bg-white dark:bg-gray-900 px-4 py-6 sm:px-6 md:px-8 border-b border-gray-200 dark:border-gray-700">
+      <div className="flex justify-end mb-4">
         <div className="hidden sm:block">
           <DownloadPDFButton />
         </div>
       </div>
-      <div className="flex flex-wrap items-center gap-3 sm:gap-4 md:gap-6 text-gray-200 mb-4 sm:mb-6 text-sm sm:text-base">
-        <div className="flex items-center gap-2">
-          {icons.location}
-          {personalInfo.location}
-        </div>
-        <div className="flex items-center gap-2">
-          {icons.phone}
-          {personalInfo.phone}
-        </div>
+
+      {/* Centered Name */}
+      <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white text-center mb-3">
+        {personalInfo.name}
+      </h1>
+
+      {/* Centered Title with muted color */}
+      <p className="text-base sm:text-lg md:text-xl text-[#2F4F4F] dark:text-[#4A7C7C] text-center mb-4 font-medium">
+        {personalInfo.title}
+      </p>
+
+      {/* Compressed Contact Info - Line 1 */}
+      <div className="text-sm sm:text-base text-gray-700 dark:text-gray-300 text-center mb-2">
+        {personalInfo.location} | {personalInfo.phone} | {personalInfo.email}
       </div>
 
-      {/* Contact Links */}
-      <div className="flex flex-wrap gap-3 sm:gap-4 md:gap-6 text-sm sm:text-base">
-        <a
-          href={`mailto:${personalInfo.email}`}
-          className="inline-flex items-center gap-2 text-gray-200 hover:text-white transition-colors duration-200"
-        >
-          {icons.email}
-          {personalInfo.email}
-        </a>
-
+      {/* Links - Line 2 */}
+      <div className="text-sm sm:text-base text-center flex flex-wrap justify-center gap-x-3">
         <a
           href={personalInfo.links.linkedin}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 text-gray-200 hover:text-white transition-colors duration-200"
+          className="text-[#0A66C2] hover:text-[#004182] dark:text-[#4A9EFF] dark:hover:text-[#6BB3FF] transition-colors duration-200"
         >
-          {icons.linkedin}
           LinkedIn
         </a>
-
+        <span className="text-gray-400">|</span>
         <a
           href={personalInfo.links.github}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 text-gray-200 hover:text-white transition-colors duration-200"
+          className="text-[#0A66C2] hover:text-[#004182] dark:text-[#4A9EFF] dark:hover:text-[#6BB3FF] transition-colors duration-200"
         >
-          {icons.github}
           GitHub
         </a>
-
+        <span className="text-gray-400">|</span>
         <a
           href={personalInfo.links.portfolio}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 text-gray-200 hover:text-white transition-colors duration-200"
+          className="text-[#0A66C2] hover:text-[#004182] dark:text-[#4A9EFF] dark:hover:text-[#6BB3FF] transition-colors duration-200"
         >
-          {icons.portfolio}
           Portfolio
         </a>
       </div>
