@@ -628,5 +628,8 @@ export const generateResumePDFForPrint = (resumeData: ResumeData) => {
   doc.autoPrint();
 
   const newWindow = window.open(doc.output("bloburl"), "_blank");
-  if (!newWindow) return;
+  if (!newWindow) {
+    console.warn("Unable to open the print dialog. The popup may have been blocked by the browser.");
+    alert("Unable to open the print dialog. Please allow popups for this site in your browser settings and try again.");
+  }
 };
