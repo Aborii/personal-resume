@@ -9,7 +9,11 @@
     "lint": "eslint",
     "pages:dev": "wrangler pages dev out",
     "deploy": "npm run build && wrangler pages deploy out",
-    "generate-og": "tsx scripts/generate-og-images.ts"
+    "g:og": "tsx scripts/generate-og-images.ts",
+    "g:pdf": "tsx scripts/generate-pdf.ts",
+    "g:docx": "tsx scripts/generate-docx.ts",
+    "g:resume": "npm run g:pdf && npm run g:docx",
+    "g:full": "npm run g:resume && npm run g:og"
   },
   "dependencies": {
     "@types/file-saver": "^2.0.7",
