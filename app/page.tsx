@@ -4,6 +4,7 @@ import Section from "./components/Section";
 import Skills from "./components/Skills";
 import Experience from "./components/Experience";
 import Projects from "./components/Projects";
+import KeyAchievements from "./components/KeyAchievements";
 import { FormattedText } from "./utils/textFormatter";
 import { generateMetadata } from "./utils/metadata";
 import resumeData from "./../data/resumeData.json";
@@ -23,6 +24,11 @@ export default function Resume() {
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-base sm:text-lg text-justify">
                 <FormattedText>{resumeData.summary}</FormattedText>
               </p>
+            </Section>
+
+            {/* Key Achievements Section */}
+            <Section title="Key Achievements">
+              <KeyAchievements achievements={resumeData.keyAchievements} />
             </Section>
 
             {/* Skills Section */}
@@ -80,7 +86,7 @@ export default function Resume() {
         </div>
         {/* Footer */}
         <footer className="pt-8">
-          <p className="text-gray-500 dark:text-gray-400 text-sm">
+          <p className="text-gray-500 dark:text-gray-400 text-sm text-center">
             © {new Date().getFullYear()} {resumeData.personalInfo.name}. Building the future, one line of code at a
             time.
           </p>

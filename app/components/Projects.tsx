@@ -2,7 +2,7 @@ import { FormattedText } from "../utils/textFormatter";
 
 interface ProjectItem {
   name: string;
-  description: string;
+  description?: string;
   details: string[];
   url?: string;
 }
@@ -35,9 +35,11 @@ export default function Projects({ projects }: ProjectsProps) {
               </a>
             )}
           </div>
-          <p className="text-green-600 dark:text-green-400 font-medium mb-3 sm:mb-4 text-sm sm:text-base">
-            <FormattedText>{project.description}</FormattedText>
-          </p>
+          {project.description ? (
+            <p className="text-green-600 dark:text-green-400 font-medium mb-3 sm:mb-4 text-sm sm:text-base">
+              <FormattedText>{project.description}</FormattedText>
+            </p>
+          ) : null}
           <ul className="text-gray-700 dark:text-gray-300 space-y-2 text-sm sm:text-base">
             {project.details.map((detail, index) => (
               <li key={index} className="flex items-start">
