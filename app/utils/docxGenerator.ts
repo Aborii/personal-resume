@@ -1,45 +1,6 @@
 import { Document, Paragraph, TextRun, AlignmentType, BorderStyle, Packer } from "docx";
 import { saveAs } from "file-saver";
-
-interface ResumeData {
-  personalInfo: {
-    name: string;
-    title: string;
-    location: string;
-    phone: string;
-    email: string;
-    links: {
-      linkedin: string;
-      github: string;
-      portfolio: string;
-    };
-  };
-  summary: string;
-  keyAchievements: string[];
-  skills: Record<string, string[]>;
-  experience: Array<{
-    title: string;
-    company: string;
-    location: string;
-    period: string;
-    current: boolean;
-    responsibilities: string[];
-  }>;
-  projects: Array<{
-    name: string;
-    description: string;
-    details: string[];
-    url?: string;
-  }>;
-  education: {
-    degree: string;
-    school: string;
-    location: string;
-    period: string;
-    gpa: string;
-  };
-  languages: Record<string, string>;
-}
+import type { ResumeData } from "../types/resume-data";
 
 export const generateResumeDOCX = async (resumeData: ResumeData) => {
   const children: Paragraph[] = [];
@@ -93,7 +54,7 @@ export const generateResumeDOCX = async (resumeData: ResumeData) => {
       ],
       alignment: AlignmentType.CENTER,
       spacing: { after: 200 },
-    })
+    }),
   );
 
   // Professional Summary
@@ -123,7 +84,7 @@ export const generateResumeDOCX = async (resumeData: ResumeData) => {
         }),
       ],
       spacing: { after: 200 },
-    })
+    }),
   );
 
   // Key Achievements
@@ -145,7 +106,7 @@ export const generateResumeDOCX = async (resumeData: ResumeData) => {
           size: 6,
         },
       },
-    })
+    }),
   );
 
   resumeData.keyAchievements.forEach((achievement) => {
@@ -158,7 +119,7 @@ export const generateResumeDOCX = async (resumeData: ResumeData) => {
         ],
         spacing: { after: 100 },
         indent: { left: 360 },
-      })
+      }),
     );
   });
 
@@ -166,7 +127,7 @@ export const generateResumeDOCX = async (resumeData: ResumeData) => {
     new Paragraph({
       text: "",
       spacing: { after: 100 },
-    })
+    }),
   );
 
   // Technical Skills
@@ -188,7 +149,7 @@ export const generateResumeDOCX = async (resumeData: ResumeData) => {
           size: 6,
         },
       },
-    })
+    }),
   );
 
   Object.entries(resumeData.skills).forEach(([category, skills]) => {
@@ -204,7 +165,7 @@ export const generateResumeDOCX = async (resumeData: ResumeData) => {
           }),
         ],
         spacing: { after: 100 },
-      })
+      }),
     );
   });
 
@@ -212,7 +173,7 @@ export const generateResumeDOCX = async (resumeData: ResumeData) => {
     new Paragraph({
       text: "",
       spacing: { after: 100 },
-    })
+    }),
   );
 
   // Professional Experience
@@ -234,7 +195,7 @@ export const generateResumeDOCX = async (resumeData: ResumeData) => {
           size: 6,
         },
       },
-    })
+    }),
   );
 
   resumeData.experience.forEach((exp) => {
@@ -274,7 +235,7 @@ export const generateResumeDOCX = async (resumeData: ResumeData) => {
           }),
         ],
         spacing: { after: 100 },
-      })
+      }),
     );
 
     exp.responsibilities.forEach((resp) => {
@@ -287,7 +248,7 @@ export const generateResumeDOCX = async (resumeData: ResumeData) => {
           ],
           spacing: { after: 80 },
           indent: { left: 360 },
-        })
+        }),
       );
     });
   });
@@ -311,7 +272,7 @@ export const generateResumeDOCX = async (resumeData: ResumeData) => {
           size: 6,
         },
       },
-    })
+    }),
   );
 
   resumeData.projects.forEach((project) => {
@@ -322,14 +283,18 @@ export const generateResumeDOCX = async (resumeData: ResumeData) => {
             text: project.name,
             bold: true,
           }),
-          new TextRun({
-            text: ` - ${project.description}`,
-            italics: true,
-            color: "2563EB",
-          }),
+          ...(project.description
+            ? [
+                new TextRun({
+                  text: ` - ${project.description}`,
+                  italics: true,
+                  color: "2563EB",
+                }),
+              ]
+            : []),
         ],
         spacing: { before: 150, after: 50 },
-      })
+      }),
     );
 
     if (project.url) {
@@ -341,7 +306,7 @@ export const generateResumeDOCX = async (resumeData: ResumeData) => {
             }),
           ],
           spacing: { after: 50 },
-        })
+        }),
       );
     }
 
@@ -355,7 +320,7 @@ export const generateResumeDOCX = async (resumeData: ResumeData) => {
           ],
           spacing: { after: 80 },
           indent: { left: 360 },
-        })
+        }),
       );
     });
   });
@@ -415,7 +380,7 @@ export const generateResumeDOCX = async (resumeData: ResumeData) => {
         }),
       ],
       spacing: { after: 200 },
-    })
+    }),
   );
 
   // Languages
@@ -447,7 +412,7 @@ export const generateResumeDOCX = async (resumeData: ResumeData) => {
         }),
       ],
       spacing: { after: 100 },
-    })
+    }),
   );
 
   const doc = new Document({

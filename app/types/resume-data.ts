@@ -24,7 +24,7 @@ export interface ResumeData {
   }>;
   projects: Array<{
     name: string;
-    description: string;
+    description?: string;
     details: string[];
     url?: string;
   }>;
