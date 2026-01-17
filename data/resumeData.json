@@ -11,7 +11,7 @@
       "portfolio": "https://abdullah-almofleh.com"
     }
   },
-  "summary": "Senior Full-Stack Engineer with ~7 years building high-volume platforms at Estia Software DMCC (real time energy/e-learning), handling 2M+ daily time-series data points. Architected NestJS/GraphQL backends and Next.js/React frontends from scratch, driving 25-40% performance gains through database sharding and caching optimizations while mentoring development teams.",
+  "summary": "Senior Full-Stack Engineer with ~7 years building high-volume platforms at Estia Software DMCC (real time energy/e-learning), handling 2M+ daily time-series data points. Architected NestJS/GraphQL backends and Next.js/React front-ends from scratch, driving 25-40% performance gains through database sharding and caching optimizations while mentoring development teams.",
   "keyAchievements": [
     "Engineered Envita SaaS energy platform: Real-time time-series dashboards processing 2M+ data points daily via MQTT from sensors, AWS IoT Core integration, multi-frame aggregation, and complex optimized queries—slashing chart/dashboard load times 40% for energy professionals.",
     "Built Ecorize energy platform: GraphQL APIs handling complex energy modeling workflows, optimizing aggregations across PostgreSQL/Redis for sub-second responses.",
@@ -122,7 +122,7 @@
       "period": "July 2020 to October 2021",
       "current": false,
       "responsibilities": [
-        "Optimized Node.js/DB queries for ASP School multilingual edtech platform.",
+        "Optimized Node.js/DB queries for ASP School multilingual e-learning platform.",
         "Cut video streaming latency 25% for global production users.",
         "Rewrote front-end components in React for better UX."
       ]

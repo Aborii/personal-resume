@@ -27,6 +27,6 @@
   "nextjs.files.exclude": ["**/node_modules/**", "**/dist/**", "**/out/**", "**/build/**", "**/.*/**"], // The files to exclude from watching. Example: "**/node_modules/**", "**/dist/**", "**/out/**", "**/build/**", "**/.*/**"
   "nextjs.files.watch": ["controllers", "components", "routers"], // The types of files to watch for changes. Example: "controllers", "components", "routers"
   "nextjs.files.showPath": true, // Show the path of the file in the file name. Example: "home.component.tsx (pages/home)"
-  "nextjs.server.turbo": true, // Enable Turbo Mode for NextJS server (Only for NextJS 14 or later)
-  "nextjs.server.experimentalHttps": true
+  "nextjs.server.experimentalHttps": true,
+  "cSpell.words": ["Adham", "Aspiraties", "Beethere", "bloburl", "DMCC", "Envita", "Nordelco", "Unifi"]
 }
