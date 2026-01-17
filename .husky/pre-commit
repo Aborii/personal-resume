@@ -1,28 +1,38 @@
 #!/bin/sh
-# Husky pre-commit hook to regenerate PDF when resumeData.json changes
+# Husky pre-commit hook to regenerate all assets when resumeData.json changes
 
 # Check if data/resumeData.json is in staged files
 if git diff --cached --name-only | grep -q "data/resumeData.json"; then
   echo "📄 resumeData.json detected in staged changes"
-  echo "🔄 Regenerating PDF..."
+  echo "🔄 Regenerating all assets (PDF, DOCX, OG images)..."
   
-  # Run the PDF generation script
-  if npm run g:pdf; then
-    echo "✅ PDF regenerated successfully"
+  # Run the full generation script (PDF + DOCX + OG images)
+  if npm run g:all; then
+    echo "✅ All assets regenerated successfully"
     
-    # Stage any generated PDF files in public directory
+    # Stage all generated files
     if ls public/*_Resume.pdf 1> /dev/null 2>&1; then
       git add public/*_Resume.pdf
       echo "✅ Generated PDF added to commit"
     fi
+    
+    if ls public/*_Resume.docx 1> /dev/null 2>&1; then
+      git add public/*_Resume.docx
+      echo "✅ Generated DOCX added to commit"
+    fi
+    
+    if ls public/og-*.png 1> /dev/null 2>&1; then
+      git add public/og-*.png
+      echo "✅ Generated OG images added to commit"
+    fi
   else
-    echo "❌ ERROR: PDF generation failed!"
-    echo "❌ resumeData.json changed but PDF not regenerated!"
-    echo "❌ Please run 'npm run g:pdf' manually and fix any errors."
+    echo "❌ ERROR: Asset generation failed!"
+    echo "❌ resumeData.json changed but assets not regenerated!"
+    echo "❌ Please run 'npm run g:all' manually and fix any errors."
     exit 1
   fi
 else
-  echo "⚡ Skipping PDF generation (resumeData.json not changed)"
+  echo "⚡ Skipping asset generation (resumeData.json not changed)"
 fi
 
 exit 0
