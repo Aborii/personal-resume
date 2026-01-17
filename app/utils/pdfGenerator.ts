@@ -1,5 +1,6 @@
 import { jsPDF } from "jspdf";
 import type { ResumeData } from "../types/resume-data";
+import { parseTextForFormatting } from "./textFormatter";
 
 // Colors
 const COLORS = {
@@ -14,13 +15,13 @@ const COLORS = {
   black: { r: 0, g: 0, b: 0 },
   mutedGray: { r: 47, g: 79, b: 79 }, // #2F4F4F for title
   mutedGreen: { r: 46, g: 125, b: 90 }, // #2E7D5A alternative muted green
-};
+} as const;
 
 // Special characters
 const CHARS = {
   bullet: "•",
   pipe: "|",
-};
+} as const;
 
 // Font sizes and line heights
 const TYPOGRAPHY = {
@@ -103,7 +104,7 @@ const addSectionTitle = (ctx: PDFContext, title: string): void => {
   // Small caps effect for section titles - uppercase with slightly smaller font for professional look
   ctx.doc.text(title.toUpperCase(), ctx.margin, ctx.yPosition);
   ctx.yPosition += LAYOUT.sectionTitleUnderlineY;
-  ctx.doc.setDrawColor(COLORS.green500.r, COLORS.green500.g, COLORS.green500.b);
+  ctx.doc.setDrawColor(COLORS.gray800.r, COLORS.gray800.g, COLORS.gray800.b);
   ctx.doc.setLineWidth(LAYOUT.sectionTitleUnderlineWidth);
   ctx.doc.line(ctx.margin, ctx.yPosition, ctx.pageWidth - ctx.margin, ctx.yPosition);
   ctx.yPosition += LAYOUT.sectionTitleBottomSpacing;
@@ -120,7 +121,7 @@ const renderHeader = (ctx: PDFContext, personalInfo: ResumeData["personalInfo"])
   // Title - muted dark gray, centered
   ctx.doc.setFontSize(TYPOGRAPHY.headerTitle.size);
   ctx.doc.setFont("helvetica", "normal");
-  ctx.doc.setTextColor(COLORS.mutedGray.r, COLORS.mutedGray.g, COLORS.mutedGray.b);
+  ctx.doc.setTextColor(COLORS.gray900.r, COLORS.gray900.g, COLORS.gray900.b);
   ctx.doc.text(personalInfo.title, ctx.pageWidth / 2, LAYOUT.headerTitleY, { align: "center" });
 
   // Contact info line 1: Location | Phone | Email
@@ -140,34 +141,91 @@ const renderHeader = (ctx: PDFContext, personalInfo: ResumeData["personalInfo"])
 const renderSummary = (ctx: PDFContext, summary: string): void => {
   addSectionTitle(ctx, "PROFESSIONAL SUMMARY");
   ctx.doc.setFontSize(TYPOGRAPHY.summaryLineHeight.size);
-  ctx.doc.setFont("helvetica", "normal");
   ctx.doc.setTextColor(COLORS.black.r, COLORS.black.g, COLORS.black.b);
-  const summaryLines = ctx.doc.splitTextToSize(summary, ctx.pageWidth - 2 * ctx.margin);
 
-  // Render each line manually with increased spacing
-  summaryLines.forEach((line: string) => {
-    ctx.doc.text(line, ctx.margin, ctx.yPosition);
-    ctx.yPosition += TYPOGRAPHY.summaryLineHeight.lineHeight;
+  // Parse full text first to preserve spaces
+  const segments = parseTextForFormatting(summary);
+  const maxWidth = ctx.pageWidth - 2 * ctx.margin;
+  let xPosition = ctx.margin;
+
+  segments.forEach((segment) => {
+    // Split segment into words to handle wrapping
+    const words = segment.text.split(" ");
+    const fontStyle = segment.bold ? "bold" : "normal";
+    ctx.doc.setFont("helvetica", fontStyle);
+
+    words.forEach((word, wordIndex) => {
+      const isLastWord = wordIndex === words.length - 1;
+      const textToRender = word;
+      const spaceToRender = isLastWord ? "" : " ";
+      const wordWidth = ctx.doc.getTextWidth(textToRender);
+      const spaceWidth = isLastWord ? 0 : ctx.doc.getTextWidth(" ");
+
+      // Check if we need to wrap to next line
+      if (xPosition + wordWidth > ctx.margin + maxWidth && xPosition > ctx.margin) {
+        ctx.yPosition += TYPOGRAPHY.summaryLineHeight.lineHeight;
+        xPosition = ctx.margin;
+      }
+
+      // Render word
+      ctx.doc.text(textToRender, xPosition, ctx.yPosition);
+      xPosition += wordWidth;
+
+      // Render space if not last word
+      if (!isLastWord) {
+        ctx.doc.text(spaceToRender, xPosition, ctx.yPosition);
+        xPosition += spaceWidth;
+      }
+    });
   });
 
-  ctx.yPosition += LAYOUT.summaryEndSpacing;
+  ctx.yPosition += TYPOGRAPHY.summaryLineHeight.lineHeight + LAYOUT.summaryEndSpacing;
 };
 
 // Render key achievements section
 const renderKeyAchievements = (ctx: PDFContext, keyAchievements: string[]): void => {
   addSectionTitle(ctx, "KEY ACHIEVEMENTS");
   ctx.doc.setFontSize(TYPOGRAPHY.bodyNormal.size);
-  ctx.doc.setFont("helvetica", "normal");
   ctx.doc.setTextColor(COLORS.black.r, COLORS.black.g, COLORS.black.b);
 
   keyAchievements.forEach((achievement) => {
     checkPageBreak(ctx, LAYOUT.projectHeightBase);
-    const achievementLines = ctx.doc.splitTextToSize(
-      `${CHARS.bullet} ${achievement}`,
-      ctx.pageWidth - 2 * ctx.margin - LAYOUT.bulletIndent,
-    );
-    ctx.doc.text(achievementLines, ctx.margin + LAYOUT.bulletIndent, ctx.yPosition);
-    ctx.yPosition += achievementLines.length * TYPOGRAPHY.bodyLarge.lineHeight + LAYOUT.achievementSpacing;
+    const bulletText = `${CHARS.bullet} ${achievement}`;
+    const segments = parseTextForFormatting(bulletText);
+    const maxWidth = ctx.pageWidth - 2 * ctx.margin - LAYOUT.bulletIndent;
+    let xPosition = ctx.margin + LAYOUT.bulletIndent;
+
+    segments.forEach((segment) => {
+      const words = segment.text.split(" ");
+      const fontStyle = segment.bold ? "bold" : "normal";
+      ctx.doc.setFont("helvetica", fontStyle);
+
+      words.forEach((word, wordIndex) => {
+        const isLastWord = wordIndex === words.length - 1;
+        const textToRender = word;
+        const spaceToRender = isLastWord ? "" : " ";
+        const wordWidth = ctx.doc.getTextWidth(textToRender);
+        const spaceWidth = isLastWord ? 0 : ctx.doc.getTextWidth(" ");
+
+        if (
+          xPosition + wordWidth > ctx.margin + LAYOUT.bulletIndent + maxWidth &&
+          xPosition > ctx.margin + LAYOUT.bulletIndent
+        ) {
+          ctx.yPosition += TYPOGRAPHY.bodyLarge.lineHeight;
+          xPosition = ctx.margin + LAYOUT.bulletIndent;
+        }
+
+        ctx.doc.text(textToRender, xPosition, ctx.yPosition);
+        xPosition += wordWidth;
+
+        if (!isLastWord) {
+          ctx.doc.text(spaceToRender, xPosition, ctx.yPosition);
+          xPosition += spaceWidth;
+        }
+      });
+    });
+
+    ctx.yPosition += TYPOGRAPHY.bodyLarge.lineHeight + LAYOUT.achievementSpacing;
   });
 
   ctx.yPosition += LAYOUT.achievementEndSpacing;
@@ -184,16 +242,16 @@ const renderSkills = (ctx: PDFContext, skills: Record<string, string[]>): void =
   Object.entries(skills).forEach(([category, skillList], index) => {
     checkPageBreak(ctx, LAYOUT.projectHeightBase);
 
-    // Category name in bold with green color
+    // Category name in bold with dark gray color
     ctx.doc.setFontSize(TYPOGRAPHY.subsectionTitle.size);
     ctx.doc.setFont("helvetica", "bold");
-    ctx.doc.setTextColor(COLORS.green500.r, COLORS.green500.g, COLORS.green500.b);
+    ctx.doc.setTextColor(COLORS.gray800.r, COLORS.gray800.g, COLORS.gray800.b);
     ctx.doc.text(`${category}:`, ctx.margin, ctx.yPosition);
 
     // Get the width with current font settings
     const categoryWidth = ctx.doc.getTextWidth(`${category}:`);
 
-    // Skills list - render on new line for single column layout
+    // Skills list - render with keyword highlighting
     ctx.doc.setFontSize(TYPOGRAPHY.bodyNormal.size);
     ctx.doc.setFont("helvetica", "normal");
     ctx.doc.setTextColor(COLORS.black.r, COLORS.black.g, COLORS.black.b);
@@ -252,14 +310,14 @@ const renderExperience = (ctx: PDFContext, experience: ResumeData["experience"])
     // Company name and period
     ctx.doc.setFontSize(TYPOGRAPHY.bodyNormal.size);
     ctx.doc.setFont("helvetica", "bold");
-    ctx.doc.setTextColor(COLORS.green500.r, COLORS.green500.g, COLORS.green500.b);
+    ctx.doc.setTextColor(COLORS.gray800.r, COLORS.gray800.g, COLORS.gray800.b);
     ctx.doc.text(exp.company, ctx.margin, ctx.yPosition);
 
     const companyWidth = ctx.doc.getTextWidth(exp.company);
     ctx.doc.setFont("helvetica", "normal");
     ctx.doc.setTextColor(COLORS.gray600.r, COLORS.gray600.g, COLORS.gray600.b);
     ctx.doc.setFontSize(TYPOGRAPHY.bodySmall.size);
-    ctx.doc.text(` ${CHARS.pipe} ${exp.period}`, ctx.margin + companyWidth + LAYOUT.categorySpacing, ctx.yPosition);
+    ctx.doc.text(` ${CHARS.pipe} ${exp.period}`, ctx.margin + companyWidth, ctx.yPosition);
     ctx.yPosition += LAYOUT.experienceCompanySpacing;
 
     // Location
@@ -269,16 +327,45 @@ const renderExperience = (ctx: PDFContext, experience: ResumeData["experience"])
 
     // Responsibilities
     ctx.doc.setFontSize(TYPOGRAPHY.bodySmall.size);
-    ctx.doc.setFont("helvetica", "normal");
     ctx.doc.setTextColor(COLORS.gray800.r, COLORS.gray800.g, COLORS.gray800.b);
 
     exp.responsibilities.forEach((resp) => {
-      const respLines = ctx.doc.splitTextToSize(
-        `${CHARS.bullet} ${resp}`,
-        ctx.pageWidth - 2 * ctx.margin - LAYOUT.bulletIndent,
-      );
-      ctx.doc.text(respLines, ctx.margin + LAYOUT.bulletIndent, ctx.yPosition);
-      ctx.yPosition += respLines.length * TYPOGRAPHY.bodySmall.lineHeight;
+      const bulletText = `${CHARS.bullet} ${resp}`;
+      const segments = parseTextForFormatting(bulletText);
+      const maxWidth = ctx.pageWidth - 2 * ctx.margin - LAYOUT.bulletIndent;
+      let xPosition = ctx.margin + LAYOUT.bulletIndent;
+
+      segments.forEach((segment) => {
+        const words = segment.text.split(" ");
+        const fontStyle = segment.bold ? "bold" : "normal";
+        ctx.doc.setFont("helvetica", fontStyle);
+
+        words.forEach((word, wordIndex) => {
+          const isLastWord = wordIndex === words.length - 1;
+          const textToRender = word;
+          const spaceToRender = isLastWord ? "" : " ";
+          const wordWidth = ctx.doc.getTextWidth(textToRender);
+          const spaceWidth = isLastWord ? 0 : ctx.doc.getTextWidth(" ");
+
+          if (
+            xPosition + wordWidth > ctx.margin + LAYOUT.bulletIndent + maxWidth &&
+            xPosition > ctx.margin + LAYOUT.bulletIndent
+          ) {
+            ctx.yPosition += TYPOGRAPHY.bodySmall.lineHeight;
+            xPosition = ctx.margin + LAYOUT.bulletIndent;
+          }
+
+          ctx.doc.text(textToRender, xPosition, ctx.yPosition);
+          xPosition += wordWidth;
+
+          if (!isLastWord) {
+            ctx.doc.text(spaceToRender, xPosition, ctx.yPosition);
+            xPosition += spaceWidth;
+          }
+        });
+      });
+
+      ctx.yPosition += TYPOGRAPHY.bodySmall.lineHeight;
     });
 
     if (index < experience.length - 1) {
@@ -332,25 +419,84 @@ const renderProjects = (ctx: PDFContext, projects: ResumeData["projects"]): void
     }
     ctx.yPosition += LAYOUT.projectNameSpacing;
 
-    // Description
+    // Description with keyword highlighting
     ctx.doc.setFontSize(TYPOGRAPHY.bodyNormal.size);
-    ctx.doc.setFont("helvetica", "italic");
-    ctx.doc.setTextColor(COLORS.green500.r, COLORS.green500.g, COLORS.green500.b);
-    ctx.doc.text(project.description, ctx.margin, ctx.yPosition);
-    ctx.yPosition += LAYOUT.projectDescriptionSpacing;
+    ctx.doc.setTextColor(COLORS.gray700.r, COLORS.gray700.g, COLORS.gray700.b);
+    if (project.description) {
+      const segments = parseTextForFormatting(project.description);
+      const maxWidth = ctx.pageWidth - 2 * ctx.margin;
+      let xPosition = ctx.margin;
 
-    // Details
+      segments.forEach((segment) => {
+        const words = segment.text.split(" ");
+        const fontStyle = segment.bold ? "bold" : "italic";
+        ctx.doc.setFont("helvetica", fontStyle);
+
+        words.forEach((word, wordIndex) => {
+          const isLastWord = wordIndex === words.length - 1;
+          const textToRender = word;
+          const spaceToRender = isLastWord ? "" : " ";
+          const wordWidth = ctx.doc.getTextWidth(textToRender);
+          const spaceWidth = isLastWord ? 0 : ctx.doc.getTextWidth(" ");
+
+          if (xPosition + wordWidth > ctx.margin + maxWidth && xPosition > ctx.margin) {
+            ctx.yPosition += TYPOGRAPHY.bodyNormal.lineHeight;
+            xPosition = ctx.margin;
+          }
+
+          ctx.doc.text(textToRender, xPosition, ctx.yPosition);
+          xPosition += wordWidth;
+
+          if (!isLastWord) {
+            ctx.doc.text(spaceToRender, xPosition, ctx.yPosition);
+            xPosition += spaceWidth;
+          }
+        });
+      });
+      ctx.yPosition += LAYOUT.projectDescriptionSpacing;
+    }
+
+    // Details with keyword highlighting
     ctx.doc.setFontSize(TYPOGRAPHY.bodySmall.size);
-    ctx.doc.setFont("helvetica", "normal");
     ctx.doc.setTextColor(COLORS.gray800.r, COLORS.gray800.g, COLORS.gray800.b);
 
     project.details.forEach((detail) => {
-      const detailLines = ctx.doc.splitTextToSize(
-        `${CHARS.bullet} ${detail}`,
-        ctx.pageWidth - 2 * ctx.margin - LAYOUT.bulletIndent,
-      );
-      ctx.doc.text(detailLines, ctx.margin + LAYOUT.bulletIndent, ctx.yPosition);
-      ctx.yPosition += detailLines.length * TYPOGRAPHY.bodySmall.lineHeight;
+      const bulletText = `${CHARS.bullet} ${detail}`;
+      const segments = parseTextForFormatting(bulletText);
+      const maxWidth = ctx.pageWidth - 2 * ctx.margin - LAYOUT.bulletIndent;
+      let xPosition = ctx.margin + LAYOUT.bulletIndent;
+
+      segments.forEach((segment) => {
+        const words = segment.text.split(" ");
+        const fontStyle = segment.bold ? "bold" : "normal";
+        ctx.doc.setFont("helvetica", fontStyle);
+
+        words.forEach((word, wordIndex) => {
+          const isLastWord = wordIndex === words.length - 1;
+          const textToRender = word;
+          const spaceToRender = isLastWord ? "" : " ";
+          const wordWidth = ctx.doc.getTextWidth(textToRender);
+          const spaceWidth = isLastWord ? 0 : ctx.doc.getTextWidth(" ");
+
+          if (
+            xPosition + wordWidth > ctx.margin + LAYOUT.bulletIndent + maxWidth &&
+            xPosition > ctx.margin + LAYOUT.bulletIndent
+          ) {
+            ctx.yPosition += TYPOGRAPHY.bodySmall.lineHeight;
+            xPosition = ctx.margin + LAYOUT.bulletIndent;
+          }
+
+          ctx.doc.text(textToRender, xPosition, ctx.yPosition);
+          xPosition += wordWidth;
+
+          if (!isLastWord) {
+            ctx.doc.text(spaceToRender, xPosition, ctx.yPosition);
+            xPosition += spaceWidth;
+          }
+        });
+      });
+
+      ctx.yPosition += TYPOGRAPHY.bodySmall.lineHeight;
     });
 
     if (index < projects.length - 1) {
@@ -373,7 +519,7 @@ const renderEducation = (ctx: PDFContext, education: ResumeData["education"]): v
 
   ctx.doc.setFontSize(TYPOGRAPHY.bodyNormal.size);
   ctx.doc.setFont("helvetica", "bold");
-  ctx.doc.setTextColor(COLORS.green500.r, COLORS.green500.g, COLORS.green500.b);
+  ctx.doc.setTextColor(COLORS.gray800.r, COLORS.gray800.g, COLORS.gray800.b);
   ctx.doc.text(education.school, ctx.margin, ctx.yPosition);
   ctx.yPosition += LAYOUT.educationSchoolSpacing;
 
@@ -399,7 +545,7 @@ const renderLanguages = (ctx: PDFContext, languages: Record<string, string>): vo
   Object.entries(languages).forEach(([lang, level], index) => {
     // Language name in bold
     ctx.doc.setFont("helvetica", "bold");
-    ctx.doc.setTextColor(COLORS.green500.r, COLORS.green500.g, COLORS.green500.b);
+    ctx.doc.setTextColor(COLORS.gray800.r, COLORS.gray800.g, COLORS.gray800.b);
     ctx.doc.text(`${lang}:`, ctx.margin, ctx.yPosition);
 
     const langWidth = ctx.doc.getTextWidth(`${lang}:`);

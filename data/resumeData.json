@@ -193,7 +193,6 @@
     },
     {
       "name": "Events Management System",
-      "description": "Events Management System",
       "details": [
         "Node.js/MongoDB, REST APIs",
         "Developed event scheduling services; scaled APIs 3x capacity with 30% reliability gains."

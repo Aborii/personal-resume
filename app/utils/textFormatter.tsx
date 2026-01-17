@@ -163,7 +163,7 @@ export function formatTextWithBold(text: string): React.ReactNode {
     result.push(
       <strong key={index} className="font-semibold">
         {match.text}
-      </strong>
+      </strong>,
     );
 
     lastIndex = match.end;
@@ -187,4 +187,106 @@ export function formatTextWithBold(text: string): React.ReactNode {
  */
 export function FormattedText({ children }: { children: string }) {
   return <>{formatTextWithBold(children)}</>;
+}
+
+/**
+ * Parses text and returns segments with formatting information for PDF rendering
+ */
+export function parseTextForFormatting(text: string): Array<{ text: string; bold: boolean }> {
+  if (!text) return [{ text, bold: false }];
+
+  const matches: Array<{ start: number; end: number; text: string }> = [];
+
+  // Find all tech keywords
+  techKeywords.forEach((keyword) => {
+    const regex = new RegExp(`\\b${keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "gi");
+    let match;
+    while ((match = regex.exec(text)) !== null) {
+      matches.push({
+        start: match.index,
+        end: match.index + match[0].length,
+        text: match[0],
+      });
+    }
+  });
+
+  // Find experience patterns
+  let match;
+  experiencePattern.lastIndex = 0;
+  while ((match = experiencePattern.exec(text)) !== null) {
+    matches.push({
+      start: match.index,
+      end: match.index + match[0].length,
+      text: match[0],
+    });
+  }
+
+  // Find academic patterns
+  academicPattern.lastIndex = 0;
+  while ((match = academicPattern.exec(text)) !== null) {
+    matches.push({
+      start: match.index,
+      end: match.index + match[0].length,
+      text: match[0],
+    });
+  }
+
+  // Find company/project patterns
+  companyProjectPattern.lastIndex = 0;
+  while ((match = companyProjectPattern.exec(text)) !== null) {
+    matches.push({
+      start: match.index,
+      end: match.index + match[0].length,
+      text: match[0],
+    });
+  }
+
+  // Sort matches by start position and remove overlaps
+  matches.sort((a, b) => a.start - b.start);
+  const filteredMatches = [];
+  let lastEnd = 0;
+
+  for (const currentMatch of matches) {
+    if (currentMatch.start >= lastEnd) {
+      filteredMatches.push(currentMatch);
+      lastEnd = currentMatch.end;
+    }
+  }
+
+  // Build segments array
+  const segments: Array<{ text: string; bold: boolean }> = [];
+  let lastIndex = 0;
+
+  filteredMatches.forEach((match) => {
+    // Add text before the match
+    if (match.start > lastIndex) {
+      segments.push({
+        text: text.slice(lastIndex, match.start),
+        bold: false,
+      });
+    }
+
+    // Add the matched text (bold)
+    segments.push({
+      text: match.text,
+      bold: true,
+    });
+
+    lastIndex = match.end;
+  });
+
+  // Add remaining text
+  if (lastIndex < text.length) {
+    segments.push({
+      text: text.slice(lastIndex),
+      bold: false,
+    });
+  }
+
+  // Reset all regex lastIndex properties
+  experiencePattern.lastIndex = 0;
+  academicPattern.lastIndex = 0;
+  companyProjectPattern.lastIndex = 0;
+
+  return segments.length > 0 ? segments : [{ text, bold: false }];
 }
