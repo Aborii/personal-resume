@@ -3,13 +3,14 @@ import type { ResumeData } from "../types/resume-data";
 
 // Colors
 const COLORS = {
-  headerBackground: { r: 30, g: 58, b: 69 }, // slate-800 to emerald-900 blend
+  headerBackground: { r: 5, g: 46, b: 22 }, // slate-800 to emerald-900 blend
   white: { r: 255, g: 255, b: 255 },
   gray200: { r: 229, g: 231, b: 235 },
   gray600: { r: 100, g: 100, b: 100 },
   gray700: { r: 55, g: 65, b: 81 },
+  gray800: { r: 31, g: 41, b: 55 },
   gray900: { r: 17, g: 24, b: 39 },
-  green500: { r: 12, g: 148, b: 103 },
+  green500: { r: 5, g: 150, b: 105 },
   black: { r: 0, g: 0, b: 0 },
 };
 
@@ -140,7 +141,7 @@ const renderSummary = (ctx: PDFContext, summary: string): void => {
   addSectionTitle(ctx, "PROFESSIONAL SUMMARY");
   ctx.doc.setFontSize(TYPOGRAPHY.summaryLineHeight.size);
   ctx.doc.setFont("helvetica", "normal");
-  ctx.doc.setTextColor(COLORS.gray700.r, COLORS.gray700.g, COLORS.gray700.b);
+  ctx.doc.setTextColor(COLORS.black.r, COLORS.black.g, COLORS.black.b);
   const summaryLines = ctx.doc.splitTextToSize(summary, ctx.pageWidth - 2 * ctx.margin);
 
   // Render each line manually with increased spacing
@@ -269,7 +270,7 @@ const renderExperience = (ctx: PDFContext, experience: ResumeData["experience"])
     // Responsibilities
     ctx.doc.setFontSize(TYPOGRAPHY.bodySmall.size);
     ctx.doc.setFont("helvetica", "normal");
-    ctx.doc.setTextColor(COLORS.black.r, COLORS.black.g, COLORS.black.b);
+    ctx.doc.setTextColor(COLORS.gray800.r, COLORS.gray800.g, COLORS.gray800.b);
 
     exp.responsibilities.forEach((resp) => {
       const respLines = ctx.doc.splitTextToSize(
@@ -341,7 +342,7 @@ const renderProjects = (ctx: PDFContext, projects: ResumeData["projects"]): void
     // Details
     ctx.doc.setFontSize(TYPOGRAPHY.bodySmall.size);
     ctx.doc.setFont("helvetica", "normal");
-    ctx.doc.setTextColor(COLORS.black.r, COLORS.black.g, COLORS.black.b);
+    ctx.doc.setTextColor(COLORS.gray800.r, COLORS.gray800.g, COLORS.gray800.b);
 
     project.details.forEach((detail) => {
       const detailLines = ctx.doc.splitTextToSize(
@@ -391,14 +392,27 @@ const renderEducation = (ctx: PDFContext, education: ResumeData["education"]): v
 const renderLanguages = (ctx: PDFContext, languages: Record<string, string>): void => {
   addSectionTitle(ctx, "LANGUAGES");
 
-  const languagesText = Object.entries(languages)
-    .map(([lang, level]) => `${lang}: ${level}`)
-    .join(` ${CHARS.pipe} `);
-
   ctx.doc.setFontSize(TYPOGRAPHY.bodyNormal.size);
   ctx.doc.setFont("helvetica", "normal");
   ctx.doc.setTextColor(COLORS.black.r, COLORS.black.g, COLORS.black.b);
-  ctx.doc.text(languagesText, ctx.margin, ctx.yPosition);
+
+  Object.entries(languages).forEach(([lang, level], index) => {
+    // Language name in bold
+    ctx.doc.setFont("helvetica", "bold");
+    ctx.doc.setTextColor(COLORS.green500.r, COLORS.green500.g, COLORS.green500.b);
+    ctx.doc.text(`${lang}:`, ctx.margin, ctx.yPosition);
+
+    const langWidth = ctx.doc.getTextWidth(`${lang}:`);
+
+    // Proficiency level
+    ctx.doc.setFont("helvetica", "normal");
+    ctx.doc.setTextColor(COLORS.black.r, COLORS.black.g, COLORS.black.b);
+    ctx.doc.text(level, ctx.margin + langWidth + LAYOUT.categorySpacing, ctx.yPosition);
+
+    if (index < Object.entries(languages).length - 1) {
+      ctx.yPosition += LAYOUT.skillMinLineHeight;
+    }
+  });
 };
 
 const generateInfo = (
