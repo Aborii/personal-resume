@@ -4,9 +4,9 @@
 # Check if data/resumeData.json is in staged files
 if git diff --cached --name-only | grep -q "data/resumeData.json"; then
   echo "📄 resumeData.json detected in staged changes"
-  echo "🔄 Regenerating all assets (PDF, DOCX, OG images)..."
+  echo "🔄 Regenerating all assets (PDF, DOCX, MD, OG images)..."
   
-  # Run the full generation script (PDF + DOCX + OG images)
+  # Run the full generation script (PDF + DOCX + MD + OG images)
   if npm run g:all; then
     echo "✅ All assets regenerated successfully"
     
@@ -19,6 +19,11 @@ if git diff --cached --name-only | grep -q "data/resumeData.json"; then
     if ls public/*_Resume.docx 1> /dev/null 2>&1; then
       git add public/*_Resume.docx
       echo "✅ Generated DOCX added to commit"
+    fi
+    
+    if ls public/*_Resume.md 1> /dev/null 2>&1; then
+      git add public/*_Resume.md
+      echo "✅ Generated MD added to commit"
     fi
     
     if ls public/og-*.png 1> /dev/null 2>&1; then
