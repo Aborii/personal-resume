@@ -22,21 +22,23 @@ const checkPageBreak = (ctx: PDFContext, requiredSpace: number): boolean => {
 // Helper function to add section title
 const addSectionTitle = (ctx: PDFContext, title: string): void => {
   checkPageBreak(ctx, 12);
-  ctx.doc.setFontSize(13);
+  ctx.doc.setFontSize(14);
   ctx.doc.setFont("helvetica", "bold");
-  ctx.doc.setTextColor(37, 99, 235);
+  ctx.doc.setTextColor(17, 24, 39); // gray-900
   ctx.doc.text(title, ctx.margin, ctx.yPosition);
   ctx.yPosition += 2;
-  ctx.doc.setDrawColor(37, 99, 235);
-  ctx.doc.setLineWidth(0.5);
+  ctx.doc.setDrawColor(16, 185, 129); // green-500
+  ctx.doc.setLineWidth(0.8);
   ctx.doc.line(ctx.margin, ctx.yPosition, ctx.pageWidth - ctx.margin, ctx.yPosition);
   ctx.yPosition += 6;
 };
 
 // Render header section
 const renderHeader = (ctx: PDFContext, personalInfo: ResumeData["personalInfo"]): void => {
-  ctx.doc.setFillColor(37, 99, 235);
-  ctx.doc.rect(0, 0, ctx.pageWidth, 50, "F");
+  // Dark gradient background (slate-800 to emerald-900)
+  // Using a solid color that represents the gradient
+  ctx.doc.setFillColor(30, 58, 69); // Blend of slate-800 and emerald-900
+  ctx.doc.rect(0, 0, ctx.pageWidth, 55, "F");
 
   ctx.doc.setTextColor(255, 255, 255);
   ctx.doc.setFontSize(24);
@@ -50,6 +52,7 @@ const renderHeader = (ctx: PDFContext, personalInfo: ResumeData["personalInfo"])
   ctx.doc.setFontSize(10);
   ctx.doc.text(personalInfo.location, ctx.pageWidth / 2, 33, { align: "center" });
 
+  // Email and links
   ctx.doc.setFontSize(9);
   const contactInfo = `${personalInfo.phone} | ${personalInfo.email}`;
   ctx.doc.text(contactInfo, ctx.pageWidth / 2, 40, { align: "center" });
@@ -57,7 +60,7 @@ const renderHeader = (ctx: PDFContext, personalInfo: ResumeData["personalInfo"])
   const linksInfo = `LinkedIn: ${personalInfo.links.linkedin} | GitHub: ${personalInfo.links.github} | Portfolio: ${personalInfo.links.portfolio}`;
   ctx.doc.text(linksInfo, ctx.pageWidth / 2, 46, { align: "center" });
 
-  ctx.yPosition = 60;
+  ctx.yPosition = 65;
 };
 
 // Render professional summary section
@@ -65,10 +68,11 @@ const renderSummary = (ctx: PDFContext, summary: string): void => {
   addSectionTitle(ctx, "PROFESSIONAL SUMMARY");
   ctx.doc.setFontSize(10);
   ctx.doc.setFont("helvetica", "normal");
-  ctx.doc.setTextColor(0, 0, 0);
+  ctx.doc.setTextColor(55, 65, 81); // gray-700
   const summaryLines = ctx.doc.splitTextToSize(summary, ctx.pageWidth - 2 * ctx.margin);
-  ctx.doc.text(summaryLines, ctx.margin, ctx.yPosition);
-  ctx.yPosition += summaryLines.length * 4 + 3;
+  ctx.doc.text(summaryLines, ctx.margin, ctx.yPosition, { align: "justify", maxWidth: ctx.pageWidth - 2 * ctx.margin });
+  ctx.yPosition += summaryLines.length * 4;
+  ctx.yPosition += 5;
 };
 
 // Render key achievements section
@@ -99,10 +103,10 @@ const renderSkills = (ctx: PDFContext, skills: Record<string, string[]>): void =
   Object.entries(skills).forEach(([category, skillList], index) => {
     checkPageBreak(ctx, 10);
 
-    // Category name in bold with blue color
+    // Category name in bold with green color
     ctx.doc.setFontSize(11);
     ctx.doc.setFont("helvetica", "bold");
-    ctx.doc.setTextColor(37, 99, 235);
+    ctx.doc.setTextColor(16, 185, 129); // green-500
     ctx.doc.text(`${category}:`, ctx.margin, ctx.yPosition);
 
     // Get the width with current font settings
@@ -119,7 +123,7 @@ const renderSkills = (ctx: PDFContext, skills: Record<string, string[]>): void =
 
     // Add spacing between categories
     if (index < Object.entries(skills).length - 1) {
-      ctx.yPosition += 2;
+      ctx.yPosition += 1;
     }
   });
 
@@ -161,7 +165,7 @@ const renderExperience = (ctx: PDFContext, experience: ResumeData["experience"])
     // Company name and period
     ctx.doc.setFontSize(10);
     ctx.doc.setFont("helvetica", "bold");
-    ctx.doc.setTextColor(37, 99, 235);
+    ctx.doc.setTextColor(16, 185, 129); // green-500
     ctx.doc.text(exp.company, ctx.margin, ctx.yPosition);
 
     const companyWidth = ctx.doc.getTextWidth(exp.company);
@@ -238,7 +242,7 @@ const renderProjects = (ctx: PDFContext, projects: ResumeData["projects"]): void
     // Description
     ctx.doc.setFontSize(10);
     ctx.doc.setFont("helvetica", "italic");
-    ctx.doc.setTextColor(37, 99, 235);
+    ctx.doc.setTextColor(16, 185, 129); // green-500
     ctx.doc.text(project.description, ctx.margin, ctx.yPosition);
     ctx.yPosition += 5;
 
@@ -273,7 +277,7 @@ const renderEducation = (ctx: PDFContext, education: ResumeData["education"]): v
 
   ctx.doc.setFontSize(10);
   ctx.doc.setFont("helvetica", "bold");
-  ctx.doc.setTextColor(37, 99, 235);
+  ctx.doc.setTextColor(16, 185, 129); // green-500
   ctx.doc.text(education.school, ctx.margin, ctx.yPosition);
   ctx.yPosition += 4;
 
@@ -328,7 +332,7 @@ const buildResumePDF = (resumeData: ResumeData): jsPDF => {
     doc,
     pageWidth: doc.internal.pageSize.getWidth(),
     pageHeight: doc.internal.pageSize.getHeight(),
-    margin: 15,
+    margin: 14,
     yPosition: 15,
   };
 
