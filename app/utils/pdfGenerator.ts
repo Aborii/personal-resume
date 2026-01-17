@@ -421,15 +421,15 @@ const generateInfo = (
   fileName: string;
   title: string;
 } => {
-  const currentDate = new Date().toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  const now = new Date();
+  const day = now.getDate().toString().padStart(2, "0");
+  const month = now.toLocaleDateString("en-US", { month: "short" }).toLowerCase();
+  const year = now.getFullYear();
+  const fileDate = `${day}_${month}_${year}`;
 
   return {
-    fileName: `${resumeData.personalInfo.name.replace(/\s+/g, "_")}_Resume_${currentDate}.pdf`,
-    title: `Resume ${resumeData.personalInfo.name}`,
+    fileName: `${resumeData.personalInfo.name.replace(/\s+/g, "_")}_Resume_${fileDate}.pdf`,
+    title: `Resume ${resumeData.personalInfo.name} - Generated on ${day} ${month}, ${year}`,
   };
 };
 
