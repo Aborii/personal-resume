@@ -112,7 +112,7 @@ const renderSkills = (ctx: PDFContext, skills: Record<string, string[]>): void =
     ctx.doc.setFontSize(10);
     ctx.doc.setFont("helvetica", "normal");
     ctx.doc.setTextColor(0, 0, 0);
-    const skillsText = skillList.join(" • ");
+    const skillsText = skillList.join(", ");
     const skillsLines = ctx.doc.splitTextToSize(skillsText, ctx.pageWidth - 2 * ctx.margin - categoryWidth - 2);
     ctx.doc.text(skillsLines, ctx.margin + categoryWidth + 2, ctx.yPosition);
     ctx.yPosition += Math.max(5, skillsLines.length * 4.5);
@@ -302,20 +302,27 @@ const renderLanguages = (ctx: PDFContext, languages: Record<string, string>): vo
   ctx.doc.text(languagesText, ctx.margin, ctx.yPosition);
 };
 
-// Render footer
-const renderFooter = (ctx: PDFContext): void => {
+const generateInfo = (
+  resumeData: ResumeData,
+): {
+  fileName: string;
+  title: string;
+} => {
   const currentDate = new Date().toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
   });
 
-  ctx.doc.setFontSize(8);
-  ctx.doc.setTextColor(150, 150, 150);
-  ctx.doc.text(`Generated on ${currentDate}`, ctx.pageWidth / 2, ctx.pageHeight - 10, { align: "center" });
+  return {
+    fileName: `${resumeData.personalInfo.name.replace(/\s+/g, "_")}_Resume_${currentDate}.pdf`,
+    title: `Resume ${resumeData.personalInfo.name}`,
+  };
 };
 
-export const generateResumePDF = (resumeData: ResumeData) => {
+// Render footer
+
+const buildResumePDF = (resumeData: ResumeData): jsPDF => {
   const doc = new jsPDF();
   const ctx: PDFContext = {
     doc,
@@ -334,36 +341,33 @@ export const generateResumePDF = (resumeData: ResumeData) => {
   renderProjects(ctx, resumeData.projects);
   renderEducation(ctx, resumeData.education);
   renderLanguages(ctx, resumeData.languages);
-  renderFooter(ctx);
 
-  // Save the PDF
-  const fileName = `${resumeData.personalInfo.name.replace(/\s+/g, "_")}_Resume.pdf`;
-  doc.save(fileName);
+  const fileInfo = generateInfo(resumeData);
+
+  doc.setProperties({
+    title: fileInfo.title,
+    author: resumeData.personalInfo.name,
+    subject: fileInfo.title,
+    keywords: "resume, pdf",
+  });
+
+  return doc;
+};
+
+export const generateResumePDF = (resumeData: ResumeData) => {
+  const doc = buildResumePDF(resumeData);
+
+  const fileInfo = generateInfo(resumeData);
+  doc.save(fileInfo.fileName);
 };
 
 // Function to generate and print PDF
 export const generateResumePDFForPrint = (resumeData: ResumeData) => {
-  const doc = new jsPDF();
-  const ctx: PDFContext = {
-    doc,
-    pageWidth: doc.internal.pageSize.getWidth(),
-    pageHeight: doc.internal.pageSize.getHeight(),
-    margin: 15,
-    yPosition: 15,
-  };
-
-  // Render all sections
-  renderHeader(ctx, resumeData.personalInfo);
-  renderSummary(ctx, resumeData.summary);
-  renderKeyAchievements(ctx, resumeData.keyAchievements);
-  renderSkills(ctx, resumeData.skills);
-  renderExperience(ctx, resumeData.experience);
-  renderProjects(ctx, resumeData.projects);
-  renderEducation(ctx, resumeData.education);
-  renderLanguages(ctx, resumeData.languages);
-  renderFooter(ctx);
+  const doc = buildResumePDF(resumeData);
 
   // Open print dialog with the PDF
   doc.autoPrint();
-  window.open(doc.output("bloburl"), "_blank");
+
+  const newWindow = window.open(doc.output("bloburl"), "_blank");
+  if (!newWindow) return;
 };
