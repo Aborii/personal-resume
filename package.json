@@ -9,29 +9,33 @@
     "lint": "eslint",
     "pages:dev": "wrangler pages dev out",
     "deploy": "npm run build && wrangler pages deploy out",
-    "generate-og": "node scripts/generate-og-images.js"
+    "generate-og": "tsx scripts/generate-og-images.ts"
   },
   "dependencies": {
     "@types/file-saver": "^2.0.7",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "docx": "^9.5.1",
     "file-saver": "^2.0.5",
     "jspdf": "^4.0.0",
-    "next": "^16.1.1",
-    "react": "19.2.0",
-    "react-dom": "19.2.0"
+    "next": "^16.1.2",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.1.17",
-    "@types/node": "^24.10.1",
-    "@types/react": "^19.2.6",
+    "@tailwindcss/postcss": "^4.1.18",
+    "@types/node": "^25.0.9",
+    "@types/react": "^19.2.8",
     "@types/react-dom": "^19.2.3",
     "@vercel/og": "^0.8.6",
-    "baseline-browser-mapping": "^2.9.12",
-    "eslint": "^9.39.1",
-    "eslint-config-next": "16.0.3",
+    "baseline-browser-mapping": "^2.9.14",
+    "eslint": "^9.39.2",
+    "eslint-config-next": "16.1.2",
     "playwright": "^1.57.0",
-    "tailwindcss": "^4.1.17",
+    "tailwindcss": "^4.1.18",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3",
-    "wrangler": "^4.50.0"
+    "wrangler": "^4.59.2"
   }
 }
