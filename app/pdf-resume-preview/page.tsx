@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { buildResumePDF } from "../utils/pdfGenerator";
 import resumeData from "../../data/resumeData.json";
 
-export default function DevPDFPreview() {
+export default function PdfResumePreviewPage() {
   const [pdfUrl, setPdfUrl] = useState<string>("");
   const [lastUpdate, setLastUpdate] = useState<string>("");
   const [error, setError] = useState<string>("");
