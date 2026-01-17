@@ -1,44 +1,5 @@
 import { jsPDF } from "jspdf";
-
-interface ResumeData {
-  personalInfo: {
-    name: string;
-    title: string;
-    location: string;
-    phone: string;
-    email: string;
-    links: {
-      linkedin: string;
-      github: string;
-      portfolio: string;
-    };
-  };
-  summary: string;
-  keyAchievements: string[];
-  skills: Record<string, string[]>;
-  experience: Array<{
-    title: string;
-    company: string;
-    location: string;
-    period: string;
-    current: boolean;
-    responsibilities: string[];
-  }>;
-  projects: Array<{
-    name: string;
-    description: string;
-    details: string[];
-    url?: string;
-  }>;
-  education: {
-    degree: string;
-    school: string;
-    location: string;
-    period: string;
-    gpa: string;
-  };
-  languages: Record<string, string>;
-}
+import type { ResumeData } from "../types/resume-data";
 
 type PDFContext = {
   doc: jsPDF;
@@ -93,7 +54,7 @@ const renderHeader = (ctx: PDFContext, personalInfo: ResumeData["personalInfo"])
   const contactInfo = `${personalInfo.phone} | ${personalInfo.email}`;
   ctx.doc.text(contactInfo, ctx.pageWidth / 2, 40, { align: "center" });
 
-  const linksInfo = `LinkedIn: ${personalInfo.links.linkedin} | Portfolio: ${personalInfo.links.portfolio}`;
+  const linksInfo = `LinkedIn: ${personalInfo.links.linkedin} | GitHub: ${personalInfo.links.github} | Portfolio: ${personalInfo.links.portfolio}`;
   ctx.doc.text(linksInfo, ctx.pageWidth / 2, 46, { align: "center" });
 
   ctx.yPosition = 60;
@@ -145,7 +106,7 @@ const renderSkills = (ctx: PDFContext, skills: Record<string, string[]>): void =
     ctx.doc.text(`${category}:`, ctx.margin, ctx.yPosition);
 
     // Get the width with current font settings
-    const categoryWidth = ctx.doc.getTextWidth(`${category}: `);
+    const categoryWidth = ctx.doc.getTextWidth(`${category}:`);
 
     // Skills list with bullets
     ctx.doc.setFontSize(10);
