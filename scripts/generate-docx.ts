@@ -440,12 +440,12 @@ async function buildResumeDOCX(resumeData: ResumeData): Promise<Buffer> {
 async function generateDOCX(): Promise<void> {
   try {
     console.log("🚀 Generating DOCX resume...");
-    
+
     const docBuffer = await buildResumeDOCX(resumeData as ResumeData);
-    
+
     const fileName = `${resumeData.personalInfo.name.replace(/\s+/g, "_")}_Resume.docx`;
     const outputPath = join(publicDir, fileName);
-    
+
     writeFileSync(outputPath, docBuffer);
     console.log(`✅ Generated: ${fileName}`);
     console.log(`📁 Location: ${outputPath}`);

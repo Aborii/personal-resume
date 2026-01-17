@@ -14,13 +14,13 @@ mkdirSync(publicDir, { recursive: true });
 async function generatePDF(): Promise<void> {
   try {
     console.log("🚀 Generating PDF resume...");
-    
+
     const doc = buildResumePDF(resumeData);
     const pdfBuffer = doc.output("arraybuffer");
-    
+
     const fileName = `${resumeData.personalInfo.name.replace(/\s+/g, "_")}_Resume.pdf`;
     const outputPath = join(publicDir, fileName);
-    
+
     writeFileSync(outputPath, Buffer.from(pdfBuffer));
     console.log(`✅ Generated: ${fileName}`);
     console.log(`📁 Location: ${outputPath}`);

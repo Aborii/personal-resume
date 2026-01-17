@@ -1,0 +1,28 @@
+#!/bin/sh
+# Husky pre-commit hook to regenerate PDF when resumeData.json changes
+
+# Check if data/resumeData.json is in staged files
+if git diff --cached --name-only | grep -q "data/resumeData.json"; then
+  echo "📄 resumeData.json detected in staged changes"
+  echo "🔄 Regenerating PDF..."
+  
+  # Run the PDF generation script
+  if npm run g:pdf; then
+    echo "✅ PDF regenerated successfully"
+    
+    # Stage any generated PDF files in public directory
+    if ls public/*_Resume.pdf 1> /dev/null 2>&1; then
+      git add public/*_Resume.pdf
+      echo "✅ Generated PDF added to commit"
+    fi
+  else
+    echo "❌ ERROR: PDF generation failed!"
+    echo "❌ resumeData.json changed but PDF not regenerated!"
+    echo "❌ Please run 'npm run g:pdf' manually and fix any errors."
+    exit 1
+  fi
+else
+  echo "⚡ Skipping PDF generation (resumeData.json not changed)"
+fi
+
+exit 0
