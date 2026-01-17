@@ -100,7 +100,7 @@
       "period": "August 2020 to March 2022",
       "current": false,
       "responsibilities": [
-        "Developed Node.js/MongoDB backend services for events management system + Bact e-learning backend (Node.js/TypeORM/Postgres); designed RESTful APIs and optimized databases.",
+        "Developed Node.js/MongoDB backend services for events management system + Bact e-learning backend (Node.js/TypeORM/PostgreSQL); designed RESTful APIs and optimized databases.",
         "Scaled APIs to 3x capacity across client apps; improved course delivery reliability 30% through performance tuning and documentation."
       ]
     },
