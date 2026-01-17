@@ -132,7 +132,7 @@ _We Media | Damascus, Syria_
 
 ### Beethere | Taxi Ordering Application
 
-- Laravel, WebSockets/Socket.io,Node.js, Next.js
+- Laravel, WebSockets/Socket.io, Node.js, Next.js
 - Developed core features for ride requests, real-time driver/customer updates; integrated APIs for location tracking and payments.
 
 ### Al-Adham | E-Commerce Platform

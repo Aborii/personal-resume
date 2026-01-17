@@ -16,7 +16,7 @@
     "Engineered Envita SaaS energy platform: Real-time time-series dashboards processing 2M+ data points daily via MQTT from sensors, AWS IoT Core integration, multi-frame aggregation, and complex optimized queries—slashing chart/dashboard load times 40% for energy professionals.",
     "Built Ecorize energy platform: GraphQL APIs handling complex energy modeling workflows, optimizing aggregations across PostgreSQL/Redis for sub-second responses.",
     "Delivered ASP School e-learning platform: Multilingual Laravel/React system with video streaming and progress tracking, scaling to production educator workflows.",
-    "Built backend to Bact for Consulting & Training e-learning platform: Node.js/TypeORM with PostgreSQL, powering scalable course delivery and user management APIs as part of development team.",
+    "Contributed to backend for Bact for Consulting & Training e-learning platform: Node.js/TypeORM with PostgreSQL, powering scalable course delivery and user management APIs as part of development team.",
     "Developed Beethere taxi ordering app: WebSocket/Socket.io for real-time ride requests and driver/customer updates; integrated live location tracking and payment APIs.",
     "Built 3+ e-commerce platforms end-to-end: Laravel/Node.js stacks with inventory management and Stripe integrations, achieving zero-downtime deploys.",
     "Drove 25-40% performance/stability gains across 5+ apps via database optimization, Jest/Cypress automation, and TypeScript refactoring.",
