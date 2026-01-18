@@ -78,7 +78,7 @@ Senior Full-Stack Engineer with ~7 years building high-volume platforms at Estia
 **3 Miles** | Damascus, Syria
 *November 2021 to September 2022*
 
-- Led Laravel/Vue/Node.js projects from requirements to deployment.
+- Contributed to full-stack Laravel, Vue.js, and Node.js projects, implementing features from requirements through production deployment and improving delivery timelines by ~50%.
 - Delivered 2 production apps, cutting client deployment times 50%.
 
 ### Full-Stack Developer
