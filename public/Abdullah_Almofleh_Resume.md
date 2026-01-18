@@ -107,7 +107,7 @@ Senior Full-Stack Engineer with ~7 years building high-volume platforms at Estia
 **We Media** | Damascus, Syria
 *May 2019 to April 2021*
 
-- Delivered React/Laravel/Flutter full-stack solutions for clients.
+- Delivered React/Laravel full-stack solutions for clients.
 - Achieved 100% on-time delivery across 6 concurrent projects.
 
 ---
