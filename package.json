@@ -9,7 +9,13 @@
     "lint": "eslint",
     "pages:dev": "wrangler pages dev out",
     "deploy": "npm run build && wrangler pages deploy out",
-    "generate-og": "tsx scripts/generate-og-images.ts"
+    "g:og": "tsx scripts/generate-og-images.ts",
+    "g:pdf": "tsx scripts/generate-pdf.ts",
+    "g:docx": "tsx scripts/generate-docx.ts",
+    "g:md": "tsx scripts/generate-md.ts",
+    "g:resume": "npm run g:pdf && npm run g:docx && npm run g:md",
+    "g:all": "npm run g:resume && npm run g:og",
+    "prepare": "husky"
   },
   "dependencies": {
     "@types/file-saver": "^2.0.7",
@@ -32,6 +38,7 @@
     "baseline-browser-mapping": "^2.9.14",
     "eslint": "^9.39.2",
     "eslint-config-next": "16.1.2",
+    "husky": "^9.1.7",
     "playwright": "^1.57.0",
     "tailwindcss": "^4.1.18",
     "tsx": "^4.21.0",
