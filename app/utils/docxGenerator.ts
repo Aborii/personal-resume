@@ -2,7 +2,8 @@ import { Document, Paragraph, TextRun, AlignmentType, BorderStyle, Packer } from
 import { saveAs } from "file-saver";
 import type { ResumeData } from "../types/resume-data";
 
-export const generateResumeDOCX = async (resumeData: ResumeData) => {
+// Build the DOCX document and return the Document object
+export const buildResumeDOCX = (resumeData: ResumeData): Document => {
   const children: Paragraph[] = [];
 
   // Header Section
@@ -415,7 +416,7 @@ export const generateResumeDOCX = async (resumeData: ResumeData) => {
     }),
   );
 
-  const doc = new Document({
+  return new Document({
     sections: [
       {
         properties: {},
@@ -423,7 +424,11 @@ export const generateResumeDOCX = async (resumeData: ResumeData) => {
       },
     ],
   });
+};
 
+// Generate and download DOCX for the app
+export const generateResumeDOCX = async (resumeData: ResumeData) => {
+  const doc = buildResumeDOCX(resumeData);
   const blob = await Packer.toBlob(doc);
   saveAs(blob, `${resumeData.personalInfo.name.replace(/\s+/g, "_")}_Resume.docx`);
 };

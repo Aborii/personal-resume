@@ -38,9 +38,6 @@ async function generateOGImage(filename: string, jsx: JSX.Element, options: Imag
 }
 
 async function generateResumeOGImage(): Promise<void> {
-  const currentRole = resumeData.experience.find((exp) => exp.current) || resumeData.experience[0];
-  const topSkills = ["TypeScript", "React.js", "Next.js", "Node.js", "Nest.js", "Laravel", "Vue.js"];
-
   const jsx: JSX.Element = {
     type: "div",
     key: "og-resume-main",
@@ -64,7 +61,7 @@ async function generateResumeOGImage(): Promise<void> {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              padding: "40px 60px",
+              padding: "50px 60px 30px",
               textAlign: "center",
             },
             children: [
@@ -72,10 +69,10 @@ async function generateResumeOGImage(): Promise<void> {
                 type: "h1",
                 props: {
                   style: {
-                    fontSize: "62px",
+                    fontSize: "68px",
                     fontWeight: "bold",
-                    color: "#A7F3D0",
-                    marginBottom: "18px",
+                    color: "#D1FAE5",
+                    marginBottom: "20px",
                     lineHeight: 1.1,
                   },
                   children: resumeData.personalInfo.name,
@@ -85,40 +82,32 @@ async function generateResumeOGImage(): Promise<void> {
                 type: "h2",
                 props: {
                   style: {
-                    fontSize: "36px",
-                    fontWeight: "700",
-                    color: "#6EE7B7",
-                    marginBottom: "24px",
+                    fontSize: "32px",
+                    fontWeight: "600",
+                    color: "#9CA3AF",
+                    marginBottom: "28px",
                   },
-                  children: `${currentRole!.title} @ ${currentRole!.company}`,
+                  children: resumeData.personalInfo.title,
                 },
               },
+              // Identity line (bold, impactful)
               {
                 type: "div",
                 props: {
                   style: {
-                    display: "flex",
-                    alignItems: "center",
-                    fontSize: "24px",
-                    color: "#CBD5E1",
-                    marginBottom: "8px",
+                    fontSize: "40px",
+                    fontWeight: "800",
+                    color: "#6EE7B7",
+                    marginBottom: "32px",
+                    lineHeight: 1.3,
                   },
-                  children: [
-                    {
-                      type: "span",
-                      props: {
-                        style: { marginRight: "10px", fontSize: "26px" },
-                        children: "📍",
-                      },
-                    },
-                    resumeData.personalInfo.location,
-                  ],
+                  children: resumeData.og.identityLine,
                 },
               },
             ],
           },
         },
-        // Skills section
+        // Skills section (reduced to 5 max)
         {
           type: "div",
           props: {
@@ -126,7 +115,7 @@ async function generateResumeOGImage(): Promise<void> {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              padding: "0 60px 40px",
+              padding: "0 60px 35px",
             },
             children: [
               {
@@ -136,20 +125,21 @@ async function generateResumeOGImage(): Promise<void> {
                     display: "flex",
                     flexWrap: "wrap",
                     justifyContent: "center",
-                    gap: "18px",
+                    gap: "20px",
                     maxWidth: "1000px",
                   },
-                  children: topSkills.map((skill, index) => ({
+                  children: resumeData.og.topSkills.map((skill, index) => ({
                     type: "div",
                     key: index,
                     props: {
                       style: {
                         background: "#0E3B2F",
-                        border: "2px solid rgba(67, 206, 162, 0.50)",
+                        border: "2px solid rgba(67, 206, 162, 0.55)",
                         borderRadius: "999px",
-                        padding: "8px 16px",
-                        fontSize: "18px",
-                        color: "#99F6E4",
+                        padding: "10px 20px",
+                        fontSize: "20px",
+                        fontWeight: "600",
+                        color: "#A7F3D0",
                       },
                       children: skill,
                     },
@@ -159,7 +149,7 @@ async function generateResumeOGImage(): Promise<void> {
             ],
           },
         },
-        // Summary
+        // Condensed experience line (replaces paragraph)
         {
           type: "div",
           props: {
@@ -175,12 +165,13 @@ async function generateResumeOGImage(): Promise<void> {
                 type: "p",
                 props: {
                   style: {
-                    fontSize: "24px",
-                    color: "#E5E7EB",
-                    lineHeight: 1.6,
+                    fontSize: "26px",
+                    fontWeight: "500",
+                    color: "#CBD5E1",
+                    lineHeight: 1.5,
                     maxWidth: "1000px",
                   },
-                  children: resumeData.summary.split(".").slice(0, 2).join(". ") + ".",
+                  children: resumeData.og.experienceLine,
                 },
               },
             ],

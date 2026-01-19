@@ -11,6 +11,11 @@
       "portfolio": "https://almofleh.dev"
     }
   },
+  "og": {
+    "topSkills": ["TypeScript", "Next.js", "NestJS", "PostgreSQL", "AWS"],
+    "identityLine": "Building high-scale, real-time systems",
+    "experienceLine": "~7 years of full-stack experience · Real-time platforms"
+  },
   "summary": "Senior Full-Stack Engineer with ~7 years building high-volume platforms at Estia Software DMCC (real time energy/e-learning), handling 2M+ daily time-series data points. Architected NestJS/PostgreSQL backends and Next.js/Typescript front-ends from scratch, driving 25-40% performance gains through database sharding and caching optimizations while mentoring development teams.",
   "keyAchievements": [
     "Engineered Envita SaaS energy platform: Real-time time-series dashboards processing 2M+ data points daily via MQTT from sensors, AWS IoT Core integration, multi-frame aggregation, and complex optimized queries—slashing chart/dashboard load times 40% for energy professionals.",
@@ -89,7 +94,7 @@
       "period": "November 2021 to September 2022",
       "current": false,
       "responsibilities": [
-        "Led Laravel/Vue/Node.js projects from requirements to deployment.",
+        "Contributed to full-stack Laravel, Vue.js, and Node.js projects, implementing features from requirements through production deployment and improving delivery timelines by ~50%.",
         "Delivered 2 production apps, cutting client deployment times 50%."
       ]
     },
@@ -134,7 +139,7 @@
       "period": "May 2019 to April 2021",
       "current": false,
       "responsibilities": [
-        "Delivered React/Laravel/Flutter full-stack solutions for clients.",
+        "Delivered React/Laravel full-stack solutions for clients.",
         "Achieved 100% on-time delivery across 6 concurrent projects."
       ]
     }
