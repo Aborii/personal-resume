@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import DevBanner from "./components/DevBanner";
+import { ThemeProvider } from "./components/ThemeProvider";
 import resumeData from "../data/resumeData.json";
 
 const geistSans = Geist({
@@ -75,13 +76,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <DevBanner />
-        {children}
+        <ThemeProvider>
+          <DevBanner />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
