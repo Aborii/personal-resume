@@ -55,6 +55,17 @@
           "url": "https://tailwindcss.com/docs/functions-and-directives#apply"
         }
       ]
+    },
+    {
+      "name": "@custom-variant",
+      "description": "Tailwind also supports custom variants, which allow you to create your own variants that can be used in your HTML. For example, you could create a `group-hover` variant that applies styles when the parent element is hovered:\n```css\n@variants group-hover {\n  .btn-group-hover {\n    background-color: #3182CE;\n  }\n}\n```\n",
+      "status": "standard",
+      "references": [
+        {
+          "name": "Tailwind Documentation | Functions and directives: @custom-variant",
+          "url": "https://tailwindcss.com/docs/functions-and-directives#custom-variant-directive"
+        }
+      ]
     }
   ]
 }
