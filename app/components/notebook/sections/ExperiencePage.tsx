@@ -5,26 +5,6 @@ import type { ResumeData } from "../../../types/resume-data";
 
 type ExperienceItem = ResumeData["experience"][number];
 
-function TimelineRail() {
-  return (
-    <svg
-      className="absolute bottom-2 left-[7px] top-3 h-auto w-[10px] text-[var(--nb-ink-faint)]"
-      viewBox="0 0 10 100"
-      preserveAspectRatio="none"
-      aria-hidden="true"
-    >
-      <path
-        d="M5 0 C 6.2 12 3.8 22 5.2 34 C 6.4 44 3.6 56 5 68 C 6.2 78 4 90 5 100"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        vectorEffect="non-scaling-stroke"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
 function TimelineNode({ current }: { current: boolean }) {
   return (
     <svg
@@ -48,9 +28,7 @@ export default function ExperiencePage({ experiences }: { experiences: Experienc
     <>
       <SectionTitle note="most recent on top">Where I&apos;ve worked</SectionTitle>
 
-      <div className="relative pl-8">
-        <TimelineRail />
-
+      <div className="pl-8">
         {experiences.map((exp) => (
           <div key={`${exp.company}-${exp.period}`} className="relative mb-[var(--nb-line)]">
             <TimelineNode current={exp.current} />
@@ -66,19 +44,21 @@ export default function ExperiencePage({ experiences }: { experiences: Experienc
               </StickyNote>
             )}
 
-            <div className="flex flex-wrap items-baseline justify-between gap-x-3">
-              <h3 className="nb-hand text-[22px] font-bold leading-[var(--nb-line)]">{exp.title}</h3>
-              <span className={`nb-chip ${exp.current ? "nb-chip--now" : ""}`}>{exp.period}</span>
-            </div>
+            <div className="nb-nosplit">
+              <div className="flex flex-wrap items-baseline justify-between gap-x-3">
+                <h3 className="nb-hand text-[22px] font-bold leading-[var(--nb-line)]">{exp.title}</h3>
+                <span className={`nb-chip ${exp.current ? "nb-chip--now" : ""}`}>{exp.period}</span>
+              </div>
 
-            <p className="nb-t-body">
-              <strong className="nb-strong">{exp.company}</strong>
-              <span className="nb-t-sm text-[var(--nb-ink-faint)]"> — {exp.location}</span>
-            </p>
+              <p className="nb-t-body">
+                <strong className="nb-strong">{exp.company}</strong>
+                <span className="nb-t-sm text-[var(--nb-ink-faint)]"> — {exp.location}</span>
+              </p>
+            </div>
 
             <ul>
               {exp.responsibilities.map((responsibility, ri) => (
-                <li key={ri} className="flex items-start gap-2">
+                <li key={ri} className="nb-nosplit flex items-start gap-2">
                   <ArrowBullet className="mt-[10px] shrink-0 text-[var(--nb-ink-soft)]" />
                   <span className="nb-t-body">
                     <NotebookText>{responsibility}</NotebookText>

@@ -31,7 +31,7 @@ export default function EducationPage({
     <>
       <SectionTitle note="the official bit">School days</SectionTitle>
 
-      <div className="relative mt-[var(--nb-line)]">
+      <div className="nb-nosplit relative mt-[var(--nb-line)]">
         <div className="absolute -top-6 right-2 flex items-end gap-1">
           <MarginNote rotate={-3}>yes — the major was AI</MarginNote>
           <ArrowCurve className="mb-[-14px] text-[var(--nb-ink-soft)]" size={34} />
@@ -55,7 +55,7 @@ export default function EducationPage({
         </div>
       </div>
 
-      <div className="mt-[var(--nb-line)]">
+      <div className="nb-nosplit mt-[var(--nb-line)]">
         <h3 className="nb-hand text-[21px] font-bold leading-[var(--nb-line)]">Languages</h3>
         {Object.entries(languages).map(([language, level]) => (
           <div key={language} className="flex h-[var(--nb-line)] items-center gap-4">

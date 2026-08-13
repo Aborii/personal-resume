@@ -17,9 +17,12 @@ export default function SummaryPage({ summary }: { summary: string }) {
         <NotebookText>{summary}</NotebookText>
       </p>
 
-      <div className="mt-[var(--nb-line)] flex flex-col gap-[var(--nb-line)]">
-        {STATS.map((stat) => (
-          <p key={stat.value} className="flex items-baseline gap-4 leading-[var(--nb-line)]">
+      <div className="mt-[var(--nb-line)]">
+        {STATS.map((stat, i) => (
+          <p
+            key={stat.value}
+            className={`nb-nosplit flex items-baseline gap-4 leading-[var(--nb-line)] ${i > 0 ? "mt-[var(--nb-line)]" : ""}`}
+          >
             <span className="relative inline-block px-2">
               <SketchEllipse className="absolute -left-2.5 -top-2 h-[calc(100%_+_14px)] w-[calc(100%_+_20px)] text-[var(--nb-accent)]" />
               <span className="nb-hand relative text-[29px] font-bold">{stat.value}</span>

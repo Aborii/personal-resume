@@ -43,7 +43,7 @@ export default function SkillsPage({
       </p>
 
       {Object.entries(skills).map(([category, list]) => (
-        <div key={category} className="mb-[var(--nb-line)]">
+        <div key={category} className="nb-nosplit mb-[var(--nb-line)]">
           <h3 className="nb-hand mb-1 text-[21px] font-bold leading-[var(--nb-line)]">{category}</h3>
           <div className="flex flex-wrap gap-x-2.5 gap-y-3">
             {list.map((raw) => {

@@ -312,6 +312,70 @@
   background-position: 0 0, 0 calc(var(--nb-line) * -0.167);
 }
 
+/* ============================================================
+   Pagination: each section lays out as a horizontal chain of
+   page-sized columns; a page shows column N of that flow.
+   --nb-colw / --nb-colh are set from JS after measuring a page.
+   ============================================================ */
+
+.nb-pageview {
+  position: absolute;
+  inset: 0;
+  /* clip (not hidden): forbids focus-scrolling inside the clipped flow */
+  overflow: clip;
+}
+
+.nb-colflow {
+  height: var(--nb-colh, 100%);
+  width: var(--nb-colw, 100%);
+  column-width: var(--nb-colw, 240px);
+  column-gap: var(--nb-colgap);
+  column-fill: auto;
+  transform: translateX(calc(var(--nb-col, 0) * (var(--nb-colw, 240px) + var(--nb-colgap)) * -1));
+}
+
+.nb-scene {
+  --nb-colgap: 96px;
+}
+
+/* invisible page-sized probe used to read the content box metrics */
+.nb-probe {
+  visibility: hidden;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+}
+
+/* off-screen measuring rig for page counting */
+.nb-measure {
+  position: absolute;
+  left: 0;
+  top: 0;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: -1;
+  contain: layout size;
+  width: 0;
+  height: 0;
+}
+
+.nb-measure .nb-measure-flow {
+  height: var(--nb-colh, 100%);
+  width: var(--nb-colw, 240px);
+  column-width: var(--nb-colw, 240px);
+  column-gap: var(--nb-colgap);
+  column-fill: auto;
+  overflow: hidden;
+  font-family: var(--font-patrick), var(--font-caveat), cursive;
+  font-size: calc(var(--nb-line) * 0.567);
+  line-height: var(--nb-line);
+}
+
+/* blocks that must never tear across a page break */
+.nb-nosplit {
+  break-inside: avoid;
+}
+
 /* line-grid type scale: sizes as fractions of the ruled line height */
 .nb-t-body {
   font-size: calc(var(--nb-line) * 0.567);

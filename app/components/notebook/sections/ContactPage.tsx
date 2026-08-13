@@ -24,11 +24,10 @@ export default function ContactPage({ personalInfo }: { personalInfo: ResumeData
     <>
       <SectionTitle>Last page</SectionTitle>
 
-      <div className="relative">
-        <PaperPlaneDoodle className="absolute -top-3 right-0 h-auto w-[72px] text-[var(--nb-ink-soft)] sm:w-[110px]" size={110} />
-
-        <p className="nb-hand max-w-[420px] text-[32px] font-bold leading-[var(--nb-line)]">
+      <div>
+        <p className="nb-hand nb-nosplit relative max-w-[420px] text-[32px] font-bold leading-[var(--nb-line)]">
           Let&apos;s <Hl color="y">build something</Hl>.
+          <PaperPlaneDoodle className="absolute -top-2 right-[-52px] h-auto w-[72px] text-[var(--nb-ink-soft)] sm:w-[96px]" size={110} />
         </p>
 
         <p className="nb-t-body mt-[var(--nb-line)] max-w-[430px]">
@@ -36,7 +35,7 @@ export default function ContactPage({ personalInfo }: { personalInfo: ResumeData
           problem with real-time data — write to me.
         </p>
 
-        <div className="mt-[var(--nb-line)]">
+        <div className="nb-nosplit mt-[var(--nb-line)]">
           <p className="flex items-center gap-3 leading-[var(--nb-line)]">
             <MailDoodle className="shrink-0 text-[var(--nb-ink-soft)]" size={20} />
             <InkLink href={`mailto:${personalInfo.email}`} external={false} className="nb-hand text-[22px] font-bold">
@@ -77,11 +76,11 @@ export default function ContactPage({ personalInfo }: { personalInfo: ResumeData
           <span className="opacity-60"># usually replies within a day</span>
         </p>
 
-        <div className="mt-[var(--nb-line)]">
+        <div className="nb-nosplit mt-[var(--nb-line)]">
           <DownloadScrap />
         </div>
 
-        <div className="mt-[var(--nb-line)]">
+        <div className="nb-nosplit mt-[var(--nb-line)]">
           <SigFlourish className="text-[var(--nb-ink-soft)]" />
           <p className="nb-hand -mt-1 text-[19px] leading-[var(--nb-line)]">— Abdullah</p>
         </div>

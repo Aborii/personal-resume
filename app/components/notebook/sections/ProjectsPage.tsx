@@ -19,16 +19,17 @@ export default function ProjectsPage({ projects }: { projects: ProjectItem[] }) 
     <>
       <SectionTitle note="taped in — don&apos;t peel">Notable projects</SectionTitle>
 
-      <div className="grid grid-cols-1 items-start gap-x-5 gap-y-[var(--nb-line)] sm:grid-cols-2">
-        {projects.map((project, i) => {
-          const [stack, ...rest] = project.details;
-          const stackChips = (stack ?? "")
-            .split(/[,]/)
-            .map((s) => s.trim())
-            .filter(Boolean);
+      {chunkPairs(projects.map((project, i) => ({ project, i }))).map((row, r) => (
+        <div key={r} className="nb-nosplit mb-[var(--nb-line)] flex flex-wrap items-start gap-5">
+          {row.map(({ project, i }) => {
+            const [stack, ...rest] = project.details;
+            const stackChips = (stack ?? "")
+              .split(/[,]/)
+              .map((s) => s.trim())
+              .filter(Boolean);
 
-          return (
-            <div key={project.name}>
+            return (
+            <div key={project.name} className="min-w-[220px] flex-1">
               <div
                 className="nb-card"
                 style={{ "--rot": `${ROTATIONS[i % ROTATIONS.length]}deg` } as React.CSSProperties}
@@ -67,9 +68,16 @@ export default function ProjectsPage({ projects }: { projects: ProjectItem[] }) 
                 ))}
               </div>
             </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      ))}
     </>
   );
+}
+
+function chunkPairs<T>(items: T[]): T[][] {
+  const rows: T[][] = [];
+  for (let i = 0; i < items.length; i += 2) rows.push(items.slice(i, i + 2));
+  return rows;
 }

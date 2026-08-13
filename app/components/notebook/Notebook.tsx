@@ -4,12 +4,10 @@ import React, { useCallback, useEffect, useMemo, useRef, useState, useSyncExtern
 import { motion, useReducedMotion } from "motion/react";
 import resumeData from "../../../data/resumeData.json";
 import { generateResumePDFForPrint } from "../../utils/pdfGenerator";
-import { useNotebookSounds } from "./useNotebookSounds";
 import BookmarkTabs, { type TabDef } from "./BookmarkTabs";
 import CoverFront from "./Cover";
 import IdentityPage, { type TocItem } from "./IdentityPage";
 import LampToggle from "./LampToggle";
-import { SpeakerDoodle } from "./doodles";
 import SummaryPage from "./sections/SummaryPage";
 import AchievementsPage from "./sections/AchievementsPage";
 import SkillsPage from "./sections/SkillsPage";
@@ -18,30 +16,35 @@ import ProjectsPage from "./sections/ProjectsPage";
 import EducationPage from "./sections/EducationPage";
 import ContactPage from "./sections/ContactPage";
 
-type PageDef = {
+type Section = {
   id: string;
   tab: string;
   color: string;
   render: () => React.ReactNode;
 };
 
+/** one physical half-sheet of the notebook */
+type PageDef =
+  | { type: "me" }
+  | { type: "blank" }
+  | { type: "end" }
+  | { type: "content"; section: number; col: number };
+
 type Flip = {
   dir: "fwd" | "back";
-  /** content on the moving leaf's front face (right-page side) */
-  frontIdx: number;
-  /** content on the leaf's back face (becomes/was the left page); null = blank verso (mobile) */
-  backIdx: number | null;
-  /** fwd: what the static left page keeps showing until the leaf lands (null = inside cover) */
+  /** page on the moving leaf's front (recto) face */
+  front: PageDef;
+  /** page on the leaf's back (verso) face; null = plain paper (mobile) */
+  back: PageDef | null;
+  /** fwd: page index the static left keeps showing until the leaf lands */
   holdLeft: number | null;
-  /** back: what the static right page keeps showing until the leaf lands */
+  /** back: page index the static right keeps showing until the leaf lands */
   holdRight: number | null;
   key: number;
 };
 
-/** which section sits on the static left page for a given spread (null = the inside cover) */
-const leftFor = (k: number) => (k >= 2 ? k - 1 : null);
-
 const FLIP_DURATION = 0.85;
+const COL_GAP = 96;
 
 function isDesktop() {
   return typeof window !== "undefined" && window.matchMedia("(min-width: 1024px)").matches;
@@ -58,54 +61,28 @@ function useVisitedAtLoad() {
   );
 }
 
+/**
+ * Page sequence per real-notebook rules: index 0 is the inside cover
+ * (identity); every section starts on a right (odd) page. A section
+ * ending on a right page leaves the next left page blank; ending on a
+ * left page lets the next section start beside it on the same spread.
+ */
+function buildPages(counts: number[]): PageDef[] {
+  const pages: PageDef[] = [{ type: "me" }];
+  counts.forEach((count, section) => {
+    if (pages.length % 2 === 0) pages.push({ type: "blank" });
+    for (let col = 0; col < count; col++) pages.push({ type: "content", section, col });
+  });
+  if (pages.length % 2 === 1) pages.push({ type: "end" });
+  return pages;
+}
+
 export default function Notebook() {
   const reduced = useReducedMotion();
   const visitedAtLoad = useVisitedAtLoad();
-  const { enabled: soundOn, toggle: toggleSound, playFlip, playTap } = useNotebookSounds();
 
-  const [current, setCurrent] = useState(1);
-  const [flip, setFlip] = useState<Flip | null>(null);
-  const [coverOpen, setCoverOpen] = useState<"closed" | "opening" | "open">("closed");
-  const [visited, setVisited] = useState<ReadonlySet<number>>(() => new Set([1]));
-
-  // same-session visitors and reduced-motion users get an already-open notebook
-  const coverState = coverOpen === "closed" && (visitedAtLoad || reduced) ? "open" : coverOpen;
-
-  const pendingRef = useRef<number | null>(null);
-  const flipCount = useRef(0);
-  const swipeRef = useRef<{ x: number; y: number } | null>(null);
-
-  const navigateRef = useRef<(index: number) => void>(() => {});
-
-  const toc: TocItem[] = useMemo(
+  const sections: Section[] = useMemo(
     () => [
-      { id: "about", label: "About me", index: 1 },
-      { id: "wins", label: "Things I'm proud of", index: 2 },
-      { id: "skills", label: "Toolbox", index: 3 },
-      { id: "work", label: "Where I've worked", index: 4 },
-      { id: "projects", label: "Notable projects", index: 5 },
-      { id: "school", label: "School days", index: 6 },
-      { id: "say-hi", label: "Say hi", index: 7 },
-    ],
-    [],
-  );
-
-  const identity = useCallback(
-    () => (
-      <IdentityPage
-        personalInfo={resumeData.personalInfo}
-        toc={toc}
-        current={current}
-        visited={visited}
-        onNavigate={(index) => navigateRef.current(index)}
-      />
-    ),
-    [toc, current, visited],
-  );
-
-  const pages: PageDef[] = useMemo(
-    () => [
-      { id: "hello", tab: "Me", color: "#d4a373", render: identity },
       { id: "about", tab: "About", color: "#ffd166", render: () => <SummaryPage summary={resumeData.summary} /> },
       { id: "wins", tab: "Wins", color: "#ef767a", render: () => <AchievementsPage achievements={resumeData.keyAchievements} /> },
       { id: "skills", tab: "Skills", color: "#7fb069", render: () => <SkillsPage skills={resumeData.skills} topSkills={resumeData.og.topSkills} /> },
@@ -114,17 +91,132 @@ export default function Notebook() {
       { id: "school", tab: "School", color: "#f79ad3", render: () => <EducationPage education={resumeData.education} languages={resumeData.languages} /> },
       { id: "say-hi", tab: "Say hi", color: "#4ecdc4", render: () => <ContactPage personalInfo={resumeData.personalInfo} /> },
     ],
-    [identity],
+    [],
   );
 
-  const tabs: TabDef[] = useMemo(
-    () => pages.map((p, index) => ({ id: p.id, tab: p.tab, color: p.color, index })),
+  const [pos, setPos] = useState(1);
+  const [flip, setFlip] = useState<Flip | null>(null);
+  const [coverOpen, setCoverOpen] = useState<"closed" | "opening" | "open">("closed");
+  const [visited, setVisited] = useState<ReadonlySet<number>>(() => new Set([0]));
+  const [metrics, setMetrics] = useState<{ colw: number; colh: number } | null>(null);
+  const [counts, setCounts] = useState<number[] | null>(null);
+  const [fontsReady, setFontsReady] = useState(false);
+
+  const pendingRef = useRef<number | null>(null);
+  const flipCount = useRef(0);
+  const swipeRef = useRef<{ x: number; y: number } | null>(null);
+  const measureRef = useRef<HTMLDivElement>(null);
+  const probeRef = useRef<HTMLDivElement>(null);
+  const lastSectionRef = useRef(0);
+  const navigateRef = useRef<(index: number) => void>(() => {});
+
+  // same-session visitors and reduced-motion users get an already-open notebook
+  const coverState = coverOpen === "closed" && (visitedAtLoad || reduced) ? "open" : coverOpen;
+  const coverIsOpen = coverState !== "closed";
+
+  const pages = useMemo(() => buildPages(counts ?? sections.map(() => 1)), [counts, sections]);
+
+  const sectionStart = useMemo(() => {
+    const starts: number[] = [];
+    pages.forEach((p, i) => {
+      if (p.type === "content" && p.col === 0) starts[p.section] = i;
+    });
+    return starts;
+  }, [pages]);
+
+  const sectionOfPage = useCallback(
+    (index: number): number | null => {
+      const p = pages[index];
+      if (p?.type === "content") return p.section;
+      return null;
+    },
     [pages],
   );
 
-  const rightShown = flip?.dir === "back" && flip.holdRight !== null ? flip.holdRight : current;
-  const leftShown = flip?.dir === "fwd" ? flip.holdLeft : leftFor(current);
+  /** section shown at a position: the right page's section, else the left's */
+  const activeSection = pos === 0 ? -1 : (sectionOfPage(pos) ?? sectionOfPage(pos - 1) ?? 0);
 
+  const isFiller = useCallback(
+    (index: number) => {
+      const t = pages[index]?.type;
+      return t === "blank" || t === "end";
+    },
+    [pages],
+  );
+
+  const stepReal = useCallback(
+    (from: number, dir: 1 | -1) => {
+      let i = from + dir;
+      while (i >= 0 && i < pages.length && isFiller(i)) i += dir;
+      return i >= 0 && i < pages.length ? i : null;
+    },
+    [pages.length, isFiller],
+  );
+
+  const lastRight = pages.length % 2 === 0 ? pages.length - 1 : pages.length - 2;
+
+  // ---------- page-size measurement ----------
+  useEffect(() => {
+    const probe = probeRef.current;
+    if (!probe) return undefined;
+    const compute = () => {
+      const cs = getComputedStyle(probe);
+      const line = parseFloat(cs.lineHeight) || 30;
+      const colw =
+        probe.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+      const raw =
+        probe.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+      const colh = Math.max(line * 4, Math.floor(raw / line) * line);
+      if (colw > 50 && colh > 50) {
+        setMetrics((prev) =>
+          prev && Math.abs(prev.colw - colw) < 1 && Math.abs(prev.colh - colh) < 1
+            ? prev
+            : { colw, colh },
+        );
+      }
+    };
+    const ro = new ResizeObserver(compute);
+    ro.observe(probe);
+    return () => ro.disconnect();
+  }, []);
+
+  useEffect(() => {
+    let alive = true;
+    void document.fonts?.ready?.then(() => {
+      if (alive) setFontsReady(true);
+    });
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  // count how many page-columns each section needs at the current size
+  useEffect(() => {
+    const measurer = measureRef.current;
+    if (!metrics || !measurer) return;
+    const next: number[] = [];
+    measurer.querySelectorAll<HTMLElement>(".nb-measure-flow").forEach((flow) => {
+      const n = Math.max(1, Math.round((flow.scrollWidth + COL_GAP) / (metrics.colw + COL_GAP)));
+      next.push(n);
+    });
+     
+    setCounts((prev) => (prev && prev.length === next.length && prev.every((v, i) => v === next[i]) ? prev : next));
+  }, [metrics, fontsReady, sections]);
+
+  // when pagination changes, stay on the section the reader was in
+  useEffect(() => {
+    if (!counts) return;
+    const section = lastSectionRef.current;
+     
+    setPos((p) => {
+      if (p === 0) return p;
+      const target = sectionStart[section] ?? 1;
+      return sectionOfPage(p) === section ? p : target;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [counts]);
+
+  // ---------- storage / cover ----------
   const markVisitedStorage = useCallback(() => {
     try {
       sessionStorage.setItem("nb-open", "1");
@@ -136,24 +228,37 @@ export default function Notebook() {
   const openCover = useCallback(() => {
     setCoverOpen((state) => {
       if (state !== "closed") return state;
-      playFlip();
       markVisitedStorage();
       return reduced ? "open" : "opening";
     });
-  }, [playFlip, markVisitedStorage, reduced]);
+  }, [markVisitedStorage, reduced]);
 
+  // ---------- navigation ----------
   const navigate = useCallback(
     (index: number) => {
       if (index < 0 || index >= pages.length) return;
-      if (index === 0 && isDesktop()) return;
-      const writeHash = () =>
-        window.history.replaceState(null, "", `#${pages[index]?.id ?? ""}`);
+      const desktop = isDesktop();
+      if (desktop && index === 0) return;
+      if (desktop && index % 2 === 0) index += 1;
+      if (!desktop && isFiller(index)) {
+        const real = stepReal(index, index > pos ? 1 : -1);
+        if (real === null) return;
+        index = real;
+      }
+      const section = sectionOfPage(index) ?? sectionOfPage(index - 1);
+      const writeHash = () => {
+        const id = index === 0 ? "hello" : section !== null ? sections[section]?.id : undefined;
+        if (id) window.history.replaceState(null, "", `#${id}`);
+      };
       if (coverState === "closed") {
         openCover();
-        if (index !== current) {
-          setCurrent(index);
-          setVisited((prev) => new Set(prev).add(index));
+        if (index !== pos) {
+          setPos(index);
           writeHash();
+        }
+        if (section !== null) {
+          lastSectionRef.current = section;
+          setVisited((prev) => new Set(prev).add(section));
         }
         return;
       }
@@ -161,28 +266,43 @@ export default function Notebook() {
         pendingRef.current = index;
         return;
       }
-      if (index === current) return;
+      if (index === pos) return;
       writeHash();
-
-      const dir: Flip["dir"] = index > current ? "fwd" : "back";
-      setVisited((prev) => new Set(prev).add(index));
-      playFlip();
+      if (section !== null) {
+        lastSectionRef.current = section;
+        setVisited((prev) => new Set(prev).add(section));
+      }
 
       if (reduced) {
-        setCurrent(index);
+        setPos(index);
         return;
       }
 
+      const dir: Flip["dir"] = index > pos ? "fwd" : "back";
       flipCount.current += 1;
-      const backIdx = isDesktop() ? leftFor(dir === "fwd" ? index : current) : null;
+      const blank: PageDef = { type: "blank" };
       if (dir === "fwd") {
-        setFlip({ dir, frontIdx: current, backIdx, holdLeft: leftFor(current), holdRight: null, key: flipCount.current });
+        setFlip({
+          dir,
+          front: pages[pos] ?? blank,
+          back: desktop ? (pages[index - 1] ?? blank) : null,
+          holdLeft: desktop ? pos - 1 : null,
+          holdRight: null,
+          key: flipCount.current,
+        });
       } else {
-        setFlip({ dir, frontIdx: index, backIdx, holdLeft: null, holdRight: current, key: flipCount.current });
+        setFlip({
+          dir,
+          front: pages[index] ?? blank,
+          back: desktop ? (pages[pos - 1] ?? blank) : null,
+          holdLeft: null,
+          holdRight: pos,
+          key: flipCount.current,
+        });
       }
-      setCurrent(index);
+      setPos(index);
     },
-    [pages, coverState, flip, current, reduced, openCover, playFlip],
+    [pages, pos, flip, coverState, reduced, openCover, sectionOfPage, sections, isFiller, stepReal],
   );
 
   useEffect(() => {
@@ -193,7 +313,6 @@ export default function Notebook() {
     setFlip(null);
   }, []);
 
-  // run a queued navigation once the current flip has finished
   useEffect(() => {
     if (!flip && pendingRef.current !== null) {
       const next = pendingRef.current;
@@ -202,15 +321,37 @@ export default function Notebook() {
     }
   }, [flip, navigate]);
 
+  const stepNext = useCallback(() => {
+    if (isDesktop()) {
+      if (pos + 2 <= lastRight) navigateRef.current(pos + 2);
+    } else {
+      const next = stepReal(pos, 1);
+      if (next !== null) navigateRef.current(next);
+    }
+  }, [pos, lastRight, stepReal]);
+
+  const stepPrev = useCallback(() => {
+    if (isDesktop()) {
+      if (pos - 2 >= 1) navigateRef.current(pos - 2);
+    } else {
+      const prev = stepReal(pos, -1);
+      if (prev !== null) navigateRef.current(prev);
+    }
+  }, [pos, stepReal]);
+
   // first mount: resolve deep links, then schedule the cover auto-open
   useEffect(() => {
     const hash = window.location.hash.replace(/^#/, "");
     if (hash) {
-      const index = pages.findIndex((p) => p.id === hash);
-      if (index >= 0 && !(index === 0 && isDesktop())) {
+      const sec = sections.findIndex((s) => s.id === hash);
+      const target = hash === "hello" ? (isDesktop() ? 1 : 0) : sec >= 0 ? sectionStart[sec] : undefined;
+      if (target !== undefined && target !== pos) {
         // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time sync from the URL hash
-        setCurrent(index);
-        setVisited((prev) => new Set(prev).add(index));
+        setPos(target);
+        if (sec >= 0) {
+          lastSectionRef.current = sec;
+          setVisited((prev) => new Set(prev).add(sec));
+        }
       }
     }
 
@@ -222,7 +363,6 @@ export default function Notebook() {
     const timer = window.setTimeout(() => {
       setCoverOpen((state) => {
         if (state !== "closed") return state;
-        playFlip();
         markVisitedStorage();
         return "opening";
       });
@@ -231,7 +371,7 @@ export default function Notebook() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // safety net: if the transitionend event is lost (e.g. hidden tab), settle the cover anyway
+  // safety net: if the transitionend event is lost, settle the cover anyway
   useEffect(() => {
     if (coverOpen !== "opening") return undefined;
     const timer = window.setTimeout(() => {
@@ -240,16 +380,18 @@ export default function Notebook() {
     return () => window.clearTimeout(timer);
   }, [coverOpen]);
 
-  // growing from mobile to the two-page spread: the "Me" sheet becomes the
-  // inside cover, so land on About instead of showing the identity twice
+  // growing to the two-page spread: land on a right page, never on "Me"
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 1024px)");
     const onChange = () => {
       if (!mq.matches) return;
-      setCurrent((c) => {
-        if (c !== 0) return c;
-        window.history.replaceState(null, "", "#about");
-        return 1;
+      setPos((p) => {
+        if (p === 0) {
+          window.history.replaceState(null, "", "#about");
+          lastSectionRef.current = 0;
+          return 1;
+        }
+        return p % 2 === 0 ? p + 1 : p;
       });
     };
     mq.addEventListener("change", onChange);
@@ -262,15 +404,12 @@ export default function Notebook() {
       if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.altKey) return;
       const target = e.target as HTMLElement | null;
       if (typeof target?.closest === "function" && target.closest("input, textarea, select, [contenteditable=true]")) return;
-      if (e.key === "ArrowRight") {
-        navigateRef.current(Math.min(current + 1, pages.length - 1));
-      } else if (e.key === "ArrowLeft") {
-        navigateRef.current(Math.max(current - 1, isDesktop() ? 1 : 0));
-      }
+      if (e.key === "ArrowRight") stepNext();
+      else if (e.key === "ArrowLeft") stepPrev();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [current, pages.length]);
+  }, [stepNext, stepPrev]);
 
   // Ctrl/Cmd+P and window.print produce the classic printable PDF
   useEffect(() => {
@@ -278,8 +417,7 @@ export default function Notebook() {
       try {
         generateResumePDFForPrint(resumeData);
       } catch (error) {
-        console.error("Error printing PDF:", error);
-      }
+        console.error("Error printing PDF:", error);      }
     };
     const onBeforePrint = (e: Event) => {
       e.preventDefault();
@@ -310,8 +448,8 @@ export default function Notebook() {
     const dy = e.clientY - swipeRef.current.y;
     swipeRef.current = null;
     if (Math.abs(dx) > 64 && Math.abs(dx) > Math.abs(dy) * 2) {
-      if (dx < 0) navigate(Math.min(current + 1, pages.length - 1));
-      else navigate(Math.max(current - 1, isDesktop() ? 1 : 0));
+      if (dx < 0) stepNext();
+      else stepPrev();
     }
   };
 
@@ -320,15 +458,70 @@ export default function Notebook() {
     setCoverOpen((state) => (state === "opening" ? "open" : state));
   };
 
-  const coverIsOpen = coverState !== "closed";
-  const leafFront = flip ? pages[flip.frontIdx] : null;
+  // ---------- derived render state ----------
+  const rightShown = flip?.dir === "back" && flip.holdRight !== null ? flip.holdRight : pos;
+  const leftShown = flip?.dir === "fwd" && flip.holdLeft !== null ? flip.holdLeft : pos - 1;
+  const leftPage = leftShown >= 1 ? pages[leftShown] : null;
+
+  const toc: TocItem[] = useMemo(
+    () => sections.map((s, i) => ({ id: s.id, label: tocLabel(s.id), index: i })),
+    [sections],
+  );
+
+  const identity = useCallback(
+    () => (
+      <IdentityPage
+        personalInfo={resumeData.personalInfo}
+        toc={toc}
+        current={activeSection}
+        visited={visited}
+        onNavigate={(sectionIdx) => {
+          const target = sectionStart[sectionIdx];
+          if (target !== undefined) navigateRef.current(target);
+        }}
+      />
+    ),
+    [toc, activeSection, visited, sectionStart],
+  );
+
+  const tabs: TabDef[] = useMemo(() => {
+    const list: TabDef[] = [{ id: "hello", tab: "Me", color: "#d4a373", index: 0 }];
+    sections.forEach((s, i) => {
+      const start = sectionStart[i];
+      if (start !== undefined) list.push({ id: s.id, tab: s.tab, color: s.color, index: start });
+    });
+    return list;
+  }, [sections, sectionStart]);
+
+  const selectedPos = pos === 0 ? 0 : (sectionStart[activeSection] ?? pos);
+
+  const colStyle = (col: number) =>
+    ({
+      "--nb-col": col,
+      ...(metrics ? { "--nb-colw": `${metrics.colw}px`, "--nb-colh": `${metrics.colh}px` } : {}),
+    }) as React.CSSProperties;
+
+  const renderContentInner = (page: Extract<PageDef, { type: "content" }>) => (
+    <div className="nb-sheet-inner nb-pageview">
+      <div className="nb-colflow" style={colStyle(page.col)}>
+        {sections[page.section]?.render()}
+      </div>
+    </div>
+  );
+
+  const pageNumber = (index: number, page: PageDef) =>
+    page.type === "end" ? (
+      <span className="nb-verso-num">· the end ·</span>
+    ) : page.type === "me" ? null : (
+      <span className="nb-verso-num">· {index} ·</span>
+    );
 
   return (
     <div className="nb-scene">
       <div className="nb-lampglow" aria-hidden="true" />
 
       <div className="nb-stagewrap">
-        <BookmarkTabs variant="mobile" tabs={tabs} current={current} onSelect={(i) => { playTap(); navigate(i); }} />
+        <BookmarkTabs variant="mobile" tabs={tabs} current={selectedPos} onSelect={(i) => navigate(i)} />
 
         <div
           className="nb-book"
@@ -339,27 +532,25 @@ export default function Notebook() {
         >
           <div className="nb-bookback" aria-hidden="true" />
 
-          <BookmarkTabs
-            variant="desktop"
-            tabs={tabs.slice(1)}
-            current={current}
-            onSelect={(i) => { playTap(); navigate(i); }}
-          />
+          <BookmarkTabs variant="desktop" tabs={tabs.slice(1)} current={selectedPos} onSelect={(i) => navigate(i)} />
 
           <div className="nb-spread">
             <div className="nb-half nb-half--left">
-              {/* blank back of the last turned sheet, atop the pile of turned pages */}
-              {leftShown !== null && (
+              {leftPage && (
                 <div className="nb-leftpage">
                   <div className="nb-stack-l" aria-hidden="true" />
-                  <div className="nb-sheet nb-sheet--left">
-                    <div className="nb-sheet-inner" />
-                    <span className="nb-verso-num">· {leftShown} ·</span>
+                  <div className="nb-sheet nb-sheet--left nb-static">
+                    {leftPage.type === "content" ? (
+                      renderContentInner(leftPage)
+                    ) : (
+                      <div className="nb-sheet-inner" />
+                    )}
+                    {pageNumber(leftShown, leftPage)}
                   </div>
                   <button
                     type="button"
                     className="nb-corner nb-corner--prev hidden lg:block"
-                    onClick={() => navigate(current - 1)}
+                    onClick={stepPrev}
                     aria-label="Turn back a page"
                   />
                 </div>
@@ -369,46 +560,55 @@ export default function Notebook() {
             <div className="nb-half nb-half--right">
               <div className="nb-stack-r" aria-hidden="true" />
 
-              {pages.map((page, i) => (
-                <div
-                  key={page.id}
-                  id={`nb-panel-${page.id}`}
-                  role="tabpanel"
-                  aria-labelledby={`nb-tabd-${page.id}`}
-                  className="nb-sheetwrap"
-                  data-active={i === rightShown ? "true" : "false"}
-                  suppressHydrationWarning
-                >
-                  <div className="nb-sheet nb-sheet--right">
-                    <div
-                      className="nb-sheet-inner"
-                      tabIndex={i === rightShown ? 0 : -1}
-                      aria-label={page.tab}
-                    >
-                      {page.render()}
+              {/* invisible page-sized probe: the source of column metrics */}
+              <div ref={probeRef} className="nb-sheet-inner nb-probe" aria-hidden="true" />
+
+              {pages.map((page, i) => {
+                if (page.type === "blank") return null;
+                const startOfSection = page.type === "content" && page.col === 0;
+                const sectionDef = page.type === "content" ? sections[page.section] : undefined;
+                return (
+                  <div
+                    key={page.type === "content" ? `c-${page.section}-${page.col}` : `${page.type}-${i}`}
+                    {...(startOfSection && sectionDef ? { id: `nb-panel-${sectionDef.id}`, role: "tabpanel", "aria-labelledby": `nb-tabd-${sectionDef.id}` } : {})}
+                    className="nb-sheetwrap"
+                    data-active={i === rightShown ? "true" : "false"}
+                    suppressHydrationWarning
+                  >
+                    <div className="nb-sheet nb-sheet--right">
+                      {page.type === "me" ? (
+                        <div className="nb-sheet-inner" tabIndex={i === rightShown ? 0 : -1} aria-label="Me">
+                          {identity()}
+                        </div>
+                      ) : page.type === "content" ? (
+                        renderContentInner(page)
+                      ) : (
+                        <div className="nb-sheet-inner" />
+                      )}
+                      {pageNumber(i, page)}
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
 
-              {current < pages.length - 1 && (
+              {pos + 2 <= lastRight || (!isFiller(pos) && stepReal(pos, 1) !== null) ? (
                 <button
                   type="button"
                   className="nb-corner nb-corner--next"
-                  onClick={() => navigate(current + 1)}
+                  onClick={stepNext}
                   aria-label="Turn to the next page"
                 />
-              )}
-              {current > 0 && (
+              ) : null}
+              {pos > 0 && (
                 <button
                   type="button"
                   className="nb-corner nb-corner--prev lg:hidden"
-                  onClick={() => navigate(current - 1)}
+                  onClick={stepPrev}
                   aria-label="Turn back a page"
                 />
               )}
 
-              {flip && leafFront && (
+              {flip && (
                 <React.Fragment key={flip.key}>
                   <motion.div
                     className="nb-castshadow"
@@ -424,7 +624,13 @@ export default function Notebook() {
                     onAnimationComplete={onFlipDone}
                   >
                     <div className="nb-leaf-face nb-static" aria-hidden="true">
-                      <div className="nb-sheet-inner">{leafFront.render()}</div>
+                      {flip.front.type === "content" ? (
+                        renderContentInner(flip.front)
+                      ) : flip.front.type === "me" ? (
+                        <div className="nb-sheet-inner">{identity()}</div>
+                      ) : (
+                        <div className="nb-sheet-inner" />
+                      )}
                       <motion.div
                         className="nb-leaf-shadow"
                         initial={{ opacity: flip.dir === "fwd" ? 0 : 0.3 }}
@@ -433,8 +639,11 @@ export default function Notebook() {
                       />
                     </div>
                     <div className="nb-leaf-face nb-leaf-face--back nb-static" aria-hidden="true">
-                      <div className="nb-sheet-inner" />
-                      {flip.backIdx !== null && <span className="nb-verso-num">· {flip.backIdx} ·</span>}
+                      {flip.back && flip.back.type === "content" ? (
+                        renderContentInner(flip.back)
+                      ) : (
+                        <div className="nb-sheet-inner" />
+                      )}
                     </div>
                   </motion.div>
                 </React.Fragment>
@@ -444,7 +653,7 @@ export default function Notebook() {
 
           <div className="nb-gutter" aria-hidden="true" />
 
-          {/* the cover: its inside face is the identity page the rest of the notebook stacks onto */}
+          {/* the cover: its inside face is the identity page the pages stack onto */}
           <div
             className={`nb-coverleaf ${coverIsOpen ? "nb-coverleaf--open" : ""} ${
               coverState === "open" ? "nb-coverleaf--settled nb-coverleaf--done-mobile" : ""
@@ -455,26 +664,49 @@ export default function Notebook() {
             <div inert={coverIsOpen}>
               <CoverFront personalInfo={resumeData.personalInfo} onOpen={openCover} />
             </div>
-            <div className="nb-cover-back" inert={!coverIsOpen || leftShown !== null}>
+            <div className="nb-cover-back" inert={!coverIsOpen || leftPage !== null}>
               <div className="nb-sheet-inner">{identity()}</div>
             </div>
+          </div>
+
+          {/* hidden measuring rig: how many page-columns does each section need? */}
+          <div ref={measureRef} className="nb-measure" aria-hidden="true" inert>
+            {metrics &&
+              sections.map((s) => (
+                <div
+                  key={s.id}
+                  className="nb-measure-flow"
+                  style={{ "--nb-colw": `${metrics.colw}px`, "--nb-colh": `${metrics.colh}px` } as React.CSSProperties}
+                >
+                  {s.render()}
+                </div>
+              ))}
           </div>
         </div>
       </div>
 
       <div className="nb-ctl">
-        <button
-          type="button"
-          className="nb-ctl-btn"
-          onClick={toggleSound}
-          aria-pressed={soundOn}
-          aria-label={soundOn ? "Mute paper sounds" : "Enable paper sounds"}
-          title={soundOn ? "Sounds on" : "Sounds off"}
-        >
-          <SpeakerDoodle on={soundOn} size={24} />
-        </button>
         <LampToggle />
       </div>
     </div>
   );
+}
+
+function tocLabel(id: string): string {
+  switch (id) {
+    case "about":
+      return "About me";
+    case "wins":
+      return "Things I'm proud of";
+    case "skills":
+      return "Toolbox";
+    case "work":
+      return "Where I've worked";
+    case "projects":
+      return "Notable projects";
+    case "school":
+      return "School days";
+    default:
+      return "Say hi";
+  }
 }

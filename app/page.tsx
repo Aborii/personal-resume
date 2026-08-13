@@ -18,9 +18,11 @@ export default function Resume() {
           .nb-sheet-inner{position:static!important;overflow:visible!important}
           .nb-coverleaf,.nb-tabs-d,.nb-tabs-m,.nb-ctl,.nb-gutter,.nb-stack-l,.nb-stack-r{display:none!important}
           .nb-bookback{display:none!important}
-          .nb-entry{opacity:1!important;transform:none!important;animation:none!important}
           .nb-draw{stroke-dashoffset:0!important;animation:none!important}
           .nb-hl{background-size:100% 82%!important;animation:none!important}
+          .nb-colflow{columns:auto!important;height:auto!important;width:auto!important;transform:none!important}
+          .nb-pageview{overflow:visible!important}
+          .nb-measure,.nb-probe,.nb-corner{display:none!important}
         `}</style>
       </noscript>
       <Notebook />

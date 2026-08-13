@@ -12,34 +12,44 @@ function splitAchievement(text: string): { head: string | null; body: string } {
   return { head: null, body: text };
 }
 
+function chunkPairs<T>(items: T[]): T[][] {
+  const rows: T[][] = [];
+  for (let i = 0; i < items.length; i += 2) rows.push(items.slice(i, i + 2));
+  return rows;
+}
+
 export default function AchievementsPage({ achievements }: { achievements: string[] }) {
+  const rows = chunkPairs(achievements.map((text, i) => ({ text, i })));
+
   return (
     <>
       <SectionTitle note="fresh off the sticky pad">Things I&apos;m proud of</SectionTitle>
 
-      <div className="columns-1 gap-5 sm:columns-2">
-        {achievements.map((achievement, i) => {
-          const { head, body } = splitAchievement(achievement);
-          return (
-            <div key={i} className="mb-5 break-inside-avoid">
-              <StickyNote
-                color={COLORS[i % COLORS.length] ?? "yellow"}
-                rotate={ROTATIONS[i % ROTATIONS.length] ?? -2}
-                attach={i % 2 === 0 ? "pin" : "tape"}
-              >
-                {head && (
-                  <p className="nb-hand mb-1 text-[19px] font-bold leading-[22px]">
-                    <NotebookText>{head}</NotebookText>
+      {rows.map((row, r) => (
+        <div key={r} className="nb-nosplit mb-5 flex flex-wrap items-start gap-5">
+          {row.map(({ text, i }) => {
+            const { head, body } = splitAchievement(text);
+            return (
+              <div key={i} className="min-w-[220px] flex-1">
+                <StickyNote
+                  color={COLORS[i % COLORS.length] ?? "yellow"}
+                  rotate={ROTATIONS[i % ROTATIONS.length] ?? -2}
+                  attach={i % 2 === 0 ? "pin" : "tape"}
+                >
+                  {head && (
+                    <p className="nb-hand mb-1 text-[19px] font-bold leading-[22px]">
+                      <NotebookText>{head}</NotebookText>
+                    </p>
+                  )}
+                  <p className="text-[14.5px] leading-[21px]">
+                    <NotebookText>{body}</NotebookText>
                   </p>
-                )}
-                <p className="text-[14.5px] leading-[21px]">
-                  <NotebookText>{body}</NotebookText>
-                </p>
-              </StickyNote>
-            </div>
-          );
-        })}
-      </div>
+                </StickyNote>
+              </div>
+            );
+          })}
+        </div>
+      ))}
     </>
   );
 }

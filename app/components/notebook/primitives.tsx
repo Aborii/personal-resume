@@ -135,7 +135,7 @@ export function SectionTitle({
   className?: string;
 }) {
   return (
-    <div className={cn("mb-[var(--nb-line)] flex flex-wrap items-baseline justify-between gap-x-3", className)}>
+    <div className={cn("nb-nosplit mb-[var(--nb-line)] flex flex-wrap items-baseline justify-between gap-x-3", className)}>
       <h2 className="nb-h2 relative">
         {children}
         <SketchUnderline className="absolute -bottom-[6px] left-0 h-[11px] w-[calc(100%_+_16px)] text-[var(--nb-ink-soft)]" />
