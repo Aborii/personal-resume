@@ -27,35 +27,35 @@ export default function ContactPage({ personalInfo }: { personalInfo: ResumeData
       <div className="relative">
         <PaperPlaneDoodle className="absolute -top-3 right-0 h-auto w-[72px] text-[var(--nb-ink-soft)] sm:w-[110px]" size={110} />
 
-        <p className="nb-hand nb-entry max-w-[420px] text-[34px] font-bold leading-[38px]" style={{ "--en-i": 0 } as React.CSSProperties}>
+        <p className="nb-hand max-w-[420px] text-[32px] font-bold leading-[var(--nb-line)]">
           Let&apos;s <Hl color="y">build something</Hl>.
         </p>
 
-        <p className="nb-entry mt-[var(--nb-line)] max-w-[430px] text-[16.5px]" style={{ "--en-i": 1 } as React.CSSProperties}>
+        <p className="mt-[var(--nb-line)] max-w-[430px] text-[16.5px]">
           The notebook is full, but I&apos;m just getting started. If you have a role, a project, or a hard
           problem with real-time data — write to me.
         </p>
 
-        <div className="nb-entry mt-[var(--nb-line)] space-y-2" style={{ "--en-i": 2 } as React.CSSProperties}>
-          <p className="flex items-center gap-3">
+        <div className="mt-[var(--nb-line)]">
+          <p className="flex items-center gap-3 leading-[var(--nb-line)]">
             <MailDoodle className="shrink-0 text-[var(--nb-ink-soft)]" size={20} />
             <InkLink href={`mailto:${personalInfo.email}`} external={false} className="nb-hand text-[22px] font-bold">
               {personalInfo.email}
             </InkLink>
           </p>
-          <p className="flex items-center gap-3">
+          <p className="flex items-center gap-3 leading-[var(--nb-line)]">
             <PhoneDoodle className="shrink-0 text-[var(--nb-ink-soft)]" size={20} />
             <InkLink href={`tel:${personalInfo.phone.replace(/\s+/g, "")}`} external={false} className="text-[16.5px]">
               {personalInfo.phone}
             </InkLink>
           </p>
-          <p className="flex items-center gap-3 text-[15.5px] text-[var(--nb-ink-soft)]">
+          <p className="flex items-center gap-3 text-[15.5px] leading-[var(--nb-line)] text-[var(--nb-ink-soft)]">
             <MapPinDoodle className="shrink-0" size={20} />
             {personalInfo.location}
           </p>
         </div>
 
-        <div className="nb-entry mt-[var(--nb-line)] flex flex-wrap gap-x-7 gap-y-2" style={{ "--en-i": 3 } as React.CSSProperties}>
+        <div className="mt-[var(--nb-line)] flex flex-wrap gap-x-7 leading-[var(--nb-line)]">
           <span className="flex items-center gap-2">
             <GithubDoodle className="text-[var(--nb-ink-soft)]" size={20} />
             <InkLink href={personalInfo.links.github}>{githubHandle}</InkLink>
@@ -70,23 +70,23 @@ export default function ContactPage({ personalInfo }: { personalInfo: ResumeData
           </span>
         </div>
 
-        <p className="nb-mono nb-entry mt-[calc(var(--nb-line)*1.2)] text-[var(--nb-ink-soft)]" style={{ "--en-i": 4 } as React.CSSProperties}>
+        <p className="nb-mono mt-[var(--nb-line)] leading-[var(--nb-line)] text-[var(--nb-ink-soft)]">
           $ npx hire-abdullah
           <span className="nb-caret" aria-hidden="true" />
           <br />
           <span className="opacity-60"># usually replies within a day</span>
         </p>
 
-        <div className="nb-entry mt-[var(--nb-line)]" style={{ "--en-i": 5 } as React.CSSProperties}>
+        <div className="mt-[var(--nb-line)]">
           <DownloadScrap />
         </div>
 
-        <div className="nb-entry mt-[calc(var(--nb-line)*1.2)]" style={{ "--en-i": 6 } as React.CSSProperties}>
+        <div className="mt-[var(--nb-line)]">
           <SigFlourish className="text-[var(--nb-ink-soft)]" />
-          <p className="nb-hand -mt-1 text-[19px]">— Abdullah</p>
+          <p className="nb-hand -mt-1 text-[19px] leading-[var(--nb-line)]">— Abdullah</p>
         </div>
 
-        <p className="mt-[var(--nb-line)] text-center text-[13.5px] leading-[20px] text-[var(--nb-ink-faint)]">
+        <p className="mt-[var(--nb-line)] text-center text-[13.5px] leading-[var(--nb-line)] text-[var(--nb-ink-faint)]">
           © {year} {personalInfo.name} — building the future, one line of code at a time.
         </p>
       </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import resumeData from "../../../data/resumeData.json";
 import { generateResumePDFForPrint } from "../../utils/pdfGenerator";
@@ -47,14 +47,29 @@ function isDesktop() {
   return typeof window !== "undefined" && window.matchMedia("(min-width: 1024px)").matches;
 }
 
+const emptySubscribe = () => () => {};
+
+/** hydration-safe read of the pre-paint "seen this session" marker */
+function useVisitedAtLoad() {
+  return useSyncExternalStore(
+    emptySubscribe,
+    () => document.documentElement.hasAttribute("data-nb-visited"),
+    () => false,
+  );
+}
+
 export default function Notebook() {
   const reduced = useReducedMotion();
+  const visitedAtLoad = useVisitedAtLoad();
   const { enabled: soundOn, toggle: toggleSound, playFlip, playTap } = useNotebookSounds();
 
   const [current, setCurrent] = useState(1);
   const [flip, setFlip] = useState<Flip | null>(null);
   const [coverOpen, setCoverOpen] = useState<"closed" | "opening" | "open">("closed");
   const [visited, setVisited] = useState<ReadonlySet<number>>(() => new Set([1]));
+
+  // same-session visitors and reduced-motion users get an already-open notebook
+  const coverState = coverOpen === "closed" && (visitedAtLoad || reduced) ? "open" : coverOpen;
 
   const pendingRef = useRef<number | null>(null);
   const flipCount = useRef(0);
@@ -131,11 +146,14 @@ export default function Notebook() {
     (index: number) => {
       if (index < 0 || index >= pages.length) return;
       if (index === 0 && isDesktop()) return;
-      if (coverOpen === "closed") {
+      const writeHash = () =>
+        window.history.replaceState(null, "", `#${pages[index]?.id ?? ""}`);
+      if (coverState === "closed") {
         openCover();
         if (index !== current) {
           setCurrent(index);
           setVisited((prev) => new Set(prev).add(index));
+          writeHash();
         }
         return;
       }
@@ -144,6 +162,7 @@ export default function Notebook() {
         return;
       }
       if (index === current) return;
+      writeHash();
 
       const dir: Flip["dir"] = index > current ? "fwd" : "back";
       setVisited((prev) => new Set(prev).add(index));
@@ -163,7 +182,7 @@ export default function Notebook() {
       }
       setCurrent(index);
     },
-    [pages.length, coverOpen, flip, current, reduced, openCover, playFlip],
+    [pages, coverState, flip, current, reduced, openCover, playFlip],
   );
 
   useEffect(() => {
@@ -183,35 +202,32 @@ export default function Notebook() {
     }
   }, [flip, navigate]);
 
-  // first mount: returning visitors get an open notebook, deep links resolve
+  // first mount: resolve deep links, then schedule the cover auto-open
   useEffect(() => {
-    const alreadyVisited = document.documentElement.hasAttribute("data-nb-visited");
-    if (alreadyVisited || reduced) {
-      setCoverOpen("open");
-      if (reduced) markVisitedStorage();
-    }
-
     const hash = window.location.hash.replace(/^#/, "");
     if (hash) {
       const index = pages.findIndex((p) => p.id === hash);
       if (index >= 0 && !(index === 0 && isDesktop())) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time sync from the URL hash
         setCurrent(index);
         setVisited((prev) => new Set(prev).add(index));
       }
     }
 
-    if (!alreadyVisited && !reduced) {
-      const timer = window.setTimeout(() => {
-        setCoverOpen((state) => {
-          if (state !== "closed") return state;
-          playFlip();
-          markVisitedStorage();
-          return "opening";
-        });
-      }, 1200);
-      return () => window.clearTimeout(timer);
+    if (visitedAtLoad) return undefined;
+    if (reduced) {
+      markVisitedStorage();
+      return undefined;
     }
-    return undefined;
+    const timer = window.setTimeout(() => {
+      setCoverOpen((state) => {
+        if (state !== "closed") return state;
+        playFlip();
+        markVisitedStorage();
+        return "opening";
+      });
+    }, 1200);
+    return () => window.clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -223,14 +239,6 @@ export default function Notebook() {
     }, 1500);
     return () => window.clearTimeout(timer);
   }, [coverOpen]);
-
-  // keep the URL hash in sync for shareable deep links
-  useEffect(() => {
-    const id = pages[current]?.id;
-    if (!id) return;
-    if (!window.location.hash && current === 1) return;
-    window.history.replaceState(null, "", `#${id}`);
-  }, [current, pages]);
 
   // arrow-key page turns
   useEffect(() => {
@@ -296,10 +304,8 @@ export default function Notebook() {
     setCoverOpen((state) => (state === "opening" ? "open" : state));
   };
 
-  const coverIsOpen = coverOpen !== "closed";
+  const coverIsOpen = coverState !== "closed";
   const leafFront = flip ? pages[flip.frontIdx] : null;
-  const leafBack = flip && flip.backIdx !== null ? pages[flip.backIdx] : null;
-  const leftPage = leftShown !== null ? pages[leftShown] : null;
 
   return (
     <div className="nb-scene">
@@ -326,13 +332,20 @@ export default function Notebook() {
 
           <div className="nb-spread">
             <div className="nb-half nb-half--left">
-              {/* previous section, lying open on the left, atop the pile of turned pages */}
-              {leftPage && (
-                <div className="nb-leftpage nb-static">
+              {/* blank back of the last turned sheet, atop the pile of turned pages */}
+              {leftShown !== null && (
+                <div className="nb-leftpage">
                   <div className="nb-stack-l" aria-hidden="true" />
                   <div className="nb-sheet nb-sheet--left">
-                    <div className="nb-sheet-inner">{leftPage.render()}</div>
+                    <div className="nb-sheet-inner" />
+                    <span className="nb-verso-num">· {leftShown} ·</span>
                   </div>
+                  <button
+                    type="button"
+                    className="nb-corner nb-corner--prev hidden lg:block"
+                    onClick={() => navigate(current - 1)}
+                    aria-label="Turn back a page"
+                  />
                 </div>
               )}
             </div>
@@ -358,10 +371,26 @@ export default function Notebook() {
                     >
                       {page.render()}
                     </div>
-                    <div className="nb-dogear" aria-hidden="true" />
                   </div>
                 </div>
               ))}
+
+              {current < pages.length - 1 && (
+                <button
+                  type="button"
+                  className="nb-corner nb-corner--next"
+                  onClick={() => navigate(current + 1)}
+                  aria-label="Turn to the next page"
+                />
+              )}
+              {current > 0 && (
+                <button
+                  type="button"
+                  className="nb-corner nb-corner--prev lg:hidden"
+                  onClick={() => navigate(current - 1)}
+                  aria-label="Turn back a page"
+                />
+              )}
 
               {flip && leafFront && (
                 <React.Fragment key={flip.key}>
@@ -388,7 +417,8 @@ export default function Notebook() {
                       />
                     </div>
                     <div className="nb-leaf-face nb-leaf-face--back nb-static" aria-hidden="true">
-                      {leafBack && <div className="nb-sheet-inner">{leafBack.render()}</div>}
+                      <div className="nb-sheet-inner" />
+                      {flip.backIdx !== null && <span className="nb-verso-num">· {flip.backIdx} ·</span>}
                     </div>
                   </motion.div>
                 </React.Fragment>
@@ -401,7 +431,7 @@ export default function Notebook() {
           {/* the cover: its inside face is the identity page the rest of the notebook stacks onto */}
           <div
             className={`nb-coverleaf ${coverIsOpen ? "nb-coverleaf--open" : ""} ${
-              coverOpen === "open" ? "nb-coverleaf--settled nb-coverleaf--done-mobile" : ""
+              coverState === "open" ? "nb-coverleaf--settled nb-coverleaf--done-mobile" : ""
             }`}
             suppressHydrationWarning
             onTransitionEnd={onCoverTransitionEnd}

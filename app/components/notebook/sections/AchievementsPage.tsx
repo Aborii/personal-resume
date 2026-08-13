@@ -21,11 +21,7 @@ export default function AchievementsPage({ achievements }: { achievements: strin
         {achievements.map((achievement, i) => {
           const { head, body } = splitAchievement(achievement);
           return (
-            <div
-              key={i}
-              className="nb-entry mb-5 break-inside-avoid"
-              style={{ "--en-i": i } as React.CSSProperties}
-            >
+            <div key={i} className="mb-5 break-inside-avoid">
               <StickyNote
                 color={COLORS[i % COLORS.length] ?? "yellow"}
                 rotate={ROTATIONS[i % ROTATIONS.length] ?? -2}

@@ -127,16 +127,47 @@ export function StapleDoodle({ className, size = 22, style }: DoodleProps) {
 
 export function CoffeeRingDoodle({ className, size = 120, style }: DoodleProps) {
   return (
-    <svg width={size} height={size * 0.9} viewBox="0 0 120 108" className={className} style={style} aria-hidden="true">
-      <g fill="none" stroke="#8a5a2b" strokeLinecap="round">
+    <svg width={size} height={size * 0.95} viewBox="0 0 120 114" className={className} style={style} aria-hidden="true">
+      <g fill="none" stroke="#7a4a1e" strokeLinecap="round">
+        {/* mug ring */}
         <path
-          d="M60 8 C 95 6 112 26 111 52 C 110 82 88 100 58 99 C 28 98 8 80 9 51 C 10 24 30 9 60 8 Z"
-          strokeWidth="7"
-          opacity="0.5"
+          d="M60 12 C 92 10 108 28 107 52 C 106 80 86 96 58 95 C 30 94 12 78 13 51 C 14 27 32 13 60 12 Z"
+          strokeWidth="8"
+          opacity="0.4"
         />
-        <path d="M60 16 C 88 15 103 31 102 52 C 101 76 84 91 58 90" strokeWidth="2.4" opacity="0.5" />
-        <path d="M23 74 C 20 82 24 88 30 89" strokeWidth="5" opacity="0.35" />
+        {/* heavier crescent where the mug rested */}
+        <path d="M20 66 C 25 85 42 95 60 95" strokeWidth="9" opacity="0.45" />
+        {/* second faint ring from setting the mug down twice */}
+        <path d="M60 18 C 87 17 101 32 100 52 C 99 75 82 89 57 88" strokeWidth="2.2" opacity="0.4" />
+        {/* run + droplets */}
+        <path d="M19 72 C 15 79 16 86 21 90" strokeWidth="4.5" opacity="0.32" />
+        <circle cx="28" cy="105" r="2.8" fill="#7a4a1e" stroke="none" opacity="0.35" />
+        <circle cx="98" cy="27" r="1.9" fill="#7a4a1e" stroke="none" opacity="0.3" />
       </g>
+    </svg>
+  );
+}
+
+export function DownloadDoodle({ className, size = 16 }: DoodleProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 20 20" className={className} aria-hidden="true">
+      <path d="M10 2.8 C 10.4 6.6 10.3 9.6 10 12.6 M 6.2 9.2 L 10 13.4 L 13.8 9" {...stroke} strokeWidth="1.8" />
+      <path d="M3.8 13.8 C 3.7 16 4.8 17.2 7 17.2 L 13.2 17.2 C 15.4 17.2 16.4 16 16.2 13.6" {...stroke} strokeWidth="1.8" />
+    </svg>
+  );
+}
+
+export function PrintDoodle({ className, size = 16 }: DoodleProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 22 22" className={className} aria-hidden="true">
+      <path d="M7 7.5 L 7.2 3.4 C 9.7 3.1 12.4 3.1 14.9 3.4 L 15.1 7.5" {...stroke} strokeWidth="1.7" />
+      <path
+        d="M4.5 8 C 9 7.6 13.4 7.6 17.5 8 C 17.9 10.2 17.9 12.4 17.5 14.6 L 15.2 14.4 L 15.4 18.6 C 12.7 19 9.5 19 6.8 18.6 L 7 14.4 L 4.5 14.6 C 4.1 12.4 4.1 10.2 4.5 8 Z"
+        {...stroke}
+        strokeWidth="1.7"
+      />
+      <path d="M7 14.4 C 9.7 14.1 12.6 14.1 15.2 14.4" {...stroke} strokeWidth="1.5" />
+      <circle cx="15.1" cy="10.8" r="1" fill="currentColor" />
     </svg>
   );
 }

@@ -31,7 +31,7 @@ export default function EducationPage({
     <>
       <SectionTitle note="the official bit">School days</SectionTitle>
 
-      <div className="nb-entry relative mt-4" style={{ "--en-i": 0 } as React.CSSProperties}>
+      <div className="relative mt-[var(--nb-line)]">
         <div className="absolute -top-6 right-2 flex items-end gap-1">
           <MarginNote rotate={-3}>yes — the major was AI</MarginNote>
           <ArrowCurve className="mb-[-14px] text-[var(--nb-ink-soft)]" size={34} />
@@ -55,10 +55,10 @@ export default function EducationPage({
         </div>
       </div>
 
-      <div className="nb-entry mt-[calc(var(--nb-line)*1.3)]" style={{ "--en-i": 1 } as React.CSSProperties}>
-        <h3 className="nb-hand mb-2 text-[21px] font-bold leading-[var(--nb-line)]">Languages</h3>
+      <div className="mt-[var(--nb-line)]">
+        <h3 className="nb-hand text-[21px] font-bold leading-[var(--nb-line)]">Languages</h3>
         {Object.entries(languages).map(([language, level]) => (
-          <div key={language} className="mb-1.5 flex items-center gap-4">
+          <div key={language} className="flex h-[var(--nb-line)] items-center gap-4">
             <span className="w-[86px] text-[16px]">{language}</span>
             <LevelDots level={level} />
             <span className="nb-marginnote text-[15px]" style={{ "--rot": "0deg" } as React.CSSProperties}>

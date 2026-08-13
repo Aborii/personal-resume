@@ -135,16 +135,16 @@ export function SectionTitle({
   className?: string;
 }) {
   return (
-    <div className={cn("mb-[calc(var(--nb-line)*0.55)]", className)}>
-      <div className="flex items-end justify-between gap-3 flex-wrap">
-        <h2 className="nb-h2">{children}</h2>
-        {note && (
-          <span className="nb-marginnote mb-1" style={{ "--rot": "-1.5deg" } as React.CSSProperties}>
-            {note}
-          </span>
-        )}
-      </div>
-      <SketchUnderline className="block h-[11px] w-[min(230px,70%)] -mt-1 text-[var(--nb-ink-soft)]" />
+    <div className={cn("mb-[var(--nb-line)] flex flex-wrap items-baseline justify-between gap-x-3", className)}>
+      <h2 className="nb-h2 relative">
+        {children}
+        <SketchUnderline className="absolute -bottom-[6px] left-0 h-[11px] w-[calc(100%_+_16px)] text-[var(--nb-ink-soft)]" />
+      </h2>
+      {note && (
+        <span className="nb-marginnote" style={{ "--rot": "-1.5deg" } as React.CSSProperties}>
+          {note}
+        </span>
+      )}
     </div>
   );
 }

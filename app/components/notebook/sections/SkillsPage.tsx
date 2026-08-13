@@ -36,19 +36,15 @@ export default function SkillsPage({
     <>
       <SectionTitle note="tallies = years of use">Toolbox</SectionTitle>
 
-      <p className="mb-[calc(var(--nb-line)*0.6)]">
+      <p className="leading-[var(--nb-line)]">
         <MarginNote rotate={-1}>
           <StarDoodle className="mr-1 inline-block text-[var(--nb-accent)]" size={15} /> = what I reach for first
         </MarginNote>
       </p>
 
-      {Object.entries(skills).map(([category, list], catIndex) => (
-        <div
-          key={category}
-          className="nb-entry mb-[calc(var(--nb-line)*0.9)]"
-          style={{ "--en-i": catIndex } as React.CSSProperties}
-        >
-          <h3 className="nb-hand mb-2 text-[21px] font-bold leading-[var(--nb-line)]">{category}</h3>
+      {Object.entries(skills).map(([category, list]) => (
+        <div key={category} className="mb-[var(--nb-line)]">
+          <h3 className="nb-hand mb-1 text-[21px] font-bold leading-[var(--nb-line)]">{category}</h3>
           <div className="flex flex-wrap gap-x-2.5 gap-y-3">
             {list.map((raw) => {
               const { name, years, extras } = parseSkill(raw);

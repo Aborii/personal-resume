@@ -46,7 +46,7 @@ export default function IdentityPage({
       <WashiTape className="-left-6 -top-4" color="rgba(250, 215, 130, 0.6)" rotate={-38} />
 
       <div className="nb-polaroid float-right ml-4 mt-1">
-        <PaperclipDoodle className="absolute -top-4 left-4 rotate-[14deg]" size={34} />
+        <PaperclipDoodle className="absolute -top-4 left-4 z-10 rotate-[14deg] drop-shadow-sm" size={34} />
         <Image
           src="/Abdullah_Almofleh_image.jpg"
           alt={`Photo of ${personalInfo.name}`}
@@ -58,9 +58,11 @@ export default function IdentityPage({
         <span className="nb-polaroid-caption">Dubai, UAE</span>
       </div>
 
-      <p className="nb-hand text-[18px] text-[var(--nb-ink-soft)]">this notebook belongs to</p>
-      <h1 className="nb-hand mt-1 text-[37px] font-bold leading-[40px]">{personalInfo.name}</h1>
-      <p className="mt-2 text-[16px] leading-[24px]">
+      <p className="nb-hand text-[18px] leading-[var(--nb-line)] text-[var(--nb-ink-soft)]">
+        this notebook belongs to
+      </p>
+      <h1 className="nb-hand text-[33px] font-bold leading-[var(--nb-line)]">{personalInfo.name}</h1>
+      <p className="text-[16px] leading-[var(--nb-line)]">
         <Hl>{titleMain}</Hl>
         {titleRest && (
           <>
@@ -70,18 +72,18 @@ export default function IdentityPage({
         )}
       </p>
 
-      <div className="clear-right mt-[calc(var(--nb-line)*0.8)] space-y-1.5 text-[15.5px]">
-        <p className="flex items-center gap-2.5">
+      <div className="clear-right mt-[var(--nb-line)] text-[15.5px]">
+        <p className="flex items-center gap-2.5 leading-[var(--nb-line)]">
           <MapPinDoodle className="shrink-0 text-[var(--nb-ink-soft)]" />
           {personalInfo.location}
         </p>
-        <p className="flex items-center gap-2.5">
+        <p className="flex items-center gap-2.5 leading-[var(--nb-line)]">
           <MailDoodle className="shrink-0 text-[var(--nb-ink-soft)]" />
           <InkLink href={`mailto:${personalInfo.email}`} external={false}>
             {personalInfo.email}
           </InkLink>
         </p>
-        <p className="flex items-center gap-2.5">
+        <p className="flex items-center gap-2.5 leading-[var(--nb-line)]">
           <PhoneDoodle className="shrink-0 text-[var(--nb-ink-soft)]" />
           <InkLink href={`tel:${personalInfo.phone.replace(/\s+/g, "")}`} external={false}>
             {personalInfo.phone}
@@ -89,7 +91,7 @@ export default function IdentityPage({
         </p>
       </div>
 
-      <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1.5 text-[15px]">
+      <div className="flex flex-wrap gap-x-5 text-[15px] leading-[var(--nb-line)]">
         <span className="flex items-center gap-1.5">
           <GithubDoodle className="text-[var(--nb-ink-soft)]" size={17} />
           <InkLink href={personalInfo.links.github}>{githubHandle}</InkLink>
@@ -104,23 +106,21 @@ export default function IdentityPage({
         </span>
       </div>
 
-      <div className="mt-[calc(var(--nb-line)*0.9)]">
-        <p className="nb-hand mb-1 text-[19px] font-bold text-[var(--nb-ink-soft)]">in this notebook:</p>
+      <div className="mt-[var(--nb-line)]">
+        <p className="nb-hand text-[19px] font-bold leading-[var(--nb-line)] text-[var(--nb-ink-soft)]">
+          in this notebook:
+        </p>
         <ul>
           {toc.map((item) => (
             <li key={item.id}>
               <button
                 type="button"
-                className="nb-toc-btn"
+                className="nb-toc-btn h-[var(--nb-line)]"
                 onClick={() => onNavigate(item.index)}
                 aria-current={current === item.index ? "page" : undefined}
               >
                 <CheckboxDoodle checked={visited.has(item.index)} className="shrink-0" />
-                <span
-                  className={`text-[16px] leading-[26px] ${
-                    current === item.index ? "nb-strong" : ""
-                  }`}
-                >
+                <span className={`text-[16px] ${current === item.index ? "nb-strong" : ""}`}>
                   {item.label}
                 </span>
                 {current === item.index && (
@@ -134,11 +134,19 @@ export default function IdentityPage({
         </ul>
       </div>
 
-      <div className="mt-[calc(var(--nb-line)*0.8)]">
+      <div className="mt-[var(--nb-line)] pb-[calc(var(--nb-line)*3)]">
         <DownloadScrap />
       </div>
 
-      <CoffeeRingDoodle className="pointer-events-none absolute -bottom-9 -right-2" size={110} />
+      <div className="pointer-events-none absolute bottom-0 right-3" aria-hidden="true">
+        <CoffeeRingDoodle size={100} />
+        <span
+          className="nb-marginnote block text-center text-[14px] text-[var(--nb-ink-faint)]"
+          style={{ "--rot": "-3deg" } as React.CSSProperties}
+        >
+          coffee. sorry.
+        </span>
+      </div>
     </div>
   );
 }

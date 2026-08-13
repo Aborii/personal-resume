@@ -51,12 +51,8 @@ export default function ExperiencePage({ experiences }: { experiences: Experienc
       <div className="relative pl-8">
         <TimelineRail />
 
-        {experiences.map((exp, i) => (
-          <div
-            key={`${exp.company}-${exp.period}`}
-            className="nb-entry relative mb-[calc(var(--nb-line)*0.9)]"
-            style={{ "--en-i": Math.min(i, 8) } as React.CSSProperties}
-          >
+        {experiences.map((exp) => (
+          <div key={`${exp.company}-${exp.period}`} className="relative mb-[var(--nb-line)]">
             <TimelineNode current={exp.current} />
 
             {exp.current && (
@@ -70,21 +66,21 @@ export default function ExperiencePage({ experiences }: { experiences: Experienc
               </StickyNote>
             )}
 
-            <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+            <div className="flex flex-wrap items-baseline justify-between gap-x-3">
               <h3 className="nb-hand text-[22px] font-bold leading-[var(--nb-line)]">{exp.title}</h3>
               <span className={`nb-chip ${exp.current ? "nb-chip--now" : ""}`}>{exp.period}</span>
             </div>
 
-            <p className="text-[16px]">
+            <p className="text-[16px] leading-[var(--nb-line)]">
               <strong className="nb-strong">{exp.company}</strong>
               <span className="text-[14px] text-[var(--nb-ink-faint)]"> — {exp.location}</span>
             </p>
 
-            <ul className="mt-1 space-y-1.5">
+            <ul>
               {exp.responsibilities.map((responsibility, ri) => (
                 <li key={ri} className="flex items-start gap-2">
-                  <ArrowBullet className="mt-[8px] shrink-0 text-[var(--nb-ink-soft)]" />
-                  <span className="text-[15.5px] leading-[24px]">
+                  <ArrowBullet className="mt-[10px] shrink-0 text-[var(--nb-ink-soft)]" />
+                  <span className="text-[16px] leading-[var(--nb-line)]">
                     <NotebookText>{responsibility}</NotebookText>
                   </span>
                 </li>
