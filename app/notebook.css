@@ -1317,6 +1317,12 @@ html[data-nb-visited] .nb-leftpage {
   transform: translateX(4px);
 }
 
+/* the page you are on: colour only, so the index's height never depends on
+   where the reader is — the page-count measurement relies on that */
+.nb-toc-current {
+  color: var(--nb-accent);
+}
+
 /* ============================================================
    Small helpers
    ============================================================ */

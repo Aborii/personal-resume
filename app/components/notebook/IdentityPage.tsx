@@ -116,7 +116,11 @@ export default function IdentityPage({
                 aria-current={current === item.index ? "page" : undefined}
               >
                 <CheckboxDoodle checked={visited.has(item.index)} className="shrink-0" />
-                <span className={`nb-t-sm ${current === item.index ? "nb-strong" : ""}`}>{item.label}</span>
+                {/* colour-only marker: a weight change would alter the page's
+                    measured height depending on which section you are reading */}
+                <span className={`nb-t-sm ${current === item.index ? "nb-toc-current" : ""}`}>
+                  {item.label}
+                </span>
               </button>
             </li>
           ))}
