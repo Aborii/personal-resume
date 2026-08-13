@@ -69,11 +69,8 @@ export default function ContactPage({ personalInfo }: { personalInfo: ResumeData
           </span>
         </div>
 
-        <p className="nb-mono mt-[var(--nb-line)] leading-[var(--nb-line)] text-[var(--nb-ink-soft)]">
-          $ npx hire-abdullah
-          <span className="nb-caret" aria-hidden="true" />
-          <br />
-          <span className="opacity-60"># usually replies within a day</span>
+        <p className="nb-hand nb-t-lg mt-[var(--nb-line)] text-[var(--nb-ink-soft)]">
+          usually replies within a day
         </p>
 
         <div className="nb-nosplit mt-[var(--nb-line)]">
