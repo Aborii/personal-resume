@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Caveat, Patrick_Hand } from "next/font/google";
 import "./globals.css";
 import DevBanner from "./components/DevBanner";
 import { ThemeProvider } from "./components/ThemeProvider";
@@ -12,6 +12,17 @@ const geistSans = Geist({
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+const caveat = Caveat({
+  variable: "--font-caveat",
+  subsets: ["latin"],
+});
+
+const patrickHand = Patrick_Hand({
+  weight: "400",
+  variable: "--font-patrick",
   subsets: ["latin"],
 });
 
@@ -78,9 +89,17 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+        {/* Marks same-session visitors before first paint so the notebook renders already-open
+            (the cover animation plays once per browser session). */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(sessionStorage.getItem("nb-open"))document.documentElement.setAttribute("data-nb-visited","")}catch(e){}`,
+          }}
+        />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} ${caveat.variable} ${patrickHand.variable} antialiased`}
+      >
         <ThemeProvider>
           <DevBanner />
           {children}
