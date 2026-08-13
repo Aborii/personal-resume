@@ -371,9 +371,11 @@
   line-height: var(--nb-line);
 }
 
-/* blocks that must never tear across a page break */
+/* blocks that must never tear across a page break; the transform makes
+   them monolithic for fragmentation, so engines can never slice them */
 .nb-nosplit {
   break-inside: avoid;
+  transform: translateZ(0);
 }
 
 /* line-grid type scale: sizes as fractions of the ruled line height */
@@ -1197,7 +1199,7 @@ html[data-nb-visited] .nb-leftpage {
 .nb-scrap {
   position: relative;
   background: var(--nb-paper-card);
-  padding: 24px 20px 16px;
+  padding: 18px 18px 12px;
   filter: drop-shadow(0 5px 7px rgba(60, 40, 15, 0.22));
   /* torn off a pad: ragged top edge, clean sides */
   clip-path: polygon(

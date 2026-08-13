@@ -30,9 +30,7 @@ export default function ExperiencePage({ experiences }: { experiences: Experienc
 
       <div className="pl-8">
         {experiences.map((exp) => (
-          <div key={`${exp.company}-${exp.period}`} className="relative mb-[var(--nb-line)]">
-            <TimelineNode current={exp.current} />
-
+          <div key={`${exp.company}-${exp.period}`} className="mb-[var(--nb-line)]">
             {exp.current && (
               <StickyNote
                 color="mint"
@@ -44,7 +42,8 @@ export default function ExperiencePage({ experiences }: { experiences: Experienc
               </StickyNote>
             )}
 
-            <div className="nb-nosplit">
+            <div className="nb-nosplit relative">
+              <TimelineNode current={exp.current} />
               <div className="flex flex-wrap items-baseline justify-between gap-x-3">
                 <h3 className="nb-hand text-[22px] font-bold leading-[var(--nb-line)]">{exp.title}</h3>
                 <span className={`nb-chip ${exp.current ? "nb-chip--now" : ""}`}>{exp.period}</span>

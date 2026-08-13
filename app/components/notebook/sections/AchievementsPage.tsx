@@ -26,7 +26,7 @@ export default function AchievementsPage({ achievements }: { achievements: strin
       <SectionTitle note="fresh off the sticky pad">Things I&apos;m proud of</SectionTitle>
 
       {rows.map((row, r) => (
-        <div key={r} className="nb-nosplit mb-5 flex flex-wrap items-start gap-5">
+        <div key={r} className="nb-nosplit mb-5 flex flex-wrap items-start gap-5 pt-3">
           {row.map(({ text, i }) => {
             const { head, body } = splitAchievement(text);
             return (

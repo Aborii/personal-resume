@@ -41,7 +41,7 @@ export default function DownloadScrap({ className }: { className?: string }) {
   return (
     <div className={`nb-scrapwrap ${className ?? ""}`}>
       <div className="nb-scrap">
-        <p className="nb-hand mb-2.5 text-[18px] leading-[22px] text-[var(--nb-ink-soft)]">
+        <p className="nb-hand mb-2 text-[18px] leading-[22px] text-[var(--nb-ink-soft)]">
           keep a copy for later:
         </p>
         <div className="flex flex-wrap gap-2.5">

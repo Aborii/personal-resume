@@ -20,7 +20,7 @@ export default function ProjectsPage({ projects }: { projects: ProjectItem[] }) 
       <SectionTitle note="taped in — don&apos;t peel">Notable projects</SectionTitle>
 
       {chunkPairs(projects.map((project, i) => ({ project, i }))).map((row, r) => (
-        <div key={r} className="nb-nosplit mb-[var(--nb-line)] flex flex-wrap items-start gap-5">
+        <div key={r} className="nb-nosplit mb-[var(--nb-line)] flex flex-wrap items-start gap-5 pt-3">
           {row.map(({ project, i }) => {
             const [stack, ...rest] = project.details;
             const stackChips = (stack ?? "")

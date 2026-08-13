@@ -81,13 +81,12 @@ export default function ContactPage({ personalInfo }: { personalInfo: ResumeData
         </div>
 
         <div className="nb-nosplit mt-[var(--nb-line)]">
-          <SigFlourish className="text-[var(--nb-ink-soft)]" />
+          <SigFlourish className="h-[24px] w-auto text-[var(--nb-ink-soft)]" size={96} />
           <p className="nb-hand -mt-1 text-[19px] leading-[var(--nb-line)]">— Abdullah</p>
+          <p className="nb-t-sm text-center text-[var(--nb-ink-faint)]">
+            © {year} {personalInfo.name} — building the future, one line of code at a time.
+          </p>
         </div>
-
-        <p className="nb-t-sm mt-[var(--nb-line)] text-center text-[var(--nb-ink-faint)]">
-          © {year} {personalInfo.name} — building the future, one line of code at a time.
-        </p>
       </div>
     </>
   );
