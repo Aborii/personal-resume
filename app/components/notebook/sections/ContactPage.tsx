@@ -25,7 +25,7 @@ export default function ContactPage({ personalInfo }: { personalInfo: ResumeData
       <SectionTitle>Last page</SectionTitle>
 
       <div className="relative">
-        <PaperPlaneDoodle className="absolute -top-3 right-0 text-[var(--nb-ink-soft)]" size={110} />
+        <PaperPlaneDoodle className="absolute -top-3 right-0 h-auto w-[72px] text-[var(--nb-ink-soft)] sm:w-[110px]" size={110} />
 
         <p className="nb-hand nb-entry max-w-[420px] text-[34px] font-bold leading-[38px]" style={{ "--en-i": 0 } as React.CSSProperties}>
           Let&apos;s <Hl color="y">build something</Hl>.

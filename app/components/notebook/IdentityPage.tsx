@@ -52,7 +52,7 @@ export default function IdentityPage({
           alt={`Photo of ${personalInfo.name}`}
           width={132}
           height={132}
-          className="h-[132px] w-[132px] object-cover"
+          className="h-[104px] w-[104px] object-cover sm:h-[132px] sm:w-[132px]"
           priority
         />
         <span className="nb-polaroid-caption">Dubai, UAE</span>

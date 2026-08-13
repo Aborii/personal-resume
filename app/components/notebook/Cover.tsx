@@ -49,7 +49,7 @@ export default function CoverFront({
         </span>
       </span>
 
-      <span className="nb-cover-emboss absolute bottom-[7%] left-1/2 -translate-x-1/2 text-[19px] nb-openhint">
+      <span className="nb-cover-cta absolute bottom-[7%] left-1/2 -translate-x-1/2 text-[20px] nb-openhint">
         tap to open →
       </span>
     </button>

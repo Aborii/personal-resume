@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useRef } from "react";
+
 export type TabDef = {
   id: string;
   tab: string;
@@ -23,8 +25,22 @@ export default function BookmarkTabs({
   onSelect: (index: number) => void;
 }) {
   const isDesktop = variant === "desktop";
+  const rowRef = useRef<HTMLDivElement>(null);
+
+  // keep the active tab in view when the mobile row overflows
+  useEffect(() => {
+    if (isDesktop) return;
+    const row = rowRef.current;
+    if (!row || row.scrollWidth <= row.clientWidth) return;
+    const active = row.querySelector<HTMLElement>('[aria-selected="true"]');
+    if (!active) return;
+    const target = active.offsetLeft - (row.clientWidth - active.offsetWidth) / 2;
+    row.scrollTo({ left: target, behavior: "smooth" });
+  }, [isDesktop, current]);
+
   return (
     <div
+      ref={rowRef}
       className={isDesktop ? "nb-tabs-d" : "nb-tabs-m"}
       role="tablist"
       aria-label="Notebook sections"

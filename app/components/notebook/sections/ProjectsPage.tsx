@@ -19,7 +19,7 @@ export default function ProjectsPage({ projects }: { projects: ProjectItem[] }) 
     <>
       <SectionTitle note="taped in — don&apos;t peel">Notable projects</SectionTitle>
 
-      <div className="grid grid-cols-1 gap-x-5 gap-y-7 sm:grid-cols-2">
+      <div className="grid grid-cols-1 items-start gap-x-5 gap-y-7 sm:grid-cols-2">
         {projects.map((project, i) => {
           const [stack, ...rest] = project.details;
           const stackChips = (stack ?? "")
@@ -30,7 +30,7 @@ export default function ProjectsPage({ projects }: { projects: ProjectItem[] }) 
           return (
             <div key={project.name} className="nb-entry" style={{ "--en-i": Math.min(i, 8) } as React.CSSProperties}>
               <div
-                className="nb-card h-full"
+                className="nb-card"
                 style={{ "--rot": `${ROTATIONS[i % ROTATIONS.length]}deg` } as React.CSSProperties}
               >
                 <WashiTape

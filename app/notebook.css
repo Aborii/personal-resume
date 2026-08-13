@@ -115,9 +115,23 @@
   padding: 20px 12px 34px;
 }
 
+/* reserve room for the bookmark tabs sticking out on the right */
+@media (min-width: 1024px) {
+  .nb-stagewrap {
+    padding-left: 20px;
+    padding-right: 108px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .nb-stagewrap {
+    padding-right: 20px;
+  }
+}
+
 .nb-book {
   position: relative;
-  width: min(1150px, 94vw, calc((100dvh - 130px) * 1.45));
+  width: min(1150px, 100%, calc((100dvh - 130px) * 1.45));
   aspect-ratio: 1.45;
 }
 
@@ -309,6 +323,21 @@
   background: transparent;
 }
 
+/* verso (left) pages: the red margin line sits by the spine, like the
+   back side of a real ruled sheet */
+.nb-sheet--left .nb-sheet-inner,
+.nb-cover-back .nb-sheet-inner,
+.nb-leaf-face--back .nb-sheet-inner {
+  padding: calc(var(--nb-line) * 1.05) 68px calc(var(--nb-line) * 1.4) 30px;
+  background-image:
+    linear-gradient(to left, transparent 0 52px, var(--nb-mline) 52px 54px, transparent 54px),
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0 calc(var(--nb-line) - 1px),
+      var(--nb-rule) calc(var(--nb-line) - 1px) var(--nb-line)
+    );
+}
+
 /* sheet wrapper stacking for the flip stage */
 .nb-sheetwrap {
   position: absolute;
@@ -376,6 +405,10 @@
   overflow: hidden;
   background: var(--nb-paper);
   border-radius: 4px 14px 14px 4px;
+  /* a hint of paper thickness along the free edge */
+  box-shadow:
+    inset -1px 0 0 rgba(255, 255, 255, 0.4),
+    inset 1px 0 0 rgba(60, 40, 15, 0.06);
 }
 
 .nb-leaf-face--back {
@@ -651,10 +684,16 @@ html[data-nb-visited] .nb-leftpage {
 }
 
 .nb-cover-emboss {
-  color: rgba(0, 0, 0, 0.32);
+  color: rgba(0, 0, 0, 0.42);
   text-shadow:
-    0 1px 1px rgba(255, 255, 255, 0.14),
-    0 -1px 2px rgba(0, 0, 0, 0.5);
+    0 1px 1px rgba(255, 255, 255, 0.22),
+    0 -1px 2px rgba(0, 0, 0, 0.55);
+  font-family: var(--font-caveat), cursive;
+}
+
+.nb-cover-cta {
+  color: rgba(255, 246, 218, 0.66);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
   font-family: var(--font-caveat), cursive;
 }
 
