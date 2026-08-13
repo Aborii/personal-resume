@@ -22,7 +22,7 @@ export default function ContactPage({ personalInfo }: { personalInfo: ResumeData
 
   return (
     <>
-      <SectionTitle>Last page</SectionTitle>
+      <SectionTitle>Contact me</SectionTitle>
 
       <div>
         <p className="nb-hand nb-nosplit relative max-w-[420px] text-[32px] font-bold leading-[var(--nb-line)]">

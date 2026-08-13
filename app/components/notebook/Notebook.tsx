@@ -8,6 +8,7 @@ import BookmarkTabs, { type TabDef } from "./BookmarkTabs";
 import CoverFront from "./Cover";
 import IdentityPage, { type TocItem } from "./IdentityPage";
 import LampToggle from "./LampToggle";
+import { PaperclipDoodle } from "./doodles";
 import SummaryPage from "./sections/SummaryPage";
 import AchievementsPage from "./sections/AchievementsPage";
 import SkillsPage from "./sections/SkillsPage";
@@ -25,7 +26,7 @@ type Section = {
 
 /** one physical half-sheet of the notebook */
 type PageDef =
-  | { type: "me" }
+  | { type: "me"; col: number }
   | { type: "blank" }
   | { type: "end" }
   | { type: "content"; section: number; col: number };
@@ -67,8 +68,9 @@ function useVisitedAtLoad() {
  * ending on a right page leaves the next left page blank; ending on a
  * left page lets the next section start beside it on the same spread.
  */
-function buildPages(counts: number[]): PageDef[] {
-  const pages: PageDef[] = [{ type: "me" }];
+function buildPages(meCount: number, counts: number[]): PageDef[] {
+  const pages: PageDef[] = [];
+  for (let col = 0; col < Math.max(1, meCount); col++) pages.push({ type: "me", col });
   counts.forEach((count, section) => {
     if (pages.length % 2 === 0) pages.push({ type: "blank" });
     for (let col = 0; col < count; col++) pages.push({ type: "content", section, col });
@@ -116,7 +118,11 @@ export default function Notebook() {
   const coverState = coverOpen === "closed" && (visitedAtLoad || reduced) ? "open" : coverOpen;
   const coverIsOpen = coverState !== "closed";
 
-  const pages = useMemo(() => buildPages(counts ?? sections.map(() => 1)), [counts, sections]);
+  // counts[0] is the identity page's column count; the rest are the sections'
+  const pages = useMemo(
+    () => buildPages(counts?.[0] ?? 1, counts?.slice(1) ?? sections.map(() => 1)),
+    [counts, sections],
+  );
 
   const sectionStart = useMemo(() => {
     const starts: number[] = [];
@@ -515,6 +521,18 @@ export default function Notebook() {
     </div>
   );
 
+  /** the identity page flows across columns too, so it never scrolls */
+  const renderIdentityInner = (col: number) => (
+    <div className="nb-sheet-inner nb-pageview">
+      <div className="nb-colflow" style={colStyle(col)}>
+        {identity()}
+      </div>
+    </div>
+  );
+
+  /* the clip grips the paper's top edge, so it lives outside the sheet's clip */
+  const paperclip = <PaperclipDoodle className="nb-idclip" size={36} />;
+
   const pageNumber = (index: number, page: PageDef) =>
     page.type === "end" ? (
       <span className="nb-verso-num">· the end ·</span>
@@ -582,16 +600,15 @@ export default function Notebook() {
                     data-anim={i === pos && i === animPage ? "true" : "false"}
                     suppressHydrationWarning
                   >
-                    <div className="nb-sheet nb-sheet--right">
+                    <div className={`nb-sheet nb-sheet--right ${page.type === "me" ? "nb-sheet--me" : ""}`}>
                       {page.type === "me" ? (
-                        <div className="nb-sheet-inner" tabIndex={i === rightShown ? 0 : -1} aria-label="Me">
-                          {identity()}
-                        </div>
+                        renderIdentityInner(page.col)
                       ) : page.type === "content" ? (
                         renderContentInner(page)
                       ) : (
                         <div className="nb-sheet-inner" />
                       )}
+                      {page.type === "me" && page.col === 0 && paperclip}
                       {pageNumber(i, page)}
                     </div>
                   </div>
@@ -634,7 +651,7 @@ export default function Notebook() {
                       {flip.front.type === "content" ? (
                         renderContentInner(flip.front)
                       ) : flip.front.type === "me" ? (
-                        <div className="nb-sheet-inner">{identity()}</div>
+                        renderIdentityInner(flip.front.col)
                       ) : (
                         <div className="nb-sheet-inner" />
                       )}
@@ -672,14 +689,16 @@ export default function Notebook() {
               <CoverFront personalInfo={resumeData.personalInfo} onOpen={openCover} />
             </div>
             <div className="nb-cover-back" inert={!coverIsOpen || leftPage !== null}>
-              <div className="nb-sheet-inner">{identity()}</div>
+              {renderIdentityInner(0)}
+              {paperclip}
             </div>
           </div>
 
-          {/* hidden measuring rig: how many page-columns does each section need? */}
+          {/* hidden measuring rig: how many page-columns does each flow need?
+              The identity page is measured first, then every section. */}
           <div ref={measureRef} className="nb-measure" aria-hidden="true" inert>
             {metrics &&
-              sections.map((s) => (
+              [{ id: "hello", render: identity }, ...sections].map((s) => (
                 <div
                   key={s.id}
                   className="nb-measure-flow"

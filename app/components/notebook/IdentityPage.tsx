@@ -9,9 +9,7 @@ import {
   GithubDoodle,
   LinkedinDoodle,
   GlobeDoodle,
-  PaperclipDoodle,
 } from "./doodles";
-import DownloadScrap from "./DownloadScrap";
 import type { ResumeData } from "../../types/resume-data";
 
 export type TocItem = { id: string; label: string; index: number };
@@ -43,8 +41,8 @@ export default function IdentityPage({
 
   return (
     <div className="relative">
-      <div className="nb-polaroid float-right ml-4 mt-1">
-        <PaperclipDoodle className="absolute -top-4 left-4 z-10 rotate-[14deg] drop-shadow-sm" size={34} />
+      {/* pulled up so the sheet-level paperclip grips it against the page edge */}
+      <div className="nb-polaroid float-right ml-4 -mt-[26px]">
         <Image
           src="/Abdullah_Almofleh_image.jpg"
           alt={`Photo of ${personalInfo.name}`}
@@ -102,7 +100,17 @@ export default function IdentityPage({
         </span>
       </div>
 
-      <div className="mt-[var(--nb-line)]">
+      <div className="relative mt-[var(--nb-line)]">
+        {/* the mug sat here while the list was being written */}
+        <div className="pointer-events-none absolute -top-2 right-0 w-[104px] text-center" aria-hidden="true">
+          <CoffeeRingDoodle size={96} />
+          <span
+            className="nb-marginnote block text-[13.5px] text-[var(--nb-ink-faint)]"
+            style={{ "--rot": "-3deg" } as React.CSSProperties}
+          >
+            coffee. sorry.
+          </span>
+        </div>
         <p className="nb-hand text-[19px] font-bold leading-[var(--nb-line)] text-[var(--nb-ink-soft)]">
           in this notebook:
         </p>
@@ -130,19 +138,6 @@ export default function IdentityPage({
         </ul>
       </div>
 
-      <div className="mt-[var(--nb-line)] pb-[calc(var(--nb-line)*3)]">
-        <DownloadScrap />
-      </div>
-
-      <div className="pointer-events-none absolute bottom-0 right-3" aria-hidden="true">
-        <CoffeeRingDoodle size={100} />
-        <span
-          className="nb-marginnote block text-center text-[14px] text-[var(--nb-ink-faint)]"
-          style={{ "--rot": "-3deg" } as React.CSSProperties}
-        >
-          coffee. sorry.
-        </span>
-      </div>
     </div>
   );
 }
