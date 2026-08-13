@@ -69,7 +69,7 @@ export default function ContactPage({ personalInfo }: { personalInfo: ResumeData
           </span>
         </div>
 
-        <p className="nb-hand mt-[var(--nb-line)] text-[18px] leading-[var(--nb-line)] text-[var(--nb-ink-soft)]">
+        <p className="nb-hand nb-t-lg mt-[var(--nb-line)] text-[var(--nb-ink-soft)]">
           usually replies within a day
         </p>
 
