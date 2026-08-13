@@ -497,12 +497,17 @@
   transition: opacity 0.25s ease, width 0.2s ease, height 0.2s ease;
 }
 
+/* the fold follows the page's rounded corner instead of squaring it off */
 .nb-corner--next {
   right: 0;
+  border-radius: 0 0 14px 0;
+  overflow: hidden;
 }
 
 .nb-corner--prev {
   left: 0;
+  border-radius: 0 0 0 14px;
+  overflow: hidden;
 }
 
 .nb-corner::before {
@@ -1236,6 +1241,17 @@ html[data-nb-visited] .nb-leftpage {
     0 12%, 4% 4%, 10% 10%, 17% 3%, 25% 9%, 33% 3%, 42% 10%, 51% 3%,
     60% 9%, 69% 4%, 78% 10%, 87% 3%, 94% 9%, 100% 5%, 100% 100%, 0 100%
   );
+}
+
+/* tighter slip for pages where height is scarce */
+.nb-scrapwrap--compact .nb-scrap {
+  padding: 17px 14px 11px;
+}
+
+.nb-scrapwrap--compact .nb-scrapbtn {
+  font-size: 16px;
+  padding: 5px 11px 6px;
+  gap: 5px;
 }
 
 .nb-scrapbtn {

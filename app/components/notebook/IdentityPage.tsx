@@ -10,6 +10,7 @@ import {
   LinkedinDoodle,
   GlobeDoodle,
 } from "./doodles";
+import DownloadScrap from "./DownloadScrap";
 import type { ResumeData } from "../../types/resume-data";
 
 export type TocItem = { id: string; label: string; index: number };
@@ -100,23 +101,14 @@ export default function IdentityPage({
         </span>
       </div>
 
-      <div className="relative mt-[var(--nb-line)]">
-        {/* the mug sat here while the list was being written */}
-        <div className="pointer-events-none absolute -top-2 right-0 w-[104px] text-center" aria-hidden="true">
-          <CoffeeRingDoodle size={96} />
-          <span
-            className="nb-marginnote block text-[13.5px] text-[var(--nb-ink-faint)]"
-            style={{ "--rot": "-3deg" } as React.CSSProperties}
-          >
-            coffee. sorry.
-          </span>
-        </div>
+      <div className="mt-[var(--nb-line)]">
         <p className="nb-hand text-[19px] font-bold leading-[var(--nb-line)] text-[var(--nb-ink-soft)]">
           in this notebook:
         </p>
-        <ul>
+        {/* two-up, so the index leaves room for the download slip */}
+        <ul className="flex flex-wrap">
           {toc.map((item) => (
-            <li key={item.id}>
+            <li key={item.id} className="w-1/2">
               <button
                 type="button"
                 className="nb-toc-btn h-[var(--nb-line)]"
@@ -124,20 +116,26 @@ export default function IdentityPage({
                 aria-current={current === item.index ? "page" : undefined}
               >
                 <CheckboxDoodle checked={visited.has(item.index)} className="shrink-0" />
-                <span className={`nb-t-body ${current === item.index ? "nb-strong" : ""}`}>
-                  {item.label}
-                </span>
-                {current === item.index && (
-                  <span className="nb-marginnote ml-1 text-[15px]" style={{ "--rot": "0deg" } as React.CSSProperties}>
-                    ← you are here
-                  </span>
-                )}
+                <span className={`nb-t-sm ${current === item.index ? "nb-strong" : ""}`}>{item.label}</span>
               </button>
             </li>
           ))}
         </ul>
       </div>
 
+      <div className="relative mt-[var(--nb-line)]">
+        <DownloadScrap compact />
+        {/* the mug sat here while the list was being written */}
+        <div className="pointer-events-none absolute -top-12 right-0 w-[118px] text-center" aria-hidden="true">
+          <CoffeeRingDoodle size={112} />
+          <span
+            className="nb-marginnote block text-[13px] text-[var(--nb-ink-faint)]"
+            style={{ "--rot": "-3deg" } as React.CSSProperties}
+          >
+            coffee. sorry.
+          </span>
+        </div>
+      </div>
     </div>
   );
 }

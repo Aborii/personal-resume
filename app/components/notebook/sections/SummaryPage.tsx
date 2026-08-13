@@ -21,11 +21,15 @@ export default function SummaryPage({ summary }: { summary: string }) {
         {STATS.map((stat, i) => (
           <p
             key={stat.value}
-            className={`nb-nosplit flex items-baseline gap-4 leading-[var(--nb-line)] ${i > 0 ? "mt-[var(--nb-line)]" : ""}`}
+            /* fixed one-line height: the big numeral's line box would otherwise
+               run taller than the rule and push everything below it off-grid */
+            className={`nb-nosplit flex h-[var(--nb-line)] items-baseline gap-4 leading-[var(--nb-line)] ${
+              i > 0 ? "mt-[var(--nb-line)]" : ""
+            }`}
           >
-            <span className="relative inline-block px-2">
+            <span className="nb-hand relative inline-block px-2 text-[29px] font-bold leading-[var(--nb-line)]">
               <SketchEllipse className="absolute -left-2.5 -top-2 h-[calc(100%_+_14px)] w-[calc(100%_+_20px)] text-[var(--nb-accent)]" />
-              <span className="nb-hand relative text-[29px] font-bold">{stat.value}</span>
+              <span className="relative">{stat.value}</span>
             </span>
             <span className="nb-t-body text-[var(--nb-ink-soft)]">{stat.label}</span>
           </p>

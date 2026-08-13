@@ -10,7 +10,14 @@ import { DownloadDoodle, PrintDoodle } from "./doodles";
  * A slip torn off a pad and taped to the page, offering the
  * "boring" downloadable versions of the resume.
  */
-export default function DownloadScrap({ className }: { className?: string }) {
+export default function DownloadScrap({
+  className,
+  compact = false,
+}: {
+  className?: string;
+  /** single tight row — used where page height is scarce */
+  compact?: boolean;
+}) {
   const handlePDF = () => {
     try {
       generateResumePDF(resumeData);
@@ -39,9 +46,13 @@ export default function DownloadScrap({ className }: { className?: string }) {
   };
 
   return (
-    <div className={`nb-scrapwrap ${className ?? ""}`}>
+    <div className={`nb-scrapwrap ${compact ? "nb-scrapwrap--compact" : ""} ${className ?? ""}`}>
       <div className="nb-scrap">
-        <p className="nb-hand mb-2 text-[18px] leading-[22px] text-[var(--nb-ink-soft)]">
+        <p
+          className={`nb-hand text-[var(--nb-ink-soft)] ${
+            compact ? "mb-1 text-[16px] leading-[19px]" : "mb-2 text-[18px] leading-[22px]"
+          }`}
+        >
           keep a copy for later:
         </p>
         <div className="flex flex-wrap gap-2.5">
