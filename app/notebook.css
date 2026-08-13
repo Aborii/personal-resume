@@ -1064,10 +1064,10 @@ html[data-nb-visited] .nb-leftpage {
 
 .nb-card {
   position: relative;
-  background:
-    linear-gradient(to bottom, transparent 0 30px, rgba(214, 86, 92, 0.35) 30px 31.5px, transparent 31.5px),
-    repeating-linear-gradient(to bottom, transparent 0 21px, rgba(88, 124, 178, 0.16) 21px 22px),
-    var(--nb-paper-card);
+  /* plain card stock: its own ruling would sit at a different rhythm and
+     angle to the page's rules, and the two read as one broken line where
+     they meet at the card's edge */
+  background: var(--nb-paper-card);
   border-radius: 4px;
   box-shadow:
     0 7px 14px -8px var(--nb-shadow),
@@ -1323,13 +1323,14 @@ html[data-nb-visited] .nb-leftpage {
 }
 
 /* draw-on SVG strokes when a page activates */
+/* drawn by default — the animation supplies its own un-drawn start state,
+   so a page that is not animating never shows a blank stroke */
 .nb-draw {
   stroke-dasharray: var(--len, 300);
-  stroke-dashoffset: var(--len, 300);
 }
 
 [data-anim="true"] .nb-draw {
-  animation: nb-draw 0.9s ease 0.55s forwards;
+  animation: nb-draw 0.9s ease 0.55s backwards;
 }
 
 /* settled copies (flipping leaf faces): highlights and ink at their end state */
@@ -1360,6 +1361,9 @@ html[data-nb-visited] .nb-leftpage {
 }
 
 @keyframes nb-draw {
+  from {
+    stroke-dashoffset: var(--len, 300);
+  }
   to {
     stroke-dashoffset: 0;
   }

@@ -95,6 +95,8 @@ export default function Notebook() {
   );
 
   const [pos, setPos] = useState(1);
+  /** page whose ink should draw itself on arrival (null = arrive fully inked) */
+  const [animPage, setAnimPage] = useState<number | null>(1);
   const [flip, setFlip] = useState<Flip | null>(null);
   const [coverOpen, setCoverOpen] = useState<"closed" | "opening" | "open">("closed");
   const [visited, setVisited] = useState<ReadonlySet<number>>(() => new Set([0]));
@@ -272,6 +274,9 @@ export default function Notebook() {
         lastSectionRef.current = section;
         setVisited((prev) => new Set(prev).add(section));
       }
+      // ink only draws itself when turning forward into new pages; turning
+      // back lands on pages already written, so they arrive fully inked
+      setAnimPage(index > pos ? index : null);
 
       if (reduced) {
         setPos(index);
@@ -348,6 +353,7 @@ export default function Notebook() {
       if (target !== undefined && target !== pos) {
         // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time sync from the URL hash
         setPos(target);
+        setAnimPage(target);
         if (sec >= 0) {
           lastSectionRef.current = sec;
           setVisited((prev) => new Set(prev).add(sec));
@@ -573,7 +579,7 @@ export default function Notebook() {
                     {...(startOfSection && sectionDef ? { id: `nb-panel-${sectionDef.id}`, role: "tabpanel", "aria-labelledby": `nb-tabd-${sectionDef.id}` } : {})}
                     className="nb-sheetwrap"
                     data-active={i === rightShown ? "true" : "false"}
-                    data-anim={i === pos ? "true" : "false"}
+                    data-anim={i === pos && i === animPage ? "true" : "false"}
                     suppressHydrationWarning
                   >
                     <div className="nb-sheet nb-sheet--right">
