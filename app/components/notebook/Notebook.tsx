@@ -357,7 +357,7 @@ export default function Notebook() {
       const sec = sections.findIndex((s) => s.id === hash);
       const target = hash === "hello" ? (isDesktop() ? 1 : 0) : sec >= 0 ? sectionStart[sec] : undefined;
       if (target !== undefined && target !== pos) {
-        // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time sync from the URL hash
+        // one-time sync from the URL hash
         setPos(target);
         setAnimPage(target);
         if (sec >= 0) {

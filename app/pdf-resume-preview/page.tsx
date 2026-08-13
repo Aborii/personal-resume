@@ -66,7 +66,7 @@ export default function PdfResumePreviewPage() {
 
   // Generate PDF on mount
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time generation of the preview blob on mount
+    // one-time generation of the preview blob on mount
     regeneratePDF();
 
     // Cleanup blob URL on unmount
