@@ -59,7 +59,7 @@ export default function EducationPage({
         <h3 className="nb-hand text-[21px] font-bold leading-[var(--nb-line)]">Languages</h3>
         {Object.entries(languages).map(([language, level]) => (
           <div key={language} className="flex h-[var(--nb-line)] items-center gap-4">
-            <span className="w-[86px] text-[16px]">{language}</span>
+            <span className="nb-t-body w-[86px]">{language}</span>
             <LevelDots level={level} />
             <span className="nb-marginnote text-[15px]" style={{ "--rot": "0deg" } as React.CSSProperties}>
               {level.toLowerCase()}

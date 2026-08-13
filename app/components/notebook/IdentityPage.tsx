@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Hl, InkLink, WashiTape } from "./primitives";
+import { Hl, InkLink } from "./primitives";
 import {
   CheckboxDoodle,
   CoffeeRingDoodle,
@@ -43,8 +43,6 @@ export default function IdentityPage({
 
   return (
     <div className="relative">
-      <WashiTape className="-left-6 -top-4" color="rgba(250, 215, 130, 0.6)" rotate={-38} />
-
       <div className="nb-polaroid float-right ml-4 mt-1">
         <PaperclipDoodle className="absolute -top-4 left-4 z-10 rotate-[14deg] drop-shadow-sm" size={34} />
         <Image
@@ -58,21 +56,19 @@ export default function IdentityPage({
         <span className="nb-polaroid-caption">Dubai, UAE</span>
       </div>
 
-      <p className="nb-hand text-[18px] leading-[var(--nb-line)] text-[var(--nb-ink-soft)]">
-        this notebook belongs to
-      </p>
+      <p className="nb-hand nb-t-lg text-[var(--nb-ink-soft)]">this notebook belongs to</p>
       <h1 className="nb-hand text-[33px] font-bold leading-[var(--nb-line)]">{personalInfo.name}</h1>
-      <p className="text-[16px] leading-[var(--nb-line)]">
+      <p className="nb-t-body">
         <Hl>{titleMain}</Hl>
         {titleRest && (
           <>
             <br />
-            <span className="text-[14.5px] text-[var(--nb-ink-soft)]">{titleRest}</span>
+            <span className="nb-t-sm text-[var(--nb-ink-soft)]">{titleRest}</span>
           </>
         )}
       </p>
 
-      <div className="clear-right mt-[var(--nb-line)] text-[15.5px]">
+      <div className="nb-t-body clear-right mt-[var(--nb-line)]">
         <p className="flex items-center gap-2.5 leading-[var(--nb-line)]">
           <MapPinDoodle className="shrink-0 text-[var(--nb-ink-soft)]" />
           {personalInfo.location}
@@ -91,7 +87,7 @@ export default function IdentityPage({
         </p>
       </div>
 
-      <div className="flex flex-wrap gap-x-5 text-[15px] leading-[var(--nb-line)]">
+      <div className="nb-t-sm flex flex-wrap gap-x-5">
         <span className="flex items-center gap-1.5">
           <GithubDoodle className="text-[var(--nb-ink-soft)]" size={17} />
           <InkLink href={personalInfo.links.github}>{githubHandle}</InkLink>
@@ -120,7 +116,7 @@ export default function IdentityPage({
                 aria-current={current === item.index ? "page" : undefined}
               >
                 <CheckboxDoodle checked={visited.has(item.index)} className="shrink-0" />
-                <span className={`text-[16px] ${current === item.index ? "nb-strong" : ""}`}>
+                <span className={`nb-t-body ${current === item.index ? "nb-strong" : ""}`}>
                   {item.label}
                 </span>
                 {current === item.index && (

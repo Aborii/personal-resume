@@ -13,7 +13,7 @@ export default function SummaryPage({ summary }: { summary: string }) {
     <>
       <SectionTitle note="the elevator pitch ↓">About me</SectionTitle>
 
-      <p className="text-[18px]">
+      <p className="nb-t-lg">
         <NotebookText>{summary}</NotebookText>
       </p>
 
@@ -24,7 +24,7 @@ export default function SummaryPage({ summary }: { summary: string }) {
               <SketchEllipse className="absolute -left-2.5 -top-2 h-[calc(100%_+_14px)] w-[calc(100%_+_20px)] text-[var(--nb-accent)]" />
               <span className="nb-hand relative text-[29px] font-bold">{stat.value}</span>
             </span>
-            <span className="text-[16px] text-[var(--nb-ink-soft)]">{stat.label}</span>
+            <span className="nb-t-body text-[var(--nb-ink-soft)]">{stat.label}</span>
           </p>
         ))}
       </div>

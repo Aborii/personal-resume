@@ -293,13 +293,14 @@
   overscroll-behavior: contain;
   padding: var(--nb-line) 30px calc(var(--nb-line) * 2) 68px;
   font-family: var(--font-patrick), var(--font-caveat), cursive;
-  font-size: 17px;
+  /* type sizes derive from the line grid so text sits on the rules at every size */
+  font-size: calc(var(--nb-line) * 0.567);
   line-height: var(--nb-line);
   color: var(--nb-ink);
   scrollbar-width: thin;
   scrollbar-color: rgba(90, 106, 140, 0.35) transparent;
   /* ruled lines + red margin line scroll with the content;
-     the -5px shift puts each rule right under the text baseline */
+     the proportional shift puts each rule right under the text baseline */
   background-image:
     linear-gradient(to right, transparent 0 52px, var(--nb-mline) 52px 54px, transparent 54px),
     repeating-linear-gradient(
@@ -308,7 +309,23 @@
       var(--nb-rule) calc(var(--nb-line) - 1px) var(--nb-line)
     );
   background-attachment: local, local;
-  background-position: 0 0, 0 -5px;
+  background-position: 0 0, 0 calc(var(--nb-line) * -0.167);
+}
+
+/* line-grid type scale: sizes as fractions of the ruled line height */
+.nb-t-body {
+  font-size: calc(var(--nb-line) * 0.567);
+  line-height: var(--nb-line);
+}
+
+.nb-t-sm {
+  font-size: calc(var(--nb-line) * 0.52);
+  line-height: var(--nb-line);
+}
+
+.nb-t-lg {
+  font-size: calc(var(--nb-line) * 0.6);
+  line-height: var(--nb-line);
 }
 
 .nb-sheet-inner::-webkit-scrollbar {
@@ -337,7 +354,7 @@
       transparent 0 calc(var(--nb-line) - 1px),
       var(--nb-rule) calc(var(--nb-line) - 1px) var(--nb-line)
     );
-  background-position: 0 0, 0 -5px;
+  background-position: 0 0, 0 calc(var(--nb-line) * -0.167);
 }
 
 /* blank verso: small handwritten page number at the bottom */
@@ -1107,12 +1124,16 @@ html[data-nb-visited] .nb-leftpage {
    Torn paper scrap + hand buttons
    ============================================================ */
 
-.nb-scrap {
+.nb-scrapwrap {
   position: relative;
   display: inline-block;
-  background: var(--nb-paper-card);
-  padding: 22px 20px 16px;
   transform: rotate(-0.8deg);
+}
+
+.nb-scrap {
+  position: relative;
+  background: var(--nb-paper-card);
+  padding: 24px 20px 16px;
   filter: drop-shadow(0 5px 7px rgba(60, 40, 15, 0.22));
   /* torn off a pad: ragged top edge, clean sides */
   clip-path: polygon(
@@ -1350,7 +1371,6 @@ html[data-nb-visited] .nb-leftpage {
 
   .nb-sheet-inner {
     padding: var(--nb-line) 18px calc(var(--nb-line) * 2) 52px;
-    font-size: 16px;
     background-image:
       linear-gradient(to right, transparent 0 40px, var(--nb-mline) 40px 41.5px, transparent 41.5px),
       repeating-linear-gradient(
@@ -1358,7 +1378,7 @@ html[data-nb-visited] .nb-leftpage {
         transparent 0 calc(var(--nb-line) - 1px),
         var(--nb-rule) calc(var(--nb-line) - 1px) var(--nb-line)
       );
-    background-position: 0 0, 0 -5px;
+    background-position: 0 0, 0 calc(var(--nb-line) * -0.167);
   }
 
   /* spiral binding along the left edge: punched hole + wire ring per ruled line */

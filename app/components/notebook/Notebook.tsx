@@ -240,6 +240,22 @@ export default function Notebook() {
     return () => window.clearTimeout(timer);
   }, [coverOpen]);
 
+  // growing from mobile to the two-page spread: the "Me" sheet becomes the
+  // inside cover, so land on About instead of showing the identity twice
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const onChange = () => {
+      if (!mq.matches) return;
+      setCurrent((c) => {
+        if (c !== 0) return c;
+        window.history.replaceState(null, "", "#about");
+        return 1;
+      });
+    };
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+
   // arrow-key page turns
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {

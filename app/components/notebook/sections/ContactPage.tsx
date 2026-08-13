@@ -31,7 +31,7 @@ export default function ContactPage({ personalInfo }: { personalInfo: ResumeData
           Let&apos;s <Hl color="y">build something</Hl>.
         </p>
 
-        <p className="mt-[var(--nb-line)] max-w-[430px] text-[16.5px]">
+        <p className="nb-t-body mt-[var(--nb-line)] max-w-[430px]">
           The notebook is full, but I&apos;m just getting started. If you have a role, a project, or a hard
           problem with real-time data — write to me.
         </p>
@@ -43,13 +43,13 @@ export default function ContactPage({ personalInfo }: { personalInfo: ResumeData
               {personalInfo.email}
             </InkLink>
           </p>
-          <p className="flex items-center gap-3 leading-[var(--nb-line)]">
+          <p className="nb-t-body flex items-center gap-3">
             <PhoneDoodle className="shrink-0 text-[var(--nb-ink-soft)]" size={20} />
-            <InkLink href={`tel:${personalInfo.phone.replace(/\s+/g, "")}`} external={false} className="text-[16.5px]">
+            <InkLink href={`tel:${personalInfo.phone.replace(/\s+/g, "")}`} external={false}>
               {personalInfo.phone}
             </InkLink>
           </p>
-          <p className="flex items-center gap-3 text-[15.5px] leading-[var(--nb-line)] text-[var(--nb-ink-soft)]">
+          <p className="nb-t-sm flex items-center gap-3 text-[var(--nb-ink-soft)]">
             <MapPinDoodle className="shrink-0" size={20} />
             {personalInfo.location}
           </p>
@@ -86,7 +86,7 @@ export default function ContactPage({ personalInfo }: { personalInfo: ResumeData
           <p className="nb-hand -mt-1 text-[19px] leading-[var(--nb-line)]">— Abdullah</p>
         </div>
 
-        <p className="mt-[var(--nb-line)] text-center text-[13.5px] leading-[var(--nb-line)] text-[var(--nb-ink-faint)]">
+        <p className="nb-t-sm mt-[var(--nb-line)] text-center text-[var(--nb-ink-faint)]">
           © {year} {personalInfo.name} — building the future, one line of code at a time.
         </p>
       </div>

@@ -39,26 +39,29 @@ export default function DownloadScrap({ className }: { className?: string }) {
   };
 
   return (
-    <div className={`nb-scrap ${className ?? ""}`}>
-      <WashiTape color="rgba(216, 210, 198, 0.65)" rotate={-45} className="-left-8 -top-1" style={{ width: 62 }} />
-      <WashiTape color="rgba(216, 210, 198, 0.65)" rotate={42} className="-right-8 -top-1" style={{ width: 62 }} />
-      <p className="nb-hand mb-2.5 text-[18px] leading-[22px] text-[var(--nb-ink-soft)]">
-        keep a copy for later:
-      </p>
-      <div className="flex flex-wrap gap-2.5">
-        <button type="button" className="nb-scrapbtn" onClick={handlePDF}>
-          <DownloadDoodle />
-          PDF
-        </button>
-        <button type="button" className="nb-scrapbtn" onClick={handleDOCX}>
-          <DownloadDoodle />
-          DOCX
-        </button>
-        <button type="button" className="nb-scrapbtn" onClick={handlePrint}>
-          <PrintDoodle />
-          Print
-        </button>
+    <div className={`nb-scrapwrap ${className ?? ""}`}>
+      <div className="nb-scrap">
+        <p className="nb-hand mb-2.5 text-[18px] leading-[22px] text-[var(--nb-ink-soft)]">
+          keep a copy for later:
+        </p>
+        <div className="flex flex-wrap gap-2.5">
+          <button type="button" className="nb-scrapbtn" onClick={handlePDF}>
+            <DownloadDoodle />
+            PDF
+          </button>
+          <button type="button" className="nb-scrapbtn" onClick={handleDOCX}>
+            <DownloadDoodle />
+            DOCX
+          </button>
+          <button type="button" className="nb-scrapbtn" onClick={handlePrint}>
+            <PrintDoodle />
+            Print
+          </button>
+        </div>
       </div>
+      {/* the tape holding the slip to the page */}
+      <WashiTape color="rgba(238, 214, 150, 0.62)" rotate={-42} className="-left-6 -top-2" style={{ width: 66 }} />
+      <WashiTape color="rgba(238, 214, 150, 0.62)" rotate={38} className="-right-6 -top-2" style={{ width: 66 }} />
     </div>
   );
 }

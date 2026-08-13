@@ -71,16 +71,16 @@ export default function ExperiencePage({ experiences }: { experiences: Experienc
               <span className={`nb-chip ${exp.current ? "nb-chip--now" : ""}`}>{exp.period}</span>
             </div>
 
-            <p className="text-[16px] leading-[var(--nb-line)]">
+            <p className="nb-t-body">
               <strong className="nb-strong">{exp.company}</strong>
-              <span className="text-[14px] text-[var(--nb-ink-faint)]"> — {exp.location}</span>
+              <span className="nb-t-sm text-[var(--nb-ink-faint)]"> — {exp.location}</span>
             </p>
 
             <ul>
               {exp.responsibilities.map((responsibility, ri) => (
                 <li key={ri} className="flex items-start gap-2">
                   <ArrowBullet className="mt-[10px] shrink-0 text-[var(--nb-ink-soft)]" />
-                  <span className="text-[16px] leading-[var(--nb-line)]">
+                  <span className="nb-t-body">
                     <NotebookText>{responsibility}</NotebookText>
                   </span>
                 </li>
