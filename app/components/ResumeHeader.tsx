@@ -27,13 +27,15 @@ const icons = {
 
 export default function ResumeHeader({ personalInfo }: HeaderProps) {
   return (
-    <div className="bg-linear-to-r from-slate-800 to-emerald-900 dark:from-gray-800 dark:to-green-900 text-white px-4 py-8 sm:px-6 md:px-8 lg:py-12 relative">
-      <div className="absolute top-4 right-4">
-        <div className="scale-75 sm:scale-90">
+    <div className="bg-linear-to-r from-slate-800 to-emerald-900 dark:from-gray-800 dark:to-green-900 text-white px-4 py-8 sm:px-6 md:px-8 lg:py-12">
+      <div className="flex flex-col gap-6">
+        {/* Download Button - Mobile */}
+        <div className="flex justify-center sm:justify-end sm:hidden">
           <DownloadPDFButton />
         </div>
-      </div>
-      <div className="flex flex-col sm:flex-row gap-6 items-center sm:items-start ">
+        
+        {/* Main Header Content */}
+        <div className="flex flex-col sm:flex-row gap-6 items-center sm:items-start">
         <div className="shrink-0">
           <Image
             src="/Abdullah_Almofleh_image.jpg"
@@ -45,8 +47,16 @@ export default function ResumeHeader({ personalInfo }: HeaderProps) {
           />
         </div>
         <div className="flex-1 text-center sm:text-left">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white">{personalInfo.name}</h1>
-          <p className="text-base sm:text-lg md:text-xl text-gray-200 mt-2">{personalInfo.title}</p>
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+            <div>
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white">{personalInfo.name}</h1>
+              <p className="text-base sm:text-lg md:text-xl text-gray-200 mt-2">{personalInfo.title}</p>
+            </div>
+            {/* Download Button - Desktop */}
+            <div className="hidden sm:block">
+              <DownloadPDFButton />
+            </div>
+          </div>
           <div className="flex flex-wrap justify-center sm:justify-start items-center gap-3 sm:gap-4 md:gap-6 text-gray-200 mt-4 text-sm sm:text-base">
             <div className="flex items-center gap-2">
               {icons.location}
@@ -88,6 +98,7 @@ export default function ResumeHeader({ personalInfo }: HeaderProps) {
               GitHub
             </a>
           </div>
+        </div>
         </div>
       </div>
     </div>
