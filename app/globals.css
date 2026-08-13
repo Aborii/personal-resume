@@ -1,4 +1,7 @@
 @import "tailwindcss";
+@import "./notebook.css";
+
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
   --background: #ffffff;
