@@ -1,5 +1,5 @@
-import { SectionTitle, Hl, MarginNote } from "../primitives";
-import { StapleDoodle, ArrowCurve } from "../doodles";
+import { SectionTitle, Hl, MarginNote, WashiTape } from "../primitives";
+import { ArrowCurve } from "../doodles";
 import type { ResumeData } from "../../../types/resume-data";
 
 function LevelDots({ level }: { level: string }) {
@@ -38,8 +38,8 @@ export default function EducationPage({
         </div>
 
         <div className="nb-cert">
-          <StapleDoodle className="absolute -top-1.5 left-8 rotate-[8deg]" />
-          <StapleDoodle className="absolute -top-1.5 right-8 rotate-[-6deg]" />
+          <WashiTape color="rgba(216, 210, 198, 0.65)" rotate={-40} className="-left-5 -top-2" style={{ width: 58 }} />
+          <WashiTape color="rgba(216, 210, 198, 0.65)" rotate={38} className="-right-5 -top-2" style={{ width: 58 }} />
 
           <p className="nb-hand text-center text-[17px] text-[var(--nb-ink-soft)]">this certifies that Abdullah earned a</p>
           <p className="nb-hand mt-1 text-center text-[24px] font-bold leading-[30px]">{education.degree}</p>

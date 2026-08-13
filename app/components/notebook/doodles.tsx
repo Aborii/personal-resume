@@ -116,15 +116,6 @@ export function BinderClipDoodle({ className, size = 34, style }: DoodleProps) {
   );
 }
 
-export function StapleDoodle({ className, size = 22, style }: DoodleProps) {
-  return (
-    <svg width={size} height={size * 0.45} viewBox="0 0 22 10" className={className} style={style} aria-hidden="true">
-      <path d="M3 8.5 L 3 3 L 19 3 L 19 8.5" fill="none" stroke="#7d8494" strokeWidth="2.6" strokeLinecap="round" />
-      <path d="M3 8.5 L 3 3 L 19 3 L 19 8.5" fill="none" stroke="rgba(0,0,0,0.25)" strokeWidth="1" />
-    </svg>
-  );
-}
-
 export function CoffeeRingDoodle({ className, size = 120, style }: DoodleProps) {
   return (
     <svg width={size} height={size * 0.95} viewBox="0 0 120 114" className={className} style={style} aria-hidden="true">

@@ -573,6 +573,7 @@ export default function Notebook() {
                     {...(startOfSection && sectionDef ? { id: `nb-panel-${sectionDef.id}`, role: "tabpanel", "aria-labelledby": `nb-tabd-${sectionDef.id}` } : {})}
                     className="nb-sheetwrap"
                     data-active={i === rightShown ? "true" : "false"}
+                    data-anim={i === pos ? "true" : "false"}
                     suppressHydrationWarning
                   >
                     <div className="nb-sheet nb-sheet--right">

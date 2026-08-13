@@ -305,8 +305,8 @@
     linear-gradient(to right, transparent 0 52px, var(--nb-mline) 52px 54px, transparent 54px),
     repeating-linear-gradient(
       to bottom,
-      transparent 0 calc(var(--nb-line) - 1px),
-      var(--nb-rule) calc(var(--nb-line) - 1px) var(--nb-line)
+      transparent 0 calc(var(--nb-line) - 1.5px),
+      var(--nb-rule) calc(var(--nb-line) - 1.5px) var(--nb-line)
     );
   background-attachment: local, local;
   background-position: 0 0, 0 calc(var(--nb-line) * -0.167);
@@ -424,8 +424,8 @@
     linear-gradient(to left, transparent 0 52px, var(--nb-mline) 52px 54px, transparent 54px),
     repeating-linear-gradient(
       to bottom,
-      transparent 0 calc(var(--nb-line) - 1px),
-      var(--nb-rule) calc(var(--nb-line) - 1px) var(--nb-line)
+      transparent 0 calc(var(--nb-line) - 1.5px),
+      var(--nb-rule) calc(var(--nb-line) - 1.5px) var(--nb-line)
     );
   background-position: 0 0, 0 calc(var(--nb-line) * -0.167);
 }
@@ -564,8 +564,8 @@
     linear-gradient(to left, transparent 0 52px, var(--nb-mline) 52px 54px, transparent 54px),
     repeating-linear-gradient(
       to bottom,
-      transparent 0 calc(var(--nb-line) - 1px),
-      var(--nb-rule) calc(var(--nb-line) - 1px) var(--nb-line)
+      transparent 0 calc(var(--nb-line) - 1.5px),
+      var(--nb-rule) calc(var(--nb-line) - 1.5px) var(--nb-line)
     );
 }
 
@@ -906,7 +906,7 @@ html[data-nb-visited] .nb-leftpage {
 }
 
 /* highlighter sweeps in when a page becomes the active one */
-[data-active="true"] .nb-hl {
+[data-anim="true"] .nb-hl {
   animation: nb-hl-sweep 0.6s cubic-bezier(0.25, 0.6, 0.3, 1) both;
   animation-delay: calc(0.5s + min(var(--hl-i, 0), 9) * 0.1s);
 }
@@ -1328,7 +1328,7 @@ html[data-nb-visited] .nb-leftpage {
   stroke-dashoffset: var(--len, 300);
 }
 
-[data-active="true"] .nb-draw {
+[data-anim="true"] .nb-draw {
   animation: nb-draw 0.9s ease 0.55s forwards;
 }
 
@@ -1448,8 +1448,8 @@ html[data-nb-visited] .nb-leftpage {
       linear-gradient(to right, transparent 0 40px, var(--nb-mline) 40px 41.5px, transparent 41.5px),
       repeating-linear-gradient(
         to bottom,
-        transparent 0 calc(var(--nb-line) - 1px),
-        var(--nb-rule) calc(var(--nb-line) - 1px) var(--nb-line)
+        transparent 0 calc(var(--nb-line) - 1.5px),
+        var(--nb-rule) calc(var(--nb-line) - 1.5px) var(--nb-line)
       );
     background-position: 0 0, 0 calc(var(--nb-line) * -0.167);
   }
