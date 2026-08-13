@@ -26,11 +26,16 @@ export default function AchievementsPage({ achievements }: { achievements: strin
       <SectionTitle note="fresh off the sticky pad">Things I&apos;m proud of</SectionTitle>
 
       {rows.map((row, r) => (
-        <div key={r} className="nb-nosplit mb-5 flex flex-wrap items-start gap-5 pt-3">
-          {row.map(({ text, i }) => {
+        <div key={r} className="nb-nosplit-sm mb-5 pt-3 leading-none">
+          {row.map(({ text, i }, cell) => {
             const { head, body } = splitAchievement(text);
             return (
-              <div key={i} className="min-w-[220px] flex-1">
+              <div
+                key={i}
+                className={`inline-block align-top ${
+                  row.length === 1 ? "w-full" : `w-full sm:w-[calc(50%_-_10px)] ${cell === 0 ? "sm:mr-5" : ""} ${cell === 1 ? "max-sm:mt-5" : ""}`
+                }`}
+              >
                 <StickyNote
                   color={COLORS[i % COLORS.length] ?? "yellow"}
                   rotate={ROTATIONS[i % ROTATIONS.length] ?? -2}

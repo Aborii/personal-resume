@@ -371,11 +371,18 @@
   line-height: var(--nb-line);
 }
 
-/* blocks that must never tear across a page break; the transform makes
-   them monolithic for fragmentation, so engines can never slice them */
+/* blocks that must never tear across a page break */
 .nb-nosplit {
   break-inside: avoid;
-  transform: translateZ(0);
+}
+
+/* only unsplittable from sm up (where the row is a single side-by-side line);
+   stacked mobile rows may break between cards, which are line boxes and
+   therefore whole either way */
+@media (min-width: 640px) {
+  .nb-nosplit-sm {
+    break-inside: avoid;
+  }
 }
 
 /* line-grid type scale: sizes as fractions of the ruled line height */

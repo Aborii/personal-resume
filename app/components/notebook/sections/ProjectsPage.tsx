@@ -20,8 +20,8 @@ export default function ProjectsPage({ projects }: { projects: ProjectItem[] }) 
       <SectionTitle note="taped in — don&apos;t peel">Notable projects</SectionTitle>
 
       {chunkPairs(projects.map((project, i) => ({ project, i }))).map((row, r) => (
-        <div key={r} className="nb-nosplit mb-[var(--nb-line)] flex flex-wrap items-start gap-5 pt-3">
-          {row.map(({ project, i }) => {
+        <div key={r} className="nb-nosplit-sm mb-[var(--nb-line)] pt-3 leading-none">
+          {row.map(({ project, i }, cell) => {
             const [stack, ...rest] = project.details;
             const stackChips = (stack ?? "")
               .split(/[,]/)
@@ -29,7 +29,12 @@ export default function ProjectsPage({ projects }: { projects: ProjectItem[] }) 
               .filter(Boolean);
 
             return (
-            <div key={project.name} className="min-w-[220px] flex-1">
+            <div
+              key={project.name}
+              className={`inline-block align-top ${
+                row.length === 1 ? "w-full" : `w-full sm:w-[calc(50%_-_10px)] ${cell === 0 ? "sm:mr-5" : ""} ${cell === 1 ? "max-sm:mt-5" : ""}`
+              }`}
+            >
               <div
                 className="nb-card"
                 style={{ "--rot": `${ROTATIONS[i % ROTATIONS.length]}deg` } as React.CSSProperties}
