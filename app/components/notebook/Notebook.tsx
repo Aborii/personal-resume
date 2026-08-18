@@ -365,6 +365,13 @@ export default function Notebook() {
           setVisited((prev) => new Set(prev).add(sec));
         }
       }
+    } else if (!isDesktop()) {
+      // a phone shows one page at a time, so it opens on the identity page;
+      // on a spread that page is the inside cover, with About facing it
+      setPos(0);
+      setAnimPage(0);
+      // nothing has been read yet, so no section is ticked off
+      setVisited(new Set());
     }
 
     if (visitedAtLoad) return undefined;
@@ -618,20 +625,11 @@ export default function Notebook() {
               {pos + 2 <= lastRight || (!isFiller(pos) && stepReal(pos, 1) !== null) ? (
                 <button
                   type="button"
-                  className="nb-corner nb-corner--next"
+                  className="nb-corner nb-corner--next hidden lg:block"
                   onClick={stepNext}
                   aria-label="Turn to the next page"
                 />
               ) : null}
-              {pos > 0 && (
-                <button
-                  type="button"
-                  className="nb-corner nb-corner--prev lg:hidden"
-                  onClick={stepPrev}
-                  aria-label="Turn back a page"
-                />
-              )}
-
               {flip && (
                 <React.Fragment key={flip.key}>
                   <motion.div
