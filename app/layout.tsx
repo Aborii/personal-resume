@@ -89,11 +89,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Marks same-session visitors before first paint so the notebook renders already-open
-            (the cover animation plays once per browser session). */}
+        {/* Runs before first paint: marks same-session visitors so the cover animation plays
+            once per session, and marks narrow viewports so a phone does not paint the
+            spread's opening page before React picks its own. */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{if(sessionStorage.getItem("nb-open"))document.documentElement.setAttribute("data-nb-visited","")}catch(e){}`,
+            __html: `try{var d=document.documentElement;if(sessionStorage.getItem("nb-open"))d.setAttribute("data-nb-visited","");if(!location.hash&&!matchMedia("(min-width: 1024px)").matches)d.setAttribute("data-nb-narrow","")}catch(e){}`,
           }}
         />
       </head>

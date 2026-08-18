@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import resumeData from "../../../data/resumeData.json";
 import { generateResumePDFForPrint } from "../../utils/pdfGenerator";
@@ -52,6 +52,9 @@ function isDesktop() {
 }
 
 const emptySubscribe = () => () => {};
+
+/** layout effects do not run while prerendering, so fall back there */
+const useBeforePaint = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 /** hydration-safe read of the pre-paint "seen this session" marker */
 function useVisitedAtLoad() {
@@ -350,6 +353,22 @@ export default function Notebook() {
     }
   }, [pos, stepReal]);
 
+  // Before the first paint: a phone opens on the identity page, which on a
+  // spread is the inside cover rather than a page of its own. The exported HTML
+  // cannot know the viewport, so <head> marks narrow ones and CSS holds the
+  // right page until this runs — otherwise the opening page is visibly wrong
+  // for as long as it takes the bundle to hydrate.
+  useBeforePaint(() => {
+    const hash = window.location.hash.replace(/^#/, "");
+    if (!hash && !isDesktop()) {
+      setPos(0);
+      setAnimPage(0);
+      // nothing has been read yet, so no section is ticked off
+      setVisited(new Set());
+    }
+    document.documentElement.removeAttribute("data-nb-narrow");
+  }, []);
+
   // first mount: resolve deep links, then schedule the cover auto-open
   useEffect(() => {
     const hash = window.location.hash.replace(/^#/, "");
@@ -365,13 +384,6 @@ export default function Notebook() {
           setVisited((prev) => new Set(prev).add(sec));
         }
       }
-    } else if (!isDesktop()) {
-      // a phone shows one page at a time, so it opens on the identity page;
-      // on a spread that page is the inside cover, with About facing it
-      setPos(0);
-      setAnimPage(0);
-      // nothing has been read yet, so no section is ticked off
-      setVisited(new Set());
     }
 
     if (visitedAtLoad) return undefined;
@@ -602,7 +614,7 @@ export default function Notebook() {
                   <div
                     key={page.type === "content" ? `c-${page.section}-${page.col}` : `${page.type}-${i}`}
                     {...(startOfSection && sectionDef ? { id: `nb-panel-${sectionDef.id}`, role: "tabpanel", "aria-labelledby": `nb-tabd-${sectionDef.id}` } : {})}
-                    className="nb-sheetwrap"
+                    className={`nb-sheetwrap ${page.type === "me" ? "nb-sheetwrap--me" : ""}`}
                     data-active={i === rightShown ? "true" : "false"}
                     data-anim={i === pos && i === animPage ? "true" : "false"}
                     suppressHydrationWarning

@@ -1589,3 +1589,28 @@ html[data-nb-visited] .nb-leftpage {
     overflow: visible;
   }
 }
+
+/* ============================================================
+   Pre-paint opening page (narrow viewports)
+   The exported HTML opens on the spread's first page, which is
+   correct for a two-page layout but wrong for a phone, where the
+   identity page is a page of its own rather than the inside cover.
+   The marker is set in <head> and removed by React before the
+   first paint, so these rules only ever cover that gap.
+   ============================================================ */
+
+html[data-nb-narrow] .nb-sheetwrap[data-active="true"] {
+  visibility: hidden;
+}
+
+html[data-nb-narrow] .nb-sheetwrap--me {
+  visibility: visible;
+}
+
+html[data-nb-narrow] .nb-tabs-m .nb-tab-m[aria-selected="true"] {
+  transform: translateY(5px);
+}
+
+html[data-nb-narrow] .nb-tabs-m .nb-tab-m:first-child {
+  transform: translateY(0);
+}
