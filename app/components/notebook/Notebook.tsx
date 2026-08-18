@@ -53,6 +53,15 @@ function isDesktop() {
 
 const emptySubscribe = () => () => {};
 
+/**
+ * A section's rendered content. Every page column, leaf face and measure
+ * flow shows one of these; memoising it means a navigation re-render
+ * touches none of them — the content is static per section.
+ */
+const SectionBody = React.memo(function SectionBody({ section }: { section: Section }) {
+  return <>{section.render()}</>;
+});
+
 /** layout effects do not run while prerendering, so fall back there */
 const useBeforePaint = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
@@ -503,7 +512,7 @@ export default function Notebook() {
     [sections],
   );
 
-  const identity = useCallback(
+  const identityEl = useMemo(
     () => (
       <IdentityPage
         personalInfo={resumeData.personalInfo}
@@ -536,19 +545,22 @@ export default function Notebook() {
       ...(metrics ? { "--nb-colw": `${metrics.colw}px`, "--nb-colh": `${metrics.colh}px` } : {}),
     }) as React.CSSProperties;
 
-  const renderContentInner = (page: Extract<PageDef, { type: "content" }>) => (
-    <div className="nb-sheet-inner nb-pageview">
-      <div className="nb-colflow" style={colStyle(page.col)}>
-        {sections[page.section]?.render()}
+  const renderContentInner = (page: Extract<PageDef, { type: "content" }>) => {
+    const section = sections[page.section];
+    return (
+      <div className="nb-sheet-inner nb-pageview">
+        <div className="nb-colflow" style={colStyle(page.col)}>
+          {section && <SectionBody section={section} />}
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   /** the identity page flows across columns too, so it never scrolls */
   const renderIdentityInner = (col: number) => (
     <div className="nb-sheet-inner nb-pageview">
       <div className="nb-colflow" style={colStyle(col)}>
-        {identity()}
+        {identityEl}
       </div>
     </div>
   );
@@ -711,16 +723,25 @@ export default function Notebook() {
           {/* hidden measuring rig: how many page-columns does each flow need?
               The identity page is measured first, then every section. */}
           <div ref={measureRef} className="nb-measure" aria-hidden="true" inert>
-            {metrics &&
-              [{ id: "hello", render: identity }, ...sections].map((s) => (
+            {metrics && (
+              <>
                 <div
-                  key={s.id}
                   className="nb-measure-flow"
                   style={{ "--nb-colw": `${metrics.colw}px`, "--nb-colh": `${metrics.colh}px` } as React.CSSProperties}
                 >
-                  {s.render()}
+                  {identityEl}
                 </div>
-              ))}
+                {sections.map((s) => (
+                  <div
+                    key={s.id}
+                    className="nb-measure-flow"
+                    style={{ "--nb-colw": `${metrics.colw}px`, "--nb-colh": `${metrics.colh}px` } as React.CSSProperties}
+                  >
+                    <SectionBody section={s} />
+                  </div>
+                ))}
+              </>
+            )}
           </div>
         </div>
       </div>
