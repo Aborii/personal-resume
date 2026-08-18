@@ -622,7 +622,7 @@ export default function Notebook() {
                 );
               })}
 
-              {pos + 2 <= lastRight || (!isFiller(pos) && stepReal(pos, 1) !== null) ? (
+              {pos + 2 <= lastRight ? (
                 <button
                   type="button"
                   className="nb-corner nb-corner--next hidden lg:block"
