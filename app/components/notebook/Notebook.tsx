@@ -210,22 +210,25 @@ export default function Notebook() {
       const n = Math.max(1, Math.round((flow.scrollWidth + COL_GAP) / (metrics.colw + COL_GAP)));
       next.push(n);
     });
-     
     setCounts((prev) => (prev && prev.length === next.length && prev.every((v, i) => v === next[i]) ? prev : next));
-  }, [metrics, fontsReady, sections]);
 
-  // when pagination changes, stay on the section the reader was in
-  useEffect(() => {
-    if (!counts) return;
-    const section = lastSectionRef.current;
-     
+    // Re-anchor to the section being read in the same commit as the new page
+    // count. Repagination renumbers every page, so a position kept across it
+    // points at whatever now sits at that index — correcting in a later effect
+    // renders one frame of the wrong section before it settles.
+    const nextPages = buildPages(next[0] ?? 1, next.slice(1));
+    const starts: number[] = [];
+    nextPages.forEach((page, i) => {
+      if (page.type === "content" && page.col === 0) starts[page.section] = i;
+    });
     setPos((p) => {
       if (p === 0) return p;
-      const target = sectionStart[section] ?? 1;
-      return sectionOfPage(p) === section ? p : target;
+      const section = lastSectionRef.current;
+      const at = nextPages[p];
+      if (at?.type === "content" && at.section === section) return p;
+      return starts[section] ?? 1;
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [counts]);
+  }, [metrics, fontsReady, sections]);
 
   // ---------- storage / cover ----------
   const markVisitedStorage = useCallback(() => {
@@ -353,30 +356,20 @@ export default function Notebook() {
     }
   }, [pos, stepReal]);
 
-  // Before the first paint: a phone opens on the identity page, which on a
-  // spread is the inside cover rather than a page of its own. The exported HTML
-  // cannot know the viewport, so <head> marks narrow ones and CSS holds the
-  // right page until this runs — otherwise the opening page is visibly wrong
-  // for as long as it takes the bundle to hydrate.
+  // Before the first paint: choose the opening page. The exported HTML is one
+  // file for every reader, so it cannot know the viewport or the URL hash and
+  // always paints the spread's first page. <head> marks the two cases where
+  // that is wrong — a narrow viewport, which opens on the identity page, and a
+  // deep link, which opens on its own section — and CSS holds the paper blank
+  // until this effect lands. Running before paint rather than after is the
+  // whole point: an effect would leave the wrong page on screen for as long as
+  // the bundle takes to hydrate.
   useBeforePaint(() => {
     const hash = window.location.hash.replace(/^#/, "");
-    if (!hash && !isDesktop()) {
-      setPos(0);
-      setAnimPage(0);
-      // nothing has been read yet, so no section is ticked off
-      setVisited(new Set());
-    }
-    document.documentElement.removeAttribute("data-nb-narrow");
-  }, []);
-
-  // first mount: resolve deep links, then schedule the cover auto-open
-  useEffect(() => {
-    const hash = window.location.hash.replace(/^#/, "");
     if (hash) {
-      const sec = sections.findIndex((s) => s.id === hash);
+      const sec = sections.findIndex((s2) => s2.id === hash);
       const target = hash === "hello" ? (isDesktop() ? 1 : 0) : sec >= 0 ? sectionStart[sec] : undefined;
       if (target !== undefined && target !== pos) {
-        // one-time sync from the URL hash
         setPos(target);
         setAnimPage(target);
         if (sec >= 0) {
@@ -384,8 +377,19 @@ export default function Notebook() {
           setVisited((prev) => new Set(prev).add(sec));
         }
       }
+    } else if (!isDesktop()) {
+      setPos(0);
+      setAnimPage(0);
+      // nothing has been read yet, so no section is ticked off
+      setVisited(new Set());
     }
+    const root = document.documentElement;
+    root.removeAttribute("data-nb-narrow");
+    root.removeAttribute("data-nb-await");
+  }, []);
 
+  // first mount: schedule the cover auto-open
+  useEffect(() => {
     if (visitedAtLoad) return undefined;
     if (reduced) {
       markVisitedStorage();

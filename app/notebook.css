@@ -1614,3 +1614,18 @@ html[data-nb-narrow] .nb-tabs-m .nb-tab-m[aria-selected="true"] {
 html[data-nb-narrow] .nb-tabs-m .nb-tab-m:first-child {
   transform: translateY(0);
 }
+
+/* A deep link cannot be resolved before React knows how the sections
+   paginate, so the paper stays blank rather than showing the wrong
+   section — the notebook is on screen, just not yet written on. */
+html[data-nb-await] .nb-sheetwrap {
+  visibility: hidden;
+}
+
+html[data-nb-await] .nb-tabs-m .nb-tab-m[aria-selected="true"] {
+  transform: translateY(5px);
+}
+
+html[data-nb-await] .nb-tabs-d .nb-tab-d[aria-selected="true"] {
+  width: 78px;
+}
