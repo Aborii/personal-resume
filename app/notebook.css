@@ -1607,10 +1607,60 @@ html[data-nb-narrow] .nb-sheetwrap--me {
   visibility: visible;
 }
 
-/* A deep link cannot be resolved before React knows how the sections
-   paginate, so the paper stays blank rather than showing the wrong
-   section — the notebook is on screen, just not yet written on. */
+/* A deep link names its section in the marker, and every section's
+   first page is already in the exported HTML (#nb-panel-<id> is that
+   section's column 0), so the awaited page is painted from the very
+   first frame — only the copies that could show the wrong section are
+   held back until React confirms the pagination. */
 html[data-nb-await] .nb-sheetwrap {
+  visibility: hidden;
+}
+
+html[data-nb-await="about"] #nb-panel-about,
+html[data-nb-await="wins"] #nb-panel-wins,
+html[data-nb-await="skills"] #nb-panel-skills,
+html[data-nb-await="work"] #nb-panel-work,
+html[data-nb-await="projects"] #nb-panel-projects,
+html[data-nb-await="school"] #nb-panel-school,
+html[data-nb-await="say-hi"] #nb-panel-say-hi,
+html[data-nb-await="hello"] .nb-sheetwrap--me {
+  visibility: visible;
+}
+
+/* Until the awaited page streams in (panels late in the HTML parse a
+   beat after first paint), the right half shows blank ruled paper
+   rather than the bare board. The opaque page covers it on arrival. */
+html[data-nb-await] .nb-half--right::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* above the page-stack pile (z1), below the real pages (z10) */
+  z-index: 2;
+  border-radius: 4px 14px 14px 4px;
+  background-color: var(--nb-paper);
+  background-image:
+    linear-gradient(to right, transparent 0 52px, var(--nb-mline) 52px 54px, transparent 54px),
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0 calc(var(--nb-line) - 1.5px),
+      var(--nb-rule) calc(var(--nb-line) - 1.5px) var(--nb-line)
+    );
+  background-position:
+    0 0,
+    0 calc(var(--nb-line) * -0.167);
+  box-shadow: inset 14px 0 26px -18px rgba(60, 40, 15, 0.5);
+}
+
+@media (max-width: 1023.98px) {
+  html[data-nb-await] .nb-half--right::before {
+    border-radius: 10px;
+    box-shadow: none;
+  }
+}
+
+/* the exported page number may not survive repagination, so it alone
+   waits for React */
+html[data-nb-await] .nb-verso-num {
   visibility: hidden;
 }
 
@@ -1676,9 +1726,10 @@ html.dark[data-nb-narrow] #nb-tabm-hello {
   filter: brightness(1);
 }
 
-/* the left paper is not written on either until the page is known */
-html[data-nb-await] .nb-cover-back .nb-sheet-inner,
+/* the left paper keeps its ruling but is not written on until the
+   pagination is known — blank ruled paper, not a bare board */
+html[data-nb-await] .nb-cover-back .nb-sheet-inner > *,
 html[data-nb-await] .nb-cover-back .nb-idclip,
-html[data-nb-await] .nb-leftpage {
+html[data-nb-await] .nb-leftpage .nb-sheet-inner > * {
   visibility: hidden;
 }
