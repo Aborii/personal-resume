@@ -656,7 +656,7 @@
   filter: brightness(1.06);
 }
 
-.nb-tab-d[aria-selected="true"] {
+html:not([data-nb-await]):not([data-nb-narrow]) .nb-tab-d[aria-selected="true"] {
   width: 96px;
   filter: brightness(1.08) saturate(1.05);
   box-shadow:
@@ -669,7 +669,7 @@
   filter: brightness(0.88) saturate(0.92);
 }
 
-.dark .nb-tab-d[aria-selected="true"],
+html.dark:not([data-nb-await]):not([data-nb-narrow]) .nb-tab-d[aria-selected="true"],
 .dark .nb-tab-d:hover {
   filter: brightness(1) saturate(1);
 }
@@ -710,7 +710,7 @@
   transition: transform 0.2s ease, filter 0.2s ease;
 }
 
-.nb-tab-m[aria-selected="true"] {
+html:not([data-nb-await]):not([data-nb-narrow]) .nb-tab-m[aria-selected="true"] {
   transform: translateY(0);
   filter: brightness(1.07);
 }
@@ -719,7 +719,7 @@
   filter: brightness(0.85) saturate(0.9);
 }
 
-.dark .nb-tab-m[aria-selected="true"] {
+html.dark:not([data-nb-await]):not([data-nb-narrow]) .nb-tab-m[aria-selected="true"] {
   filter: brightness(1);
 }
 
@@ -1588,4 +1588,97 @@ html[data-nb-visited] .nb-leftpage {
     position: static;
     overflow: visible;
   }
+}
+
+/* ============================================================
+   Pre-paint opening page (narrow viewports)
+   The exported HTML opens on the spread's first page, which is
+   correct for a two-page layout but wrong for a phone, where the
+   identity page is a page of its own rather than the inside cover.
+   The marker is set in <head> and removed by React before the
+   first paint, so these rules only ever cover that gap.
+   ============================================================ */
+
+html[data-nb-narrow] .nb-sheetwrap[data-active="true"] {
+  visibility: hidden;
+}
+
+html[data-nb-narrow] .nb-sheetwrap--me {
+  visibility: visible;
+}
+
+/* A deep link cannot be resolved before React knows how the sections
+   paginate, so the paper stays blank rather than showing the wrong
+   section — the notebook is on screen, just not yet written on. */
+html[data-nb-await] .nb-sheetwrap {
+  visibility: hidden;
+}
+
+/* ============================================================
+   Pre-paint tab selection
+   The exported HTML marks About selected, but which tab is truly
+   current depends only on the URL hash, which <head> copies onto
+   <html> before first paint. While the hold is up the selected
+   look is suppressed and re-applied here to the right tab, so the
+   highlight never visits About on the way. React removes the
+   markers before its own first paint.
+   ============================================================ */
+
+html[data-nb-await="about"] #nb-tabd-about,
+html[data-nb-await="wins"] #nb-tabd-wins,
+html[data-nb-await="skills"] #nb-tabd-skills,
+html[data-nb-await="work"] #nb-tabd-work,
+html[data-nb-await="projects"] #nb-tabd-projects,
+html[data-nb-await="school"] #nb-tabd-school,
+html[data-nb-await="say-hi"] #nb-tabd-say-hi,
+html[data-nb-await="hello"] #nb-tabd-about {
+  width: 96px;
+  filter: brightness(1.08) saturate(1.05);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.08),
+    3px 4px 9px rgba(20, 10, 0, 0.32);
+}
+
+html[data-nb-await="about"] #nb-tabm-about,
+html[data-nb-await="wins"] #nb-tabm-wins,
+html[data-nb-await="skills"] #nb-tabm-skills,
+html[data-nb-await="work"] #nb-tabm-work,
+html[data-nb-await="projects"] #nb-tabm-projects,
+html[data-nb-await="school"] #nb-tabm-school,
+html[data-nb-await="say-hi"] #nb-tabm-say-hi,
+html[data-nb-await="hello"] #nb-tabm-hello,
+html[data-nb-narrow] #nb-tabm-hello {
+  transform: translateY(0);
+  filter: brightness(1.07);
+}
+
+html.dark[data-nb-await="about"] #nb-tabd-about,
+html.dark[data-nb-await="wins"] #nb-tabd-wins,
+html.dark[data-nb-await="skills"] #nb-tabd-skills,
+html.dark[data-nb-await="work"] #nb-tabd-work,
+html.dark[data-nb-await="projects"] #nb-tabd-projects,
+html.dark[data-nb-await="school"] #nb-tabd-school,
+html.dark[data-nb-await="say-hi"] #nb-tabd-say-hi,
+html.dark[data-nb-await="hello"] #nb-tabd-about {
+  filter: brightness(1) saturate(1.05);
+}
+
+html.dark[data-nb-await="about"] #nb-tabm-about,
+html.dark[data-nb-await="wins"] #nb-tabm-wins,
+html.dark[data-nb-await="skills"] #nb-tabm-skills,
+html.dark[data-nb-await="work"] #nb-tabm-work,
+html.dark[data-nb-await="projects"] #nb-tabm-projects,
+html.dark[data-nb-await="school"] #nb-tabm-school,
+html.dark[data-nb-await="say-hi"] #nb-tabm-say-hi,
+html.dark[data-nb-await="hello"] #nb-tabm-hello,
+html.dark[data-nb-narrow] #nb-tabm-hello {
+  filter: brightness(1);
+}
+
+/* the left paper is not written on either until the page is known */
+html[data-nb-await] .nb-cover-back .nb-sheet-inner,
+html[data-nb-await] .nb-cover-back .nb-idclip,
+html[data-nb-await] .nb-leftpage {
+  visibility: hidden;
 }

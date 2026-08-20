@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import resumeData from "../../../data/resumeData.json";
 import { generateResumePDFForPrint } from "../../utils/pdfGenerator";
@@ -52,6 +52,18 @@ function isDesktop() {
 }
 
 const emptySubscribe = () => () => {};
+
+/**
+ * A section's rendered content. Every page column, leaf face and measure
+ * flow shows one of these; memoising it means a navigation re-render
+ * touches none of them — the content is static per section.
+ */
+const SectionBody = React.memo(function SectionBody({ section }: { section: Section }) {
+  return <>{section.render()}</>;
+});
+
+/** layout effects do not run while prerendering, so fall back there */
+const useBeforePaint = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 /** hydration-safe read of the pre-paint "seen this session" marker */
 function useVisitedAtLoad() {
@@ -207,22 +219,25 @@ export default function Notebook() {
       const n = Math.max(1, Math.round((flow.scrollWidth + COL_GAP) / (metrics.colw + COL_GAP)));
       next.push(n);
     });
-     
     setCounts((prev) => (prev && prev.length === next.length && prev.every((v, i) => v === next[i]) ? prev : next));
-  }, [metrics, fontsReady, sections]);
 
-  // when pagination changes, stay on the section the reader was in
-  useEffect(() => {
-    if (!counts) return;
-    const section = lastSectionRef.current;
-     
+    // Re-anchor to the section being read in the same commit as the new page
+    // count. Repagination renumbers every page, so a position kept across it
+    // points at whatever now sits at that index — correcting in a later effect
+    // renders one frame of the wrong section before it settles.
+    const nextPages = buildPages(next[0] ?? 1, next.slice(1));
+    const starts: number[] = [];
+    nextPages.forEach((page, i) => {
+      if (page.type === "content" && page.col === 0) starts[page.section] = i;
+    });
     setPos((p) => {
       if (p === 0) return p;
-      const target = sectionStart[section] ?? 1;
-      return sectionOfPage(p) === section ? p : target;
+      const section = lastSectionRef.current;
+      const at = nextPages[p];
+      if (at?.type === "content" && at.section === section) return p;
+      return starts[section] ?? 1;
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [counts]);
+  }, [metrics, fontsReady, sections]);
 
   // ---------- storage / cover ----------
   const markVisitedStorage = useCallback(() => {
@@ -350,14 +365,20 @@ export default function Notebook() {
     }
   }, [pos, stepReal]);
 
-  // first mount: resolve deep links, then schedule the cover auto-open
-  useEffect(() => {
+  // Before the first paint: choose the opening page. The exported HTML is one
+  // file for every reader, so it cannot know the viewport or the URL hash and
+  // always paints the spread's first page. <head> marks the two cases where
+  // that is wrong — a narrow viewport, which opens on the identity page, and a
+  // deep link, which opens on its own section — and CSS holds the paper blank
+  // until this effect lands. Running before paint rather than after is the
+  // whole point: an effect would leave the wrong page on screen for as long as
+  // the bundle takes to hydrate.
+  useBeforePaint(() => {
     const hash = window.location.hash.replace(/^#/, "");
     if (hash) {
-      const sec = sections.findIndex((s) => s.id === hash);
+      const sec = sections.findIndex((s2) => s2.id === hash);
       const target = hash === "hello" ? (isDesktop() ? 1 : 0) : sec >= 0 ? sectionStart[sec] : undefined;
       if (target !== undefined && target !== pos) {
-        // one-time sync from the URL hash
         setPos(target);
         setAnimPage(target);
         if (sec >= 0) {
@@ -365,8 +386,19 @@ export default function Notebook() {
           setVisited((prev) => new Set(prev).add(sec));
         }
       }
+    } else if (!isDesktop()) {
+      setPos(0);
+      setAnimPage(0);
+      // nothing has been read yet, so no section is ticked off
+      setVisited(new Set());
     }
+    const root = document.documentElement;
+    root.removeAttribute("data-nb-narrow");
+    root.removeAttribute("data-nb-await");
+  }, []);
 
+  // first mount: schedule the cover auto-open
+  useEffect(() => {
     if (visitedAtLoad) return undefined;
     if (reduced) {
       markVisitedStorage();
@@ -480,7 +512,7 @@ export default function Notebook() {
     [sections],
   );
 
-  const identity = useCallback(
+  const identityEl = useMemo(
     () => (
       <IdentityPage
         personalInfo={resumeData.personalInfo}
@@ -513,19 +545,22 @@ export default function Notebook() {
       ...(metrics ? { "--nb-colw": `${metrics.colw}px`, "--nb-colh": `${metrics.colh}px` } : {}),
     }) as React.CSSProperties;
 
-  const renderContentInner = (page: Extract<PageDef, { type: "content" }>) => (
-    <div className="nb-sheet-inner nb-pageview">
-      <div className="nb-colflow" style={colStyle(page.col)}>
-        {sections[page.section]?.render()}
+  const renderContentInner = (page: Extract<PageDef, { type: "content" }>) => {
+    const section = sections[page.section];
+    return (
+      <div className="nb-sheet-inner nb-pageview">
+        <div className="nb-colflow" style={colStyle(page.col)}>
+          {section && <SectionBody section={section} />}
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   /** the identity page flows across columns too, so it never scrolls */
   const renderIdentityInner = (col: number) => (
     <div className="nb-sheet-inner nb-pageview">
       <div className="nb-colflow" style={colStyle(col)}>
-        {identity()}
+        {identityEl}
       </div>
     </div>
   );
@@ -595,7 +630,7 @@ export default function Notebook() {
                   <div
                     key={page.type === "content" ? `c-${page.section}-${page.col}` : `${page.type}-${i}`}
                     {...(startOfSection && sectionDef ? { id: `nb-panel-${sectionDef.id}`, role: "tabpanel", "aria-labelledby": `nb-tabd-${sectionDef.id}` } : {})}
-                    className="nb-sheetwrap"
+                    className={`nb-sheetwrap ${page.type === "me" ? "nb-sheetwrap--me" : ""}`}
                     data-active={i === rightShown ? "true" : "false"}
                     data-anim={i === pos && i === animPage ? "true" : "false"}
                     suppressHydrationWarning
@@ -615,23 +650,14 @@ export default function Notebook() {
                 );
               })}
 
-              {pos + 2 <= lastRight || (!isFiller(pos) && stepReal(pos, 1) !== null) ? (
+              {pos + 2 <= lastRight ? (
                 <button
                   type="button"
-                  className="nb-corner nb-corner--next"
+                  className="nb-corner nb-corner--next hidden lg:block"
                   onClick={stepNext}
                   aria-label="Turn to the next page"
                 />
               ) : null}
-              {pos > 0 && (
-                <button
-                  type="button"
-                  className="nb-corner nb-corner--prev lg:hidden"
-                  onClick={stepPrev}
-                  aria-label="Turn back a page"
-                />
-              )}
-
               {flip && (
                 <React.Fragment key={flip.key}>
                   <motion.div
@@ -697,16 +723,25 @@ export default function Notebook() {
           {/* hidden measuring rig: how many page-columns does each flow need?
               The identity page is measured first, then every section. */}
           <div ref={measureRef} className="nb-measure" aria-hidden="true" inert>
-            {metrics &&
-              [{ id: "hello", render: identity }, ...sections].map((s) => (
+            {metrics && (
+              <>
                 <div
-                  key={s.id}
                   className="nb-measure-flow"
                   style={{ "--nb-colw": `${metrics.colw}px`, "--nb-colh": `${metrics.colh}px` } as React.CSSProperties}
                 >
-                  {s.render()}
+                  {identityEl}
                 </div>
-              ))}
+                {sections.map((s) => (
+                  <div
+                    key={s.id}
+                    className="nb-measure-flow"
+                    style={{ "--nb-colw": `${metrics.colw}px`, "--nb-colh": `${metrics.colh}px` } as React.CSSProperties}
+                  >
+                    <SectionBody section={s} />
+                  </div>
+                ))}
+              </>
+            )}
           </div>
         </div>
       </div>
