@@ -74,6 +74,21 @@ function useVisitedAtLoad() {
   );
 }
 
+const subscribeViewport = (cb: () => void) => {
+  const mq = window.matchMedia("(min-width: 1024px)");
+  mq.addEventListener("change", cb);
+  return () => mq.removeEventListener("change", cb);
+};
+
+/** hydration-safe one-page-view flag; the export is desktop-shaped */
+function useNarrow() {
+  return useSyncExternalStore(
+    subscribeViewport,
+    () => !isDesktop(),
+    () => false,
+  );
+}
+
 /**
  * Page sequence per real-notebook rules: index 0 is the inside cover
  * (identity); every section starts on a right (odd) page. A section
@@ -94,6 +109,7 @@ function buildPages(meCount: number, counts: number[]): PageDef[] {
 export default function Notebook() {
   const reduced = useReducedMotion();
   const visitedAtLoad = useVisitedAtLoad();
+  const narrow = useNarrow();
 
   const sections: Section[] = useMemo(
     () => [
@@ -130,10 +146,15 @@ export default function Notebook() {
   const coverState = coverOpen === "closed" && (visitedAtLoad || reduced) ? "open" : coverOpen;
   const coverIsOpen = coverState !== "closed";
 
-  // counts[0] is the identity page's column count; the rest are the sections'
+  // counts[0] is the identity page's column count; the rest are the sections'.
+  // One-page view never paginates: every section is a single page that
+  // scrolls, so the measured counts only shape the two-page spread.
   const pages = useMemo(
-    () => buildPages(counts?.[0] ?? 1, counts?.slice(1) ?? sections.map(() => 1)),
-    [counts, sections],
+    () =>
+      narrow
+        ? buildPages(1, sections.map(() => 1))
+        : buildPages(counts?.[0] ?? 1, counts?.slice(1) ?? sections.map(() => 1)),
+    [narrow, counts, sections],
   );
 
   const sectionStart = useMemo(() => {
@@ -220,6 +241,8 @@ export default function Notebook() {
       next.push(n);
     });
     setCounts((prev) => (prev && prev.length === next.length && prev.every((v, i) => v === next[i]) ? prev : next));
+    // one-page view ignores the measured counts, so nothing renumbers
+    if (!isDesktop()) return;
 
     // Re-anchor to the section being read in the same commit as the new page
     // count. Repagination renumbers every page, so a position kept across it
@@ -424,23 +447,24 @@ export default function Notebook() {
     return () => window.clearTimeout(timer);
   }, [coverOpen]);
 
-  // growing to the two-page spread: land on a right page, never on "Me"
-  useEffect(() => {
-    const mq = window.matchMedia("(min-width: 1024px)");
-    const onChange = () => {
-      if (!mq.matches) return;
-      setPos((p) => {
-        if (p === 0) {
-          window.history.replaceState(null, "", "#about");
-          lastSectionRef.current = 0;
-          return 1;
-        }
-        return p % 2 === 0 ? p + 1 : p;
-      });
-    };
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
-  }, []);
+  // Crossing the one-page/two-page line reshapes the page list (one-page
+  // view never paginates), so stay on the section being read rather than
+  // on a now-meaningless index. Growing to the spread also leaves "Me",
+  // which is not a page of its own there.
+  const prevNarrowRef = useRef(narrow);
+  useBeforePaint(() => {
+    if (prevNarrowRef.current === narrow) return;
+    prevNarrowRef.current = narrow;
+    setPos((p) => {
+      if (p === 0) {
+        if (narrow) return p;
+        window.history.replaceState(null, "", "#about");
+        lastSectionRef.current = 0;
+        return 1;
+      }
+      return sectionStart[lastSectionRef.current] ?? (narrow ? 0 : 1);
+    });
+  }, [narrow, sectionStart]);
 
   // arrow-key page turns
   useEffect(() => {
