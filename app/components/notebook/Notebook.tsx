@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import resumeData from "../../../data/resumeData.json";
 import { generateResumePDFForPrint } from "../../utils/pdfGenerator";
 import BookmarkTabs, { type TabDef } from "./BookmarkTabs";
@@ -53,6 +53,11 @@ function isDesktop() {
 
 const emptySubscribe = () => () => {};
 
+/** read once, as motion's hook did: a mid-visit OS change must not shut the cover */
+let reducedAtLoad: boolean | undefined;
+const readReducedAtLoad = () =>
+  (reducedAtLoad ??= window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+
 /**
  * A section's rendered content. Every page column, leaf face and measure
  * flow shows one of these; memoising it means a navigation re-render
@@ -79,6 +84,16 @@ const subscribeViewport = (cb: () => void) => {
   mq.addEventListener("change", cb);
   return () => mq.removeEventListener("change", cb);
 };
+
+/**
+ * hydration-safe reduced-motion flag. motion's useReducedMotion reads the
+ * media query during the first client render, so the cover's `inert`
+ * disagreed with the server HTML; the CSS media query already opens the
+ * cover before paint.
+ */
+function useReducedMotion() {
+  return useSyncExternalStore(emptySubscribe, readReducedAtLoad, () => false);
+}
 
 /** hydration-safe one-page-view flag; the export is desktop-shaped */
 function useNarrow() {
@@ -240,6 +255,7 @@ export default function Notebook() {
       const n = Math.max(1, Math.round((flow.scrollWidth + COL_GAP) / (metrics.colw + COL_GAP)));
       next.push(n);
     });
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- counts come from measuring flows that only exist after commit
     setCounts((prev) => (prev && prev.length === next.length && prev.every((v, i) => v === next[i]) ? prev : next));
     // one-page view ignores the measured counts, so nothing renumbers
     if (!isDesktop()) return;
@@ -420,7 +436,9 @@ export default function Notebook() {
     root.removeAttribute("data-nb-await");
   }, []);
 
-  // first mount: schedule the cover auto-open
+  // first mount: schedule the cover auto-open. Hydration renders both flags
+  // false, so the deps let the corrected re-render cancel a timer that a
+  // returning or reduced-motion visitor should never get.
   useEffect(() => {
     if (visitedAtLoad) return undefined;
     if (reduced) {
@@ -435,8 +453,7 @@ export default function Notebook() {
       });
     }, 1200);
     return () => window.clearTimeout(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [visitedAtLoad, reduced, markVisitedStorage]);
 
   // safety net: if the transitionend event is lost, settle the cover anyway
   useEffect(() => {
