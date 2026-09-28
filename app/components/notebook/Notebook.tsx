@@ -91,7 +91,7 @@ const subscribeViewport = (cb: () => void) => {
  * disagreed with the server HTML; the CSS media query already opens the
  * cover before paint.
  */
-function useReducedMotion() {
+function useReducedMotionAtLoad() {
   return useSyncExternalStore(emptySubscribe, readReducedAtLoad, () => false);
 }
 
@@ -122,7 +122,7 @@ function buildPages(meCount: number, counts: number[]): PageDef[] {
 }
 
 export default function Notebook() {
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionAtLoad();
   const visitedAtLoad = useVisitedAtLoad();
   const narrow = useNarrow();
 
