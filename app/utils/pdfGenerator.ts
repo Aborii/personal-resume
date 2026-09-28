@@ -410,12 +410,30 @@ const renderProjects = (ctx: PDFContext, projects: ResumeData["projects"]): void
     ctx.doc.setTextColor(COLORS.black.r, COLORS.black.g, COLORS.black.b);
     ctx.doc.text(project.name, ctx.margin, ctx.yPosition);
 
-    if (project.url) {
+    if (project.links || project.url) {
       const nameWidth = ctx.doc.getTextWidth(project.name);
       ctx.doc.setFontSize(TYPOGRAPHY.bodySmall.size);
       ctx.doc.setFont("helvetica", "normal");
       ctx.doc.setTextColor(COLORS.gray600.r, COLORS.gray600.g, COLORS.gray600.b);
-      ctx.doc.text(`(${project.url})`, ctx.margin + nameWidth + LAYOUT.projectNameUrlSpacing, ctx.yPosition);
+      let xPosition = ctx.margin + nameWidth + LAYOUT.projectNameUrlSpacing;
+
+      if (project.links) {
+        // Clickable labels rather than raw URLs: two store listings would overrun the line.
+        const parts: Array<{ text: string; url?: string }> = [{ text: "(" }];
+        project.links.forEach((link, linkIndex) => {
+          if (linkIndex > 0) parts.push({ text: ` ${CHARS.pipe} ` });
+          parts.push({ text: link.label, url: link.url });
+        });
+        parts.push({ text: ")" });
+
+        parts.forEach((part) => {
+          if (part.url) ctx.doc.textWithLink(part.text, xPosition, ctx.yPosition, { url: part.url });
+          else ctx.doc.text(part.text, xPosition, ctx.yPosition);
+          xPosition += ctx.doc.getTextWidth(part.text);
+        });
+      } else {
+        ctx.doc.text(`(${project.url})`, xPosition, ctx.yPosition);
+      }
     }
     ctx.yPosition += LAYOUT.projectNameSpacing;
 

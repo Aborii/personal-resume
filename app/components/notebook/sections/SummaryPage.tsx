@@ -4,8 +4,8 @@ import { SketchEllipse } from "../doodles";
 
 const STATS: Array<{ value: string; label: string }> = [
   { value: "~7", label: "years shipping code" },
-  { value: "2M+", label: "data points handled daily" },
-  { value: "40%", label: "faster dashboards" },
+  { value: "3.9s", label: "key query, down from 93s" },
+  { value: "2M+", label: "IoT events a day at Estia" },
 ];
 
 export default function SummaryPage({ summary }: { summary: string }) {
@@ -37,9 +37,9 @@ export default function SummaryPage({ summary }: { summary: string }) {
       </div>
 
       <p className="mt-[var(--nb-line)]">
-        These days I spend most of my time on <strong className="nb-strong">real-time energy platforms</strong> —
-        sensors talking over MQTT, time-series databases under pressure, and dashboards that have to feel instant.
-        The rest of this notebook is the long version.
+        These days I spend most of my time on a <strong className="nb-strong">real estate CRM</strong> — NestJS
+        and PostgreSQL behind it, a Next.js web app and a React Native mobile app in front. The rest of this notebook
+        is the long version.
       </p>
     </>
   );

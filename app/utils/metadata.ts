@@ -12,7 +12,7 @@ export function generateMetadata(pageType: "home", customTitle?: string, customD
   };
 
   const descriptions = {
-    home: `Portfolio of ${personalInfo.name}, a ${roleTitle} with nearly 7 years of experience. Explore my projects, skills, and professional experience.`,
+    home: `Portfolio of ${personalInfo.name}, a ${roleTitle} with ~7 years of experience. Explore my projects, skills, and professional experience.`,
   };
 
   const urls = {

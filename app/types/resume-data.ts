@@ -27,6 +27,8 @@ export interface ResumeData {
     description?: string;
     details: string[];
     url?: string;
+    /** Labelled links for a project with more than one home, e.g. app store listings. */
+    links?: Array<{ label: string; url: string }>;
   }>;
   education: {
     degree: string;

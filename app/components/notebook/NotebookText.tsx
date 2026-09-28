@@ -9,6 +9,7 @@ import {
   devopsCloud,
   testingTools,
   methodologies,
+  aiTools,
   otherTechs,
   companyNames,
   projectNames,
@@ -30,6 +31,7 @@ const KEYWORDS = [
   ...devopsCloud,
   ...testingTools,
   ...methodologies,
+  ...aiTools,
   ...otherTechs,
   ...companyNames,
   ...projectNames,
@@ -44,6 +46,9 @@ const KEYWORD_RE = new RegExp(`\\b(${KEYWORDS.map(escapeRe).join("|")})\\b`, "gi
 const METRIC_RE = new RegExp(
   [
     String.raw`\b\d+(?:\.\d+)?M\+(?:\s+daily)?(?:\s+time-series)?(?:\s+data\s+points?)?`,
+    String.raw`\b\d+(?:\.\d+)?(?:s|GB)\s+to\s+\d+(?:\.\d+)?(?:s|GB)\b`,
+    String.raw`\b\d+(?:\s+deadlocks)?\s+to\s+0\b`,
+    String.raw`\b\d+(?:\.\d+)?M\b`,
     String.raw`\b\d+(?:\.\d+)?\s*[-–]\s*\d+(?:\.\d+)?%`,
     String.raw`\b\d+(?:\.\d+)?%`,
     String.raw`\b\d+(?:\.\d+)?x\b`,
