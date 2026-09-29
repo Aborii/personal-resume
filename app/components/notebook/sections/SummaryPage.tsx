@@ -2,13 +2,9 @@ import { NotebookText } from "../NotebookText";
 import { SectionTitle } from "../primitives";
 import { SketchEllipse } from "../doodles";
 
-const STATS: Array<{ value: string; label: string }> = [
-  { value: "~7", label: "years shipping code" },
-  { value: "3.9s", label: "key query, down from 93s" },
-  { value: "2M+", label: "IoT events a day at Estia" },
-];
+type Stat = { value: string; label: string };
 
-export default function SummaryPage({ summary }: { summary: string }) {
+export default function SummaryPage({ summary, stats, now }: { summary: string; stats: Stat[]; now: string }) {
   return (
     <>
       <SectionTitle note="the elevator pitch ↓">About me</SectionTitle>
@@ -18,7 +14,7 @@ export default function SummaryPage({ summary }: { summary: string }) {
       </p>
 
       <div className="mt-[var(--nb-line)]">
-        {STATS.map((stat, i) => (
+        {stats.map((stat, i) => (
           <p
             key={stat.value}
             /* fixed one-line height: the big numeral's line box would otherwise
@@ -37,9 +33,7 @@ export default function SummaryPage({ summary }: { summary: string }) {
       </div>
 
       <p className="mt-[var(--nb-line)]">
-        These days I spend most of my time on a <strong className="nb-strong">real estate CRM</strong> — NestJS
-        and PostgreSQL behind it, a Next.js web app and a React Native mobile app in front. The rest of this notebook
-        is the long version.
+        <NotebookText>{now}</NotebookText> The rest of this notebook is the long version.
       </p>
     </>
   );

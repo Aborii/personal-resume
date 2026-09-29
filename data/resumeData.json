@@ -16,6 +16,14 @@
     "identityLine": "Building a real estate CRM for web and mobile",
     "experienceLine": "~7 years of full-stack experience · Real estate, energy & e-learning SaaS"
   },
+  "about": {
+    "stats": [
+      { "value": "~7", "label": "years shipping code" },
+      { "value": "3.9s", "label": "key query, down from 93s" },
+      { "value": "2M+", "label": "IoT events a day at Estia" }
+    ],
+    "now": "These days I spend most of my time on a real estate CRM — NestJS and PostgreSQL behind it, a Next.js web app and a React Native mobile app in front."
+  },
   "summary": "Senior Full-Stack Engineer with ~7 years of experience building SaaS platforms in real estate, energy and e-learning. At Propwise in Dubai, I build a real estate CRM and its mobile app, Propilot, across the backend, web app and mobile app. My work covers the core CRM modules, team roles and permissions, and performance work like cutting a key query from 93s to 3.9s on 1.9M tasks. Before that, at Estia Software, I led architecture for enterprise energy platforms handling 2M+ daily IoT events, delivering 25–40% performance improvements and 99.9% uptime. I enjoy owning systems end to end, mentoring engineers, and using Claude and Cursor to plan, build and test complex features faster.",
   "keyAchievements": [
     "Built core modules of the Propwise real estate CRM: Contacts, companies, deals, commission payments, tasks, calendar reminders, email integration, and team roles and permissions, end to end across the NestJS/PostgreSQL backend, Next.js web app and React Native mobile app.",
