@@ -87,7 +87,8 @@ async function generateResumeOGImage(): Promise<void> {
                     color: "#9CA3AF",
                     marginBottom: "28px",
                   },
-                  children: resumeData.personalInfo.title,
+                  // the stack half of the title repeats the skill chips below
+                  children: resumeData.personalInfo.title.split("|")[0]?.trim(),
                 },
               },
               // Identity line (bold, impactful)

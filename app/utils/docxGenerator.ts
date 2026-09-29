@@ -298,18 +298,19 @@ export const buildResumeDOCX = (resumeData: ResumeData): Document => {
       }),
     );
 
-    if (project.url) {
+    const projectLinks = project.links ?? (project.url ? [{ label: "URL", url: project.url }] : []);
+    projectLinks.forEach((link) => {
       children.push(
         new Paragraph({
           children: [
             new TextRun({
-              text: `URL: ${project.url}`,
+              text: `${link.label}: ${link.url}`,
             }),
           ],
           spacing: { after: 50 },
         }),
       );
-    }
+    });
 
     project.details.forEach((detail) => {
       children.push(

@@ -113,7 +113,7 @@ export default function Notebook() {
 
   const sections: Section[] = useMemo(
     () => [
-      { id: "about", tab: "About", color: "#ffd166", render: () => <SummaryPage summary={resumeData.summary} /> },
+      { id: "about", tab: "About", color: "#ffd166", render: () => <SummaryPage summary={resumeData.summary} stats={resumeData.about.stats} now={resumeData.about.now} /> },
       { id: "wins", tab: "Wins", color: "#ef767a", render: () => <AchievementsPage achievements={resumeData.keyAchievements} /> },
       { id: "skills", tab: "Skills", color: "#7fb069", render: () => <SkillsPage skills={resumeData.skills} topSkills={resumeData.og.topSkills} /> },
       { id: "work", tab: "Work", color: "#5aa9e6", render: () => <ExperiencePage experiences={resumeData.experience} /> },

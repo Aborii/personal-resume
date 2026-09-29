@@ -1,5 +1,5 @@
 # Abdullah Almofleh
-### Senior Full-Stack Engineer | NestJS / Next.js Specialist
+### Senior Full-Stack Engineer at Propwise | NestJS • Next.js • React Native • PostgreSQL
 
 📍 Dubai, United Arab Emirates
 📞 +971 50 510 8253 | ✉️ almofleh.abdullah@gmail.com
@@ -9,12 +9,14 @@
 
 ## Professional Summary
 
-Senior Full-Stack Engineer with ~7 years building high-volume platforms at Estia Software DMCC (real time energy/e-learning), handling 2M+ daily time-series data points. Architected NestJS/PostgreSQL backends and Next.js/Typescript front-ends from scratch, driving 25-40% performance gains through database sharding and caching optimizations while mentoring development teams.
+Senior Full-Stack Engineer with ~7 years of experience building SaaS platforms in real estate, energy and e-learning. At Propwise in Dubai, I build a real estate CRM and its mobile app, Propilot, across the backend, web app and mobile app. My work covers the core CRM modules, team roles and permissions, and performance work like cutting a key query from 93s to 3.9s on 1.9M tasks. Before that, at Estia Software, I led architecture for enterprise energy platforms handling 2M+ daily IoT events, delivering 25–40% performance improvements and 99.9% uptime. I enjoy owning systems end to end, mentoring engineers, and using Claude and Cursor to plan, build and test complex features faster.
 
 ---
 
 ## Key Achievements
 
+- Built core modules of the Propwise real estate CRM: Contacts, companies, deals, commission payments, tasks, calendar reminders, email integration, and team roles and permissions, end to end across the NestJS/PostgreSQL backend, Next.js web app and React Native mobile app.
+- Fixed a deadlock that was silently dropping tasks: Took Propwise from 378 deadlocks to 0, and cut a key query from 93s to 3.9s on 1.9M tasks.
 - Engineered Envita SaaS energy platform: Real-time time-series dashboards processing 2M+ data points daily via MQTT from sensors, AWS IoT Core integration, multi-frame aggregation, and complex optimized queries—slashing chart/dashboard load times 40% for energy professionals.
 - Built Ecorize energy platform: GraphQL APIs handling complex energy modeling workflows, optimizing aggregations across PostgreSQL/Redis for sub-second responses.
 - Delivered ASP School e-learning platform: Multilingual Laravel/React system with video streaming and progress tracking, scaling to production educator workflows.
@@ -32,6 +34,8 @@ Senior Full-Stack Engineer with ~7 years building high-volume platforms at Estia
 
 **Front-End:** Next.js (SSR/SSG, 4+ years) • React.js (6+ years) • Vue.js (3+ years) • Tailwind CSS
 
+**Mobile:** React Native
+
 **Back-End:** Node.js (6+ years) • NestJS (4+ years) • Express.js (6+ years) • Laravel (4+ years) • TypeORM (4+ years)
 
 **Databases:** PostgreSQL (advanced queries/aggregations, 5+ years) • TimescaleDB (time-series) • MongoDB (high-volume real-time data, 4+ years) • MySQL • Redis
@@ -44,64 +48,89 @@ Senior Full-Stack Engineer with ~7 years building high-volume platforms at Estia
 
 **Testing/Tools:** Jest • Cypress • Playwright • Git
 
+**AI Tools:** Claude Code • Cursor
+
 **Methodologies:** Agile • Scrum
 
 ---
 
 ## Professional Experience
 
+### Senior Full-Stack Engineer
+**Propwise.com** | Dubai, United Arab Emirates
+*February 2026 to Present*
+
+- Built the core CRM modules end to end: contacts, companies, deals, commission payments, tasks, calendar reminders and email integration.
+- Built team roles, permissions and invitations, so managers and agents each get the right access.
+- Built client merging that works the same on web and mobile, and warns before an archived client comes back or deals move.
+- Fixed a database deadlock that was silently dropping tasks (378 deadlocks to 0), and cut a key query from 93s to 3.9s on 1.9M tasks.
+- Added test suites for data isolation between companies, payments and sign-in security, and cut CI test memory from 2.65GB to 1.25GB.
+- Built a demo-account mode that sets up and removes a full sample workspace, so new users can try the CRM without risk.
+- Grouped notifications into one alert per burst, with a daily task digest in each user's time zone.
+- Built ad conversion tracking (Meta, LinkedIn, Google), cookie consent and onboarding emails across the website and CRM.
+- Used Claude and Cursor to plan, build and test complex features faster, such as client merging across web and mobile and the notification redesign.
+
 ### Senior Software Engineer
 **Estia Software DMCC** | Dubai, United Arab Emirates
-*May 2023 to Present*
+*May 2023 to January 2026*
 
-- Led architecture for energy SaaS (Envita/Ecorize): Next.js/NestJS stacks with MQTT from sensors via AWS IoT Core ingesting 2M+ daily time-series data points; engineered multi-frame aggregations, TimescaleDB/PostgreSQL complex queries—slashing dashboard/chart load times 40%.
-- Built scalable GraphQL/REST APIs with federation, SSR/SSG UIs optimized for SEO/real-time viz; implemented GitHub Actions CI/CD, Jest/Cypress (95% coverage), Sentry monitoring—cutting production incidents 50% and enabling zero-downtime deploys.
-- Impact: Shipped 3 enterprise platforms to production; mentored 5+ engineers on TypeScript/CI/CD standards, doubling team velocity while hitting 99.9% uptime SLA.
+- Led architecture for enterprise energy SaaS platforms processing 2M+ daily IoT time-series events using NestJS, Next.js, AWS IoT Core, and PostgreSQL/TimescaleDB.
+- Designed multi-frame aggregations and optimized complex queries, reducing dashboard and chart load times by ~40%.
+- Built scalable GraphQL and REST APIs, SEO-optimized SSR/SSG front-ends, and real-time dashboards for energy professionals.
+- Implemented CI/CD pipelines, automated testing (~95% coverage), and monitoring, cutting production incidents by ~50%.
+- Mentored 5+ engineers, enforced TypeScript and code-quality standards, and helped double team delivery speed while maintaining 99.9% uptime.
 
 ### Software Engineer
 **Nordelco DMCC** | Dubai, United Arab Emirates
 *December 2022 to May 2023*
 
-- Converted project from JavaScript to TypeScript; improved bug detection and reduced runtime errors by 40% through static typing and better IDE support.
-- Developed/optimized Node.js/Express REST APIs for energy workflows; PostgreSQL indexing delivered 35% faster queries and 25% stability gains.
-- Collaborated on Vue.js dashboards with real-time charts; refactored legacy components, cut bundle sizes 50% via code-splitting/tree-shaking.
-- Impact: Stabilized platform for 50+ daily users; Jest automation reduced bugs 60%.
+- Migrated production codebase from JavaScript to TypeScript, reducing runtime errors by ~40% and improving maintainability.
+- Developed and optimized Node.js/Express APIs for energy workflows; PostgreSQL indexing improved query performance by ~35%.
+- Refactored Vue.js dashboards with real-time visualizations, cutting bundle size by ~50% via code-splitting and tree-shaking.
+- Added Jest-based automation, reducing recurring bugs by ~60%.
 
-### Software Engineer
+### Full-Stack Developer
 **Digital Real Marketing** | Dubai, United Arab Emirates
 *October 2022 to December 2022*
 
-- Delivered Laravel e-commerce APIs/DB schemas for products/orders/payments; 100% on-time under tight deadlines.
-- Impact: Launched 2 live sites, enabled first revenue via reliable processing.
+- Delivered Laravel-based e-commerce APIs and database schemas for products, orders, and payments.
+- Successfully launched 2 production sites on tight deadlines, enabling first revenue with stable transaction flows.
 
 ### Full-Stack Developer
 **3 Miles** | Damascus, Syria
 *November 2021 to September 2022*
 
 - Contributed to full-stack Laravel, Vue.js, and Node.js projects, implementing features from requirements through production deployment and improving delivery timelines by ~50%.
-- Delivered 2 production apps, cutting client deployment times 50%.
+- Delivered 2 production applications, cutting client delivery timelines by ~50%.
 
-### Full-Stack Developer
-**Unifi Solutions** | Remote, Part-time
-*August 2020 to March 2022*
+### Full-Stack JavaScript Developer
+**Unifi Solutions** | Damascus, Syria (Remote, Part-time)
+*May 2021 to March 2022*
 
-- Developed Node.js/MongoDB backend services for events management system + Bact e-learning backend (Node.js/TypeORM/PostgreSQL); designed RESTful APIs and optimized databases.
-- Scaled APIs to 3x capacity across client apps; improved course delivery reliability 30% through performance tuning and documentation.
+- Built the Bact e-learning backend (Node.js, TypeORM, PostgreSQL).
+- Scaled APIs to 3x capacity across client apps and improved course delivery reliability by 30% through performance tuning and documentation.
 
-### Full-Stack Developer
+### Full-Stack Developer & IT Support
 **Technical G** | Damascus, Syria
 *February 2021 to May 2021*
 
-- Led small development team on production systems.
-- Resolved performance bottlenecks, boosting app responsiveness 40%.
+- Led small teams, optimized backend performance, and delivered multiple production systems across e-learning, media, and client platforms.
+- Maintained 100% on-time delivery across concurrent projects.
 
 ### Full-Stack Developer
-**Aspiraties** | Damascus, Syria (Remote, Part-time)
+**Aspiraties** | Damascus, Syria (Hybrid, Part-time)
 *July 2020 to October 2021*
 
 - Optimized Node.js/DB queries for ASP School multilingual e-learning platform.
 - Cut video streaming latency 25% for global production users.
 - Rewrote front-end components in React for better UX.
+
+### Back-End Developer
+**Unifi Solutions** | Damascus, Syria (Remote, Part-time)
+*August 2020 to January 2021*
+
+- Developed Node.js/MongoDB backend services for an events management system.
+- Designed RESTful APIs and optimized databases.
 
 ### Full-Stack Developer
 **We Media** | Damascus, Syria
@@ -113,6 +142,20 @@ Senior Full-Stack Engineer with ~7 years building high-volume platforms at Estia
 ---
 
 ## Notable Projects
+
+### Propwise - *Real Estate CRM (SaaS)*
+🔗 [https://www.propwise.com/](https://www.propwise.com/)
+
+- Next.js/NestJS, PostgreSQL, pg-boss, PostHog/GA4
+- Built core modules of a real estate CRM for Dubai agencies: contacts, companies, deals, commission payments, tasks, calendar reminders, email integration, team roles and permissions, client merging and a demo-account mode; fixed a deadlock that was silently dropping tasks and sped up key queries on 1.9M tasks.
+- Key query 93s to 3.9s on 1.9M tasks · Deadlocks 378 to 0 · CI memory 2.65GB to 1.25GB
+
+### Propilot - *AI Assistant & Mobile App for Real Estate Agents*
+🔗 [App Store](https://apps.apple.com/ae/app/propilot-real-estate-ai/id6796117879) · [Google Play](https://play.google.com/store/apps/details?id=com.propwise.propilot)
+
+- React Native, NestJS, PostgreSQL, RevenueCat, Push notifications
+- Worked on the Propilot AI assistant and built features across its iOS/Android app and backend: lead and client merging that matches the web CRM, deal commissions, a daily digest of overdue and due tasks with push reminders, Propilot-branded emails and app links, and sign-in and onboarding flows.
+- Web and mobile kept in step: the same merge rules and daily digest on both
 
 ### Envita - *Energy Monitoring Platform*
 🔗 [https://envita.io/](https://envita.io/)

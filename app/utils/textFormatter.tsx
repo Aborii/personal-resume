@@ -5,7 +5,7 @@ import React from "react";
 export const programmingLanguages = ["TypeScript", "JavaScript", "PHP"];
 
 // Frontend Technologies
-export const frontendTechs = ["Next.js", "React.js", "React", "Vue.js", "Tailwind CSS", "HTML", "CSS", "SSR", "SSG"];
+export const frontendTechs = ["Next.js", "React Native", "React.js", "React", "Vue.js", "Tailwind CSS", "HTML", "CSS", "SSR", "SSG"];
 
 // Backend Technologies
 export const backendTechs = ["Node.js", "Nest.js", "NestJS", "Express.js", "Laravel", "TypeORM"];
@@ -28,8 +28,11 @@ export const testingTools = ["Jest", "Cypress", "Playwright", "Git"];
 // Methodologies
 export const methodologies = ["Agile", "Scrum"];
 
+// AI Tools
+export const aiTools = ["Claude Code", "Claude", "Cursor"];
+
 // Other Technologies
-export const otherTechs = ["Stripe", "Flutter"];
+export const otherTechs = ["Stripe", "Flutter", "RevenueCat", "pg-boss", "PostHog", "GA4"];
 
 // Combined tech keywords array
 const techKeywords = [
@@ -42,11 +45,13 @@ const techKeywords = [
   ...devopsCloud,
   ...testingTools,
   ...methodologies,
+  ...aiTools,
   ...otherTechs,
 ];
 
 // ===== COMPANY NAMES =====
 export const companyNames = [
+  "Propwise.com",
   "Estia Software DMCC",
   "Estia Software",
   "Nordelco DMCC",
@@ -62,6 +67,8 @@ export const companyNames = [
 
 // ===== PROJECT NAMES =====
 export const projectNames = [
+  "Propwise",
+  "Propilot",
   "Envita",
   "Ecorize",
   "ASP School",
@@ -140,8 +147,8 @@ export function formatTextWithBold(text: string): React.ReactNode {
     });
   }
 
-  // Sort matches by start position and remove overlaps
-  matches.sort((a, b) => a.start - b.start);
+  // Sort matches by start position (longest first on a tie, so "React Native" beats "React") and remove overlaps
+  matches.sort((a, b) => a.start - b.start || b.end - a.end);
   const filteredMatches = [];
   let lastEnd = 0;
 
@@ -241,8 +248,8 @@ export function parseTextForFormatting(text: string): Array<{ text: string; bold
     });
   }
 
-  // Sort matches by start position and remove overlaps
-  matches.sort((a, b) => a.start - b.start);
+  // Sort matches by start position (longest first on a tie, so "React Native" beats "React") and remove overlaps
+  matches.sort((a, b) => a.start - b.start || b.end - a.end);
   const filteredMatches = [];
   let lastEnd = 0;
 
