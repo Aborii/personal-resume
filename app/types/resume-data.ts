@@ -11,6 +11,17 @@ export interface ResumeData {
       portfolio: string;
     };
   };
+  /** Lines and chips for the generated OG image; topSkills also stars those skills on the site. */
+  og: {
+    topSkills: string[];
+    identityLine: string;
+    experienceLine: string;
+  };
+  /** The About page's circled stats and its "these days" sentence. */
+  about: {
+    stats: Array<{ value: string; label: string }>;
+    now: string;
+  };
   summary: string;
   keyAchievements: string[];
   skills: Record<string, string[]>;
@@ -27,6 +38,8 @@ export interface ResumeData {
     description?: string;
     details: string[];
     url?: string;
+    /** Labelled links for a project with more than one home, e.g. app store listings. */
+    links?: Array<{ label: string; url: string }>;
   }>;
   education: {
     degree: string;

@@ -71,7 +71,9 @@ export const buildResumeMD = (resumeData: ResumeData): string => {
     } else {
       lines.push(`### ${project.name}`);
     }
-    if (project.url) {
+    if (project.links) {
+      lines.push(`🔗 ${project.links.map((link) => `[${link.label}](${link.url})`).join(" · ")}`);
+    } else if (project.url) {
       lines.push(`🔗 [${project.url}](${project.url})`);
     }
     lines.push("");

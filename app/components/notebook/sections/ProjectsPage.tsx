@@ -47,10 +47,23 @@ export default function ProjectsPage({ projects }: { projects: ProjectItem[] }) 
 
                 <div className="flex items-baseline justify-between gap-2">
                   <h3 className="nb-hand text-[21px] font-bold leading-[24px]">{project.name}</h3>
-                  {project.url && (
-                    <InkLink href={project.url} className="nb-hand shrink-0 text-[16px]" ariaLabel={`Visit ${project.name}`}>
-                      visit
-                    </InkLink>
+                  {project.links ? (
+                    <span className="nb-hand shrink-0 text-[16px]">
+                      {project.links.map((link, li) => (
+                        <span key={link.url}>
+                          {li > 0 && " · "}
+                          <InkLink href={link.url} ariaLabel={`${project.name} on ${link.label}`}>
+                            {link.label}
+                          </InkLink>
+                        </span>
+                      ))}
+                    </span>
+                  ) : (
+                    project.url && (
+                      <InkLink href={project.url} className="nb-hand shrink-0 text-[16px]" ariaLabel={`Visit ${project.name}`}>
+                        visit
+                      </InkLink>
+                    )
                   )}
                 </div>
 
