@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "npm run g:pdf -- out && npm run g:docx -- out && npm run g:md -- out",
     "start": "next start",
     "lint": "eslint",
     "pages:dev": "wrangler pages dev out",

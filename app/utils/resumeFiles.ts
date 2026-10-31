@@ -1,5 +1,6 @@
-// The resume files that `npm run g:resume` writes into public/. The site serves these
-// copies as they are, so a visitor's download is never generated in their browser.
+// The resume files the site serves as static files, so a visitor's download is never generated
+// in their browser. The build writes fresh copies into out/ (postbuild); the committed copies in
+// public/, written by `npm run g:resume`, are what `next dev` serves.
 
 const SUFFIXES = {
   pdf: ".pdf",

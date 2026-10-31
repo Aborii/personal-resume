@@ -1,5 +1,5 @@
-import { writeFileSync, mkdirSync } from "fs";
-import { join, dirname } from "path";
+import { writeFileSync, mkdirSync, existsSync } from "fs";
+import { join, dirname, resolve } from "path";
 import { fileURLToPath } from "url";
 import { Packer } from "docx";
 import { buildResumeDOCX } from "../app/utils/docxGenerator.js";
@@ -10,9 +10,15 @@ import type { ResumeData } from "../app/types/resume-data.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Ensure public directory exists
-const publicDir = join(__dirname, "..", "public");
-mkdirSync(publicDir, { recursive: true });
+// Write into public/ unless a folder is given. The build passes "out", which must already exist:
+// creating it would let the deploy ship a folder holding only these files.
+const outputDir = resolve(__dirname, "..", process.argv[2] ?? "public");
+if (process.argv[2] === undefined) {
+  mkdirSync(outputDir, { recursive: true });
+} else if (!existsSync(outputDir)) {
+  console.error(`❌ Output folder not found: ${outputDir}`);
+  process.exit(1);
+}
 
 async function generateDOCX(): Promise<void> {
   try {
@@ -22,7 +28,7 @@ async function generateDOCX(): Promise<void> {
     const docBuffer = await Packer.toBuffer(doc);
 
     const fileName = resumeFileName(resumeData.personalInfo.name, "docx");
-    const outputPath = join(publicDir, fileName);
+    const outputPath = join(outputDir, fileName);
 
     writeFileSync(outputPath, docBuffer);
     console.log(`✅ Generated: ${fileName}`);
