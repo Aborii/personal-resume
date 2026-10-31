@@ -1,4 +1,3 @@
-import { saveAs } from "file-saver";
 import type { ResumeData } from "../types/resume-data";
 
 // Build the Markdown content
@@ -105,11 +104,4 @@ export const buildResumeMD = (resumeData: ResumeData): string => {
   lines.push("");
 
   return lines.join("\n");
-};
-
-// Generate and download MD for the app
-export const generateResumeMD = (resumeData: ResumeData) => {
-  const mdContent = buildResumeMD(resumeData);
-  const blob = new Blob([mdContent], { type: "text/markdown;charset=utf-8" });
-  saveAs(blob, `${resumeData.personalInfo.name.replace(/\s+/g, "_")}_Resume.md`);
 };
