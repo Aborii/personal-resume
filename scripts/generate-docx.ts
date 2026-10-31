@@ -3,6 +3,7 @@ import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 import { Packer } from "docx";
 import { buildResumeDOCX } from "../app/utils/docxGenerator.js";
+import { resumeFileName } from "../app/utils/resumeFiles.js";
 import resumeData from "../data/resumeData.json" assert { type: "json" };
 import type { ResumeData } from "../app/types/resume-data.js";
 
@@ -20,7 +21,7 @@ async function generateDOCX(): Promise<void> {
     const doc = buildResumeDOCX(resumeData as ResumeData);
     const docBuffer = await Packer.toBuffer(doc);
 
-    const fileName = `${resumeData.personalInfo.name.replace(/\s+/g, "_")}_Resume.docx`;
+    const fileName = resumeFileName(resumeData.personalInfo.name, "docx");
     const outputPath = join(publicDir, fileName);
 
     writeFileSync(outputPath, docBuffer);

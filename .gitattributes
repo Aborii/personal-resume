@@ -1,0 +1,3 @@
+# The site serves the generated resume PDFs as they are. Git must never rewrite their
+# line endings (core.autocrlf on Windows), or the PDF's byte offsets stop matching.
+*.pdf binary

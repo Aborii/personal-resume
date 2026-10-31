@@ -1,10 +1,11 @@
 "use client";
 
-import { generateResumePDF, generateResumePDFForPrint } from "../../utils/pdfGenerator";
-import { generateResumeDOCX } from "../../utils/docxGenerator";
+import { openResumeForPrint, resumeFileUrl } from "../../utils/resumeFiles";
 import resumeData from "../../../data/resumeData.json";
 import { WashiTape } from "./primitives";
 import { DownloadDoodle, PrintDoodle } from "./doodles";
+
+const { name } = resumeData.personalInfo;
 
 /**
  * A slip torn off a pad and taped to the page, offering the
@@ -18,33 +19,6 @@ export default function DownloadScrap({
   /** single tight row — used where page height is scarce */
   compact?: boolean;
 }) {
-  const handlePDF = () => {
-    try {
-      generateResumePDF(resumeData);
-    } catch (error) {
-      console.error("Error generating PDF:", error);
-      alert("Failed to generate PDF. Please try again.");
-    }
-  };
-
-  const handleDOCX = async () => {
-    try {
-      await generateResumeDOCX(resumeData);
-    } catch (error) {
-      console.error("Error generating DOCX:", error);
-      alert("Failed to generate DOCX. Please try again.");
-    }
-  };
-
-  const handlePrint = () => {
-    try {
-      generateResumePDFForPrint(resumeData);
-    } catch (error) {
-      console.error("Error printing PDF:", error);
-      alert("Failed to print PDF. Please try again.");
-    }
-  };
-
   return (
     <div className={`nb-scrapwrap ${compact ? "nb-scrapwrap--compact" : ""} ${className ?? ""}`}>
       <div className="nb-scrap">
@@ -56,15 +30,15 @@ export default function DownloadScrap({
           keep a copy for later:
         </p>
         <div className="flex flex-wrap gap-2.5">
-          <button type="button" className="nb-scrapbtn" onClick={handlePDF}>
+          <a className="nb-scrapbtn" href={resumeFileUrl(name, "pdf")} download>
             <DownloadDoodle />
             PDF
-          </button>
-          <button type="button" className="nb-scrapbtn" onClick={handleDOCX}>
+          </a>
+          <a className="nb-scrapbtn" href={resumeFileUrl(name, "docx")} download>
             <DownloadDoodle />
             DOCX
-          </button>
-          <button type="button" className="nb-scrapbtn" onClick={handlePrint}>
+          </a>
+          <button type="button" className="nb-scrapbtn" onClick={() => openResumeForPrint(name)}>
             <PrintDoodle />
             Print
           </button>

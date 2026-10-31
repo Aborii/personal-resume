@@ -1257,6 +1257,7 @@ html[data-nb-visited] .nb-leftpage {
 .nb-scrapbtn {
   appearance: none;
   cursor: pointer;
+  text-decoration: none;
   display: inline-flex;
   align-items: center;
   gap: 7px;
