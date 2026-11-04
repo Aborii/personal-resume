@@ -1,5 +1,4 @@
-import { Document, Paragraph, TextRun, AlignmentType, BorderStyle, Packer } from "docx";
-import { saveAs } from "file-saver";
+import { Document, Paragraph, TextRun, AlignmentType, BorderStyle } from "docx";
 import type { ResumeData } from "../types/resume-data";
 
 // Build the DOCX document and return the Document object
@@ -425,11 +424,4 @@ export const buildResumeDOCX = (resumeData: ResumeData): Document => {
       },
     ],
   });
-};
-
-// Generate and download DOCX for the app
-export const generateResumeDOCX = async (resumeData: ResumeData) => {
-  const doc = buildResumeDOCX(resumeData);
-  const blob = await Packer.toBlob(doc);
-  saveAs(blob, `${resumeData.personalInfo.name.replace(/\s+/g, "_")}_Resume.docx`);
 };

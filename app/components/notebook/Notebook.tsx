@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { motion } from "motion/react";
 import resumeData from "../../../data/resumeData.json";
-import { generateResumePDFForPrint } from "../../utils/pdfGenerator";
+import { openResumeForPrint } from "../../utils/resumeFiles";
 import BookmarkTabs, { type TabDef } from "./BookmarkTabs";
 import CoverFront from "./Cover";
 import IdentityPage, { type TocItem } from "./IdentityPage";
@@ -498,12 +498,7 @@ export default function Notebook() {
 
   // Ctrl/Cmd+P and window.print produce the classic printable PDF
   useEffect(() => {
-    const printPDF = () => {
-      try {
-        generateResumePDFForPrint(resumeData);
-      } catch (error) {
-        console.error("Error printing PDF:", error);      }
-    };
+    const printPDF = () => openResumeForPrint(resumeData.personalInfo.name);
     const onBeforePrint = (e: Event) => {
       e.preventDefault();
       printPDF();

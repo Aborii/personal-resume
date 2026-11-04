@@ -579,22 +579,13 @@ const renderLanguages = (ctx: PDFContext, languages: Record<string, string>): vo
   });
 };
 
-const generateInfo = (
-  resumeData: ResumeData,
-): {
-  fileName: string;
-  title: string;
-} => {
+const generateTitle = (resumeData: ResumeData): string => {
   const now = new Date();
   const day = now.getDate().toString().padStart(2, "0");
   const month = now.toLocaleDateString("en-US", { month: "short" }).toLowerCase();
   const year = now.getFullYear();
-  const fileDate = `${day}_${month}_${year}`;
 
-  return {
-    fileName: `${resumeData.personalInfo.name.replace(/\s+/g, "_")}_Resume_${fileDate}.pdf`,
-    title: `Resume ${resumeData.personalInfo.name} - Generated on ${day} ${month}, ${year}`,
-  };
+  return `Resume ${resumeData.personalInfo.name} - Generated on ${day} ${month}, ${year}`;
 };
 
 // Render footer
@@ -619,35 +610,14 @@ export const buildResumePDF = (resumeData: ResumeData): jsPDF => {
   renderEducation(ctx, resumeData.education);
   renderLanguages(ctx, resumeData.languages);
 
-  const fileInfo = generateInfo(resumeData);
+  const title = generateTitle(resumeData);
 
   doc.setProperties({
-    title: fileInfo.title,
+    title,
     author: resumeData.personalInfo.name,
-    subject: fileInfo.title,
+    subject: title,
     keywords: "resume, pdf",
   });
 
   return doc;
-};
-
-export const generateResumePDF = (resumeData: ResumeData) => {
-  const doc = buildResumePDF(resumeData);
-
-  const fileInfo = generateInfo(resumeData);
-  doc.save(fileInfo.fileName);
-};
-
-// Function to generate and print PDF
-export const generateResumePDFForPrint = (resumeData: ResumeData) => {
-  const doc = buildResumePDF(resumeData);
-
-  // Open print dialog with the PDF
-  doc.autoPrint();
-
-  const newWindow = window.open(doc.output("bloburl"), "_blank");
-  if (!newWindow) {
-    console.warn("Unable to open the print dialog. The popup may have been blocked by the browser.");
-    alert("Unable to open the print dialog. Please allow popups for this site in your browser settings and try again.");
-  }
 };

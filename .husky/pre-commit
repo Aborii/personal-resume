@@ -1,43 +1,45 @@
 #!/bin/sh
-# Husky pre-commit hook to regenerate all assets when resumeData.json changes
+# Husky pre-commit hook to regenerate all assets when the resume data or its generators change.
+# The build writes fresh resume files into out/ itself (postbuild), so for those this only keeps
+# the committed copies, which `next dev` serves, in step. og-main.png is regenerated only here.
 
-# Check if data/resumeData.json is in staged files
-if git diff --cached --name-only | grep -q "data/resumeData.json"; then
-  echo "📄 resumeData.json detected in staged changes"
+# Check if the data file, a generator, or a generation script is in staged files
+if git diff --cached --name-only | grep -qE "^(data/resumeData\.json|app/utils/(pdfGenerator|docxGenerator|mdGenerator|textFormatter|resumeFiles)\.tsx?|scripts/generate-)"; then
+  echo "📄 Resume data or a generator detected in staged changes"
   echo "🔄 Regenerating all assets (PDF, DOCX, MD, OG images)..."
-  
+
   # Run the full generation script (PDF + DOCX + MD + OG images)
   if npm run g:all; then
     echo "✅ All assets regenerated successfully"
-    
-    # Stage all generated files
-    if ls public/*_Resume.pdf 1> /dev/null 2>&1; then
-      git add public/*_Resume.pdf
-      echo "✅ Generated PDF added to commit"
+
+    # Stage all generated files (the PDF glob also covers the _print copy)
+    if ls public/*_Resume*.pdf 1> /dev/null 2>&1; then
+      git add public/*_Resume*.pdf
+      echo "✅ Generated PDFs added to commit"
     fi
-    
+
     if ls public/*_Resume.docx 1> /dev/null 2>&1; then
       git add public/*_Resume.docx
       echo "✅ Generated DOCX added to commit"
     fi
-    
+
     if ls public/*_Resume.md 1> /dev/null 2>&1; then
       git add public/*_Resume.md
       echo "✅ Generated MD added to commit"
     fi
-    
+
     if ls public/og-*.png 1> /dev/null 2>&1; then
       git add public/og-*.png
       echo "✅ Generated OG images added to commit"
     fi
   else
     echo "❌ ERROR: Asset generation failed!"
-    echo "❌ resumeData.json changed but assets not regenerated!"
+    echo "❌ Resume data or a generator changed but assets not regenerated!"
     echo "❌ Please run 'npm run g:all' manually and fix any errors."
     exit 1
   fi
 else
-  echo "⚡ Skipping asset generation (resumeData.json not changed)"
+  echo "⚡ Skipping asset generation (resume data and generators not changed)"
 fi
 
 exit 0
